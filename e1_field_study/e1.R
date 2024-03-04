@@ -828,5 +828,5 @@ topic_modelling = function(data_topic, check_perplexity=FALSE, comments=FALSE) {
   while (!is.null(dev.list()))  dev.off()
 }
 
-topic_modelling(d_all[['posts']], check_perplexity = TRUE)
+topic_modelling(d_all[['posts']]) # Note: Set check_perplexity to TRUE to check the perplexity (takes ~15 minutes on an M1 Pro)
 topic_modelling(d_all[['comments']], comments=TRUE)
