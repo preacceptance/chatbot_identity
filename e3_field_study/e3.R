@@ -42,7 +42,8 @@ pacman::p_load('ggplot2',         # plotting
                'hash',
                'dplyr',
                'tidytext',
-               'parallel'
+               'parallel',
+               'lsr'
 )
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
@@ -77,7 +78,7 @@ d_2 <- read.csv('./data/replika/comments_2023_02.csv', sep = ",")
 # Combine the two dataframes
 d <- rbind(d_1, d_2)
 print(paste0("Number of comments: ", nrow(d)))
-  
+
 # Load the arrays in 'sentiment' column. The first object in the python array is the sentiment label and the second one is sentiment score
 d$sentiment_label <- sapply(d$sentiment, function(x) {reticulate::py_eval(x)[[1]]})
 d$sentiment_score <- sapply(d$sentiment, function(x) {reticulate::py_eval(x)[[2]]})
@@ -92,7 +93,7 @@ d_all[['comments']] <- d
 
 # For Replika
 d_1 <- read.csv('./data/replika/posts_2023_01.csv', sep = ",")  
-d_2 <- read.csv('./data/replika/posts_2023_02.csv', sep = ",")  
+d_2 <- read.csv('./data/replika/posts_2023_02.csv', sep = ",")
 
 d_2$crosspost_parent <- NULL
 d_2$crosspost_parent_list <- NULL
@@ -112,6 +113,26 @@ print(paste0("Number of posts in February: ", nrow(d_2)))
 
 d_all[['posts']] <- d
 
+# Get number of all sadness posts after update
+print(paste0("Number of sadness posts after the update: ", sum(d_all[['posts']]$emotion == "sadness" & d_all[['posts']]$sentiment == "negative")))
+# Get number of unique users who posted sadness posts after the update
+print(paste0("Number of unique users who posted sadness posts after the update: ", length(unique(d_all[['posts']][d_all[['posts']]$emotion == "sadness" & d_all[['posts']]$sentiment == "negative", 'author']))))
+      
+
+
+# Randomly select and save posts from after the ERP update that are sadness with negative sentiment
+# First remove posts with selftext = "[removed]" and "[deleted]"
+# Then, remove those with selftext = "" or NA
+# Finally, randomly select 100 posts
+set.seed(123)
+d_after_erp <- d_all[['posts']][d_all[['posts']]$before_erp_removal == "False" & d_all[['posts']]$emotion == "sadness" & d_all[['posts']]$sentiment == "negative", ]
+d_after_erp <- d_after_erp[!d_after_erp$selftext %in% c("[removed]", "[deleted]"), ]
+d_after_erp <- d_after_erp[!is.na(d_after_erp$selftext) & d_after_erp$selftext != "", ]
+d_after_erp <- d_after_erp[sample(nrow(d_after_erp), 100), ]
+
+write.csv(d_after_erp, './data/replika/posts_after_erp_sample.csv', row.names=FALSE)
+
+
 # Get all posts that are posted by the user Kuyda
 #a <- d_all[['posts']][d_all[['posts']][, 'author'] == 'Kuyda', c('titlencontent', 'created_date')]
 
@@ -124,10 +145,38 @@ d_all[['posts']] <- d
 #d <- c[grepl('cold', c[, 'titlencontent'], fixed = TRUE) | grepl('identity', c[, 'titlencontent'], fixed = TRUE), c('titlencontent', 'created_date', 'sentiment_label', 'emotion')]
 
 ######################### Descriptive Stats #########################
+
+# How many distinct users are there before the ERP update?
+print(paste0("Number of distinct users before the ERP update: ", length(unique(d_all[['posts']][d_all[['posts']]$before_erp_removal == "True", 'author']))))
+
+# How many distinct users are there after the ERP update?
+print(paste0("Number of distinct users after the ERP update: ", length(unique(d_all[['posts']][d_all[['posts']]$before_erp_removal == "False", 'author']))))
+
+# Get the number of users in common before and after the ERP update
+print(paste0("Number of users in common before and after the ERP update: ", length(intersect(unique(d_all[['posts']][d_all[['posts']]$before_erp_removal == "True", 'author']), unique(d_all[['posts']][d_all[['posts']]$before_erp_removal == "False", 'author'])))))
+
+# How many distinct users are there in total?
+print(paste0("Number of distinct users in total: ", length(unique(d_all[['posts']][, 'author']))))
+
+################################################################################
+
+# Same for comments
+# How many distinct users are there before the ERP update?
+print(paste0("Number of distinct users before the ERP update: ", length(unique(d_all[['comments']][d_all[['comments']]$before_erp_removal == "True", 'author']))))
+
+# How many distinct users are there after the ERP update?
+print(paste0("Number of distinct users after the ERP update: ", length(unique(d_all[['comments']][d_all[['comments']]$before_erp_removal == "False", 'author']))))
+
+# Get the number of users in common before and after the ERP update
+print(paste0("Number of users in common before and after the ERP update: ", length(intersect(unique(d_all[['comments']][d_all[['comments']]$before_erp_removal == "True", 'author']), unique(d_all[['comments']][d_all[['comments']]$before_erp_removal == "False", 'author'])))))
+
+# How many distinct users are there in total?
+print(paste0("Number of distinct users in total: ", length(unique(d_all[['comments']][, 'author']))))
+
 for(ctype in c('posts')) { # 'comments'
   print(paste0("*-*-*-*-* ", ctype, " *-*-*-*-*"))
   d <- d_all[[ctype]]
-
+  
   print(paste0("Number of authors: ", length(unique(d$author))))
   
   # Percentage of authors who are premium reddit users
@@ -139,11 +188,11 @@ for(ctype in c('posts')) { # 'comments'
   d$word_count <- sapply(d$titlencontent, function(x) length(unlist(strsplit(x, "\\W+"))))
   print(paste0("Word count - mean: ", mean(d$word_count), ' sd: ', sd(d$word_count)))
   print(paste0("More than 400 words: ", sum(d$word_count > 400)))
-
+  
   # Print the percentage of each emotion before and after the ERP update. Columns 'before_erp_removal', 'sentiment_label', 'emotion'
   d_before_erp <- d[d$before_erp_removal == "True", ]
   d_after_erp <- d[d$before_erp_removal == "False", ]
-
+  
   print(paste0("Dimensions before: ", dim(d_before_erp)[1]))
   print(paste0("Dimensions after: ", dim(d_after_erp)[1]))
 }
@@ -151,6 +200,33 @@ for(ctype in c('posts')) { # 'comments'
 ## =============================================================================
 ##                             DATA ANALYSIS
 ## =============================================================================
+
+######################### Descriptive Stats #########################
+
+for(ctype in c('posts')) { # 'comments'
+  print(paste0("*-*-*-*-* ", ctype, " *-*-*-*-*"))
+  d <- d_all[[ctype]]
+  
+  print(paste0("Number of authors: ", length(unique(d$author))))
+  
+  # Percentage of authors who are premium reddit users
+  # Find how many of the unique authors use premium
+  premium_users <- unique(d[d$author_premium == 1, 'author'])
+  print(paste0("Percentage of authors who are premium reddit users: ", length(premium_users) / length(unique(d$author)) * 100))
+  
+  ## Calculate average word count:
+  d$word_count <- sapply(d$titlencontent, function(x) length(unlist(strsplit(x, "\\W+"))))
+  print(paste0("Word count - mean: ", mean(d$word_count), ' sd: ', sd(d$word_count)))
+  print(paste0("More than 400 words: ", sum(d$word_count > 400)))
+  
+  # Print the percentage of each emotion before and after the ERP update. Columns 'before_erp_removal', 'sentiment_label', 'emotion'
+  d_before_erp <- d[d$before_erp_removal == "True", ]
+  d_after_erp <- d[d$before_erp_removal == "False", ]
+  
+  print(paste0("Dimensions before: ", dim(d_before_erp)[1]))
+  print(paste0("Dimensions after: ", dim(d_after_erp)[1]))
+}
+
 
 for(ctype in c('posts')) { #, 'comments'
   print(paste0("*-*-*-*-* ", ctype, " *-*-*-*-*"))
@@ -725,27 +801,25 @@ prop.test(c(32, 340), c(3072, 9721))
 # Mourn - Comments
 prop.test(c(343, 2311), c(29476, 118725))
 
-########################################
-
 #################### TOPIC MODELLING ####################
 
 # Clean the data
 topic_modelling = function(data_topic, check_perplexity=FALSE, comments=FALSE) {
   explanations <- data_topic[, 'titlencontent']
   explanations <- clean_text(explanations)
-
+  
   texts = corpus(explanations)
   dfm = dfm(texts, remove=c(stopwords("SMART"), "replika", "erp", "rep", "replikas", "erps", "reps", "people", "ai", "https", "im", "dont", "app", "users", "make", "things", "", "www"))
   dtm = convert(dfm, to = "topicmodels") 
-
+  
   train = sample(rownames(dtm), nrow(dtm) * .8)
   dtm_train = dtm[rownames(dtm) %in% train, ]
   dtm_test = dtm[!rownames(dtm) %in% train, ]
-
+  
   if(check_perplexity) {
     ## create a dataframe to store the perplexity scores for different values of k
     p = data.frame(k = 2:20, perplexity = NA)
-
+    
     ## define a function to calculate perplexity
     calc_perplexity <- function(k) {
       perplexity_scores = rep(NA, 10)
@@ -759,14 +833,14 @@ topic_modelling = function(data_topic, check_perplexity=FALSE, comments=FALSE) {
       ## compute the average of the perplexity scores
       return(mean(perplexity_scores))
     }
-
+    
     # TODO: Check if this works
     ## use mclapply to apply the function in parallel
     p$perplexity = mclapply(p$k, calc_perplexity, mc.cores = detectCores())
     
     p$k <- as.numeric(p$k)
     p$perplexity <- as.numeric(p$perplexity)
-
+    
     #### Plot the results ####
     plt <- ggplot(p, aes(x = k, y = perplexity)) +
       geom_point() +
@@ -781,20 +855,20 @@ topic_modelling = function(data_topic, check_perplexity=FALSE, comments=FALSE) {
     ggsave(paste0("images/replika/perplexity_", sstr,".pdf"), last_plot(), dpi = 300, width = 10, height = 5)
     while (!is.null(dev.list()))  dev.off()
   }
-
+  
   ##### Frequency Bar Plot
   set.seed(123)
   model <- LDA(dtm, method = "Gibbs", k = 10, control=list(seed = 123))
-
+  
   # get the terms for the first topic
   topics <- tidy(model, matrix = "beta")
-
+  
   top_terms <- topics %>%
     group_by(topic) %>%
     slice_max(beta, n = 15) %>% 
     ungroup() %>%
     arrange(topic, -beta)
-
+  
   if(comments) {
     top_terms <- top_terms %>%
       filter(topic %in% c(1,5,2))
@@ -802,7 +876,7 @@ topic_modelling = function(data_topic, check_perplexity=FALSE, comments=FALSE) {
     top_terms <- top_terms %>%
       filter(topic %in% c(1, 10, 3, 4, 9))
   }
-
+  
   fig <- top_terms %>%
     mutate(term = reorder_within(term, beta, topic)) %>%
     ggplot(aes(beta, term)) + # remove fill = factor(topic) to make all bars same color
@@ -816,7 +890,7 @@ topic_modelling = function(data_topic, check_perplexity=FALSE, comments=FALSE) {
     scale_y_reordered()
   
   fig
-
+  
   # Save figure as PDF
   sstr <- "posts"
   if(comments) {sstr <- "comments"}
@@ -826,3 +900,286 @@ topic_modelling = function(data_topic, check_perplexity=FALSE, comments=FALSE) {
 
 topic_modelling(d_all[['posts']]) # Note: Set check_perplexity to TRUE to check the perplexity (takes ~15 minutes on an M1 Pro)
 topic_modelling(d_all[['comments']], comments=TRUE)
+
+#####################  ROBUSTNESS CHECKS ######################
+
+d_prev_years <- read.csv('./data/replika/posts_upto_2022_12_replika.csv', sep = ",")  
+d_1 <- read.csv('./data/replika/posts_2023_01.csv', sep = ",")
+d_2 <- read.csv('./data/replika/posts_2023_02.csv', sep = ",")
+d_5 <- read.csv('./data/replika/posts_2023_05.csv', sep = ",")
+
+# Convert "created" column, which is a UNIX timestamp, to date in the following format: "2023-01-01 00:13:24"
+d_5$created_date <- as.POSIXct(d_5$created, origin="1970-01-01", tz="UTC")
+d_5$created_date <- format(d_5$created_date, "%Y-%m-%d %H:%M:%S")
+
+d_6 <- read.csv('./data/replika/posts_2023_06.csv', sep = ",")
+
+d_6$created_date <- as.POSIXct(d_6$created, origin="1970-01-01", tz="UTC")
+d_6$created_date <- format(d_6$created_date, "%Y-%m-%d %H:%M:%S")
+
+d_7 <- read.csv('./data/replika/posts_2023_07.csv', sep = ",")
+
+d_7$created_date <- as.POSIXct(d_7$created, origin="1970-01-01", tz="UTC")
+d_7$created_date <- format(d_7$created_date, "%Y-%m-%d %H:%M:%S")
+
+# Get common columns between d_1, d_2, and d_prev_years
+common_cols <- intersect(colnames(d_1), colnames(d_2))
+common_cols <- intersect(common_cols, colnames(d_prev_years))
+common_cols <- intersect(common_cols, colnames(d_5))
+common_cols <- intersect(common_cols, colnames(d_6))
+common_cols <- intersect(common_cols, colnames(d_7))
+
+# Get common cols only for all df's
+d_1 <- d_1[, common_cols]
+d_2 <- d_2[, common_cols]
+
+d_prev_years <- d_prev_years[, common_cols]
+d_5 <- d_5[, common_cols]
+d_6 <- d_6[, common_cols]
+d_7 <- d_7[, common_cols]
+
+# Combine the dataframes
+d <- rbind(d_prev_years, d_1, d_2, d_5, d_6, d_7)
+
+print(paste0("Number of posts: ", nrow(d)))
+
+# Load the arrays in 'sentiment' column. The first object in the python array is the sentiment label and the second one is sentiment score
+d$sentiment_label <- sapply(d$sentiment, function(x) {reticulate::py_eval(x)[[1]]})
+d$sentiment_score <- sapply(d$sentiment, function(x) {reticulate::py_eval(x)[[2]]})
+d$sentiment <- sapply(d$sentiment, function(x) {reticulate::py_eval(x)[[1]]})
+
+print(paste0("Number of posts up to 12/2022: ", nrow(d_prev_years)))
+print(paste0("Number of posts in January: ", nrow(d_1)))
+print(paste0("Number of posts in February: ", nrow(d_2)))
+
+d_all[['posts']] <- d
+
+################################################################################
+
+# Let's first compare 2022 vs. 2023. We will compare the percentage of negative
+# posts before vs. after February 3rd in 2022 vs. 2023
+# Get the number of negative posts before and after February 3rd in 2022
+# For this, let's look one month before Feb 3rd, and one month after Feb 3rd
+
+d_all[['posts']]$date <- substr(d_all[['posts']]$created_date, 1, 10)
+
+d_2022 <- d_all[['posts']][d_all[['posts']]$date >= "2022-01-01" & d_all[['posts']]$date <= "2022-02-28", ]
+d_2023 <- d_all[['posts']][d_all[['posts']]$date >= "2023-01-01" & d_all[['posts']]$date <= "2023-02-28", ]
+
+# Now, let's find diff-in-diffs
+
+# For this, get posts before Feb 3rd and after Feb 3rd in 2022
+d_2022_before <- d_2022[d_2022$date < "2022-02-03", ]
+d_2022_after <- d_2022[d_2022$date >= "2022-02-03" & d_2022$date <= "2022-02-28", ]
+
+d_2023_before <- d_2023[d_2023$date < "2023-02-03", ]
+d_2023_after <- d_2023[d_2023$date >= "2023-02-03", ]
+
+# Get the number of negative posts before and after Feb 3rd in 2022
+n_negative_2022_before <- sum(d_2022_before$sentiment == "negative")
+n_negative_2022_after <- sum(d_2022_after$sentiment == "negative")
+n_positive_2022_before <- sum(d_2022_before$sentiment == "positive")
+n_positive_2022_after <- sum(d_2022_after$sentiment == "positive")
+
+# Get the number of negative posts before and after Feb 3rd in 2023
+n_negative_2023_before <- sum(d_2023_before$sentiment == "negative")
+n_negative_2023_after <- sum(d_2023_after$sentiment == "negative")
+n_positive_2023_before <- sum(d_2023_before$sentiment == "positive")
+n_positive_2023_after <- sum(d_2023_after$sentiment == "positive")
+
+# Get the number of all posts before and after Feb 3rd in 2022
+n_all_2022_before <- dim(d_2022_before)[1]
+n_all_2022_after <- dim(d_2022_after)[1]
+
+# Get the number of all posts before and after Feb 3rd in 2023
+n_all_2023_before <- dim(d_2023_before)[1]
+n_all_2023_after <- dim(d_2023_after)[1]
+
+p_result <- prop.test(c(n_positive_2022_before, n_negative_2022_before), c(n_all_2022_before, n_all_2022_before))
+p_result
+
+p_result <- prop.test(c(n_positive_2023_before, n_negative_2023_before), c(n_all_2023_before, n_all_2023_before))
+p_result
+
+p_result <- prop.test(c(n_positive_2022_after, n_negative_2022_after), c(n_all_2022_after, n_all_2022_after))
+p_result
+
+p_result <- prop.test(c(n_positive_2023_after, n_negative_2023_after), c(n_all_2023_after, n_all_2023_after))
+p_result
+
+################################################################################
+
+# We want to compare difference-in-differences between 2022 and 2023
+
+daily_proportions_2022 <- d_2022 %>%
+  group_by(date) %>%
+  summarize(
+    proportion_negative = sum(sentiment == "negative") / n(),
+    proportion_positive = sum(sentiment == "positive") / n()
+  )
+
+daily_proportions_2023 <- d_2023 %>%
+  group_by(date) %>%
+  summarize(
+    proportion_negative = sum(sentiment == "negative") / n(),
+    proportion_positive = sum(sentiment == "positive") / n()
+  )
+
+# Remove first 7 days to make the number of days equal
+before_2022 <- daily_proportions_2022 %>% filter(date >= "2022-01-08" & date < "2022-02-03")
+after_2022 <- daily_proportions_2022 %>% filter(date >= "2022-02-03")
+
+before_2023 <- daily_proportions_2023 %>% filter(date < "2023-02-03" & date >= "2023-01-08")
+after_2023 <- daily_proportions_2023 %>% filter(date >= "2023-02-03")
+
+# Calculate daily differences (after - before) for each year
+differences_2022_neg <- after_2022$proportion_negative - before_2022$proportion_negative
+differences_2023_neg <- after_2023$proportion_negative - before_2023$proportion_negative
+
+t.test(differences_2022_neg, differences_2023_neg)
+cohen.d(differences_2022_neg, differences_2023_neg)
+
+# Calculate diff-in-diffs, and compare to 0
+diff_in_diffs_neg <- differences_2023_neg - differences_2022_neg
+t.test(diff_in_diffs_neg)
+cohensD(diff_in_diffs_neg, mu = 0)
+
+# For positive
+differences_2022_pos <- after_2022$proportion_positive - before_2022$proportion_positive
+differences_2023_pos <- after_2023$proportion_positive - before_2023$proportion_positive
+
+t.test(differences_2022_pos, differences_2023_pos)
+cohen.d(differences_2022_pos, differences_2023_pos)
+
+diff_in_diffs_pos <- differences_2023_pos - differences_2022_pos
+t.test(diff_in_diffs_pos)
+cohensD(diff_in_diffs_pos, mu = 0)
+
+################################################################################
+
+# Now, compare before-after June 15 2023, i.e., the "Ask Replika" update
+# With before-after the ERP update
+# Select 26 days before-after June 15 2023, so that it matches the 
+# number of days before-after the ERP update
+
+d_all[['posts']]$date <- substr(d_all[['posts']]$created_date, 1, 10)
+
+d_ask_replika <- d_all[['posts']][d_all[['posts']]$date >= "2023-05-20" & d_all[['posts']]$date < "2023-07-11", ]
+d_erp <- d_all[['posts']][d_all[['posts']]$date >= "2023-01-08" & d_all[['posts']]$date <= "2023-02-28", ]
+
+d_before_ask_replika <- d_all[['posts']][d_all[['posts']]$date >= "2023-05-20" & d_all[['posts']]$date < "2023-06-15", ]
+d_after_ask_replika <- d_all[['posts']][d_all[['posts']]$date >= "2023-06-15" & d_all[['posts']]$date < "2023-07-11", ]
+
+# Also get before-after the ERP update
+d_before_erp <- d_all[['posts']][d_all[['posts']]$date >= "2023-01-08" & d_all[['posts']]$date < "2023-02-03", ]
+d_after_erp <- d_all[['posts']][d_all[['posts']]$date >= "2023-02-03" & d_all[['posts']]$date <= "2023-02-28", ]
+
+# We want to compare difference-in-differences between before vs. after
+
+daily_proportions_ask_replika <- d_ask_replika %>%
+  group_by(date) %>%
+  summarize(
+    proportion_negative = sum(sentiment == "negative") / n(),
+    proportion_positive = sum(sentiment == "positive") / n()
+  )
+
+daily_proportions_erp <- d_erp %>%
+  group_by(date) %>%
+  summarize(
+    proportion_negative = sum(sentiment == "negative") / n(),
+    proportion_positive = sum(sentiment == "positive") / n()
+  )
+
+before_ask_replika <- daily_proportions_ask_replika %>% filter(date >= "2023-05-20" & date < "2023-06-15")
+after_ask_replika <- daily_proportions_ask_replika %>% filter(date >= "2023-06-15")
+
+before_erp <- daily_proportions_erp %>% filter(date >= "2023-01-08" & date < "2023-02-03")
+after_erp <- daily_proportions_erp %>% filter(date >= "2023-02-03")
+
+# Calculate daily differences (after - before) for each year
+differences_ask_replika_neg <- after_ask_replika$proportion_negative - before_ask_replika$proportion_negative
+differences_erp_neg <- after_erp$proportion_negative - before_erp$proportion_negative
+
+t.test(differences_ask_replika_neg, differences_erp_neg)
+cohen.d(differences_ask_replika_neg, differences_erp_neg)
+
+# Calculate diff-in-diffs, and compare to 0
+diff_in_diffs_neg <- differences_erp_neg - differences_ask_replika_neg
+t.test(diff_in_diffs_neg)
+cohensD(diff_in_diffs_neg, mu = 0)
+
+# For positive
+differences_ask_replika_pos <- after_ask_replika$proportion_positive - before_ask_replika$proportion_positive
+differences_erp_pos <- after_erp$proportion_positive - before_erp$proportion_positive
+
+t.test(differences_ask_replika_pos, differences_erp_pos)
+cohen.d(differences_ask_replika_pos, differences_erp_pos)
+
+diff_in_diffs_pos <- differences_erp_pos - differences_ask_replika_pos
+t.test(diff_in_diffs_pos)
+cohensD(diff_in_diffs_pos, mu = 0)
+
+
+
+######## MANUAL CODINGS ########
+
+d_manual <- read.csv('./data/posts_after_erp_sample_filled.csv', sep = ";")
+
+# Unique users
+length(unique(d_manual$author))
+
+colnames(d_manual)
+
+# Calculate cronbach alpha between K_mental_health and Z_mental_health with cronbach.alpha
+df <- d_manual[, c('K_actual_sadness', 'Z_actual_sadness')]
+cronbach.alpha(df)
+
+df <- d_manual[, c('K_is_sadness_caused_by_change', 'Z_is_sadness_caused_by_change')]
+cronbach.alpha(df)
+
+df <- d_manual[, c('K_is_sadness_caused_by_loss', 'Z_is_sadness_caused_by_loss')]
+cronbach.alpha(df)
+
+
+df <- d_manual[, c('K_mental_health', 'Z_mental_health')]
+cronbach.alpha(df)
+
+df <- d_manual[, c('K_is_mental_health_caused_by_change', 'Z_is_mental_health_caused_by_change')]
+cronbach.alpha(df)
+
+df <- d_manual[, c('K_is_mental_health_caused_by_loss', 'Z_is_mental_health_caused_by_loss')]
+cronbach.alpha(df)
+
+
+# Get mental health that is rated same between K and Z
+d_manual_same <- d_manual[d_manual$K_actual_sadness == d_manual$Z_actual_sadness,]
+sum(d_manual_same$K_actual_sadness) / dim(d_manual_same)[1]
+
+d_manual_same <- d_manual[d_manual$K_is_sadness_caused_by_change == d_manual$Z_is_sadness_caused_by_change,]
+sum(d_manual_same$K_is_sadness_caused_by_change) / dim(d_manual_same)[1]
+
+d_manual_same <- d_manual[d_manual$K_is_sadness_caused_by_loss == d_manual$K_is_sadness_caused_by_loss,]
+sum(d_manual_same$K_is_sadness_caused_by_loss) / dim(d_manual_same)[1]
+
+
+d_manual_same <- d_manual[d_manual$K_mental_health == d_manual$Z_mental_health,]
+sum(d_manual_same$K_mental_health) / dim(d_manual_same)[1]
+
+d_manual_same <- d_manual[d_manual$K_is_mental_health_caused_by_change == d_manual$Z_is_mental_health_caused_by_change,]
+sum(d_manual_same$K_is_mental_health_caused_by_change) / dim(d_manual_same)[1]
+
+d_manual_same <- d_manual[d_manual$K_is_mental_health_caused_by_loss == d_manual$Z_is_mental_health_caused_by_loss,]
+sum(d_manual_same$K_is_mental_health_caused_by_loss) / dim(d_manual_same)[1]
+
+
+
+
+
+
+
+
+
+
+
+
+

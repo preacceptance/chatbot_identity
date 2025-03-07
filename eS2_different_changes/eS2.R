@@ -156,6 +156,8 @@ spearman_brown(d$mourn_1_1, d$mourn_2_1)
 cronbach.alpha(d[, c("identity_stability_1_1", "identity_stability_2_1")])
 spearman_brown(d$identity_stability_1_1, d$identity_stability_2_1)
 
+cronbach.alpha(d[, c("parasocial_1_1", "parasocial_2_1")])
+spearman_brown(d$parasocial_1_1, d$parasocial_2_1)
 cor(d$parasocial_1_1, d$parasocial_2_1)
 
 cronbach.alpha(d[, c('abandonment_1', 'reassurance_need_1', 'closeness_scare_1')])
@@ -424,29 +426,41 @@ d_mediation$change_type_num <- ifelse(d_mediation$change_type == 'control', 1, i
 d_mediation$used_ai_companion <- ifelse(d_mediation$used_ai_companion, 1, 0)
 
 # Run a serial mediation model with change_type -> identity_stability -> mourning -> devaluation
+process(data = d_mediation, y = "mourn", x = "change_type_num",
+      m = c("identity_stability"), model = 4, effsize = 1, total = 1, stand = 1, mcx = 1,
+      contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
+
 process(data = d_mediation, y = "value", x = "change_type_num",
-      m = c("identity_stability", "mourn"), model = 6, effsize = 1, total = 1, stand = 1, mcx = 1,
-      contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
+        m = c("identity_stability"), model = 4, effsize = 1, total = 1, stand = 1, mcx = 1,
+        contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
 
-# Replicated the mediation analysis with only the main devaluation question
+
 process(data = d_mediation, y = "value_1_1", x = "change_type_num",
-      m = c("identity_stability", "mourn"), model = 6, effsize = 1, total = 1, stand = 1, mcx = 1,
-      contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
+        m = c("identity_stability"), model = 4, effsize = 1, total = 1, stand = 1, mcx = 1,
+        contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
 
-# Replicated the mediation analysis with only the refund question
 process(data = d_mediation, y = "value_2_1", x = "change_type_num",
-      m = c("identity_stability", "mourn"), model = 6, effsize = 1, total = 1, stand = 1, mcx = 1,
-      contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
+        m = c("identity_stability"), model = 4, effsize = 1, total = 1, stand = 1, mcx = 1,
+        contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
+
 
 ######## EXPLORATORY ANALYSES ########
-if(FALSE) {
-  process(data = d_mediation, y = "value", x = "change_type_num",
-      m = c("identity_stability", "mourn"), w = "parasocial_interaction", model = 91, effsize = 1, total = 1, stand = 1, mcx = 1,
-      contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
+
+process(data = d_mediation, y = "value", x = "change_type_num",
+    m = c("identity_stability"), w = "parasocial_interaction", model = 14, effsize = 1, total = 1, stand = 1, mcx = 1,
+    contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
+
+process(data = d_mediation, y = "mourn", x = "change_type_num",
+        m = c("identity_stability"), w = "parasocial_interaction", model = 14, effsize = 1, total = 1, stand = 1, mcx = 1,
+        contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
 
 
-  process(data = d_mediation, y = "value", x = "change_type_num",
-      m = c("identity_stability", "mourn"), w = "anxious_attachment", model = 91, effsize = 1, total = 1, stand = 1, mcx = 1,
-      contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
-}
+
+process(data = d_mediation, y = "value", x = "change_type_num",
+        m = c("identity_stability"), w = "anxious_attachment", model = 14, effsize = 1, total = 1, stand = 1, mcx = 1,
+        contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
+
+process(data = d_mediation, y = "mourn", x = "change_type_num",
+    m = c("identity_stability"), w = "anxious_attachment", model = 14, effsize = 1, total = 1, stand = 1, mcx = 1,
+    contrast = 1, boot = 10000, modelbt = 1, seed = 654321)
 

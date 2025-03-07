@@ -256,6 +256,19 @@ for( dv in dvs ) {
 }
 
 
+
+source("process.R")
+d_mediation <- d
+
+d_mediation$change_type_num <- ifelse(d_mediation$change_type == 'control', 1, 2)
+d_mediation$revertible_num <- ifelse(d_mediation$revertible == 'True', 1, 2)
+
+process(data = d_mediation, y = "mourn", x = "change_type_num",
+        m = c("identity_stability"), model = 4, effsize = 1, total = 1, stand = 1, contrast = 1,
+        boot = 10000, modelbt = 1, seed = 654321)
+
+
+
 # T-tests comparing no Revertible vs. Not, for each of control and coldness
 for (dv in c('mourn')) {
   print(paste0("*-*-*-*-*  ", dv, "  *-*-*-*-*"))
@@ -373,7 +386,7 @@ plt2 <- plot_dv("mourn")
 plt3 <- plot_dv("value")
 
 # Arrange all plots:
-dev.new(width = 30 * 3/4, height = 12 * 3/5, noRStudioGD = TRUE)
+dev.new(width = 25 * 3/4, height = 12 * 3/5, noRStudioGD = TRUE)
 
 figure <- ggarrange(plt1, plt2, plt3, nrow = 1, ncol = 3, common.legend = TRUE, legend = "top", vjust = 1.0, hjust = 0.5)
 annotate_figure(figure, bottom = text_grob("Change Type", color = "black", face = "plain", size = 26, margin(b = 2), hjust = 0.25))
@@ -381,7 +394,7 @@ annotate_figure(figure, bottom = text_grob("Change Type", color = "black", face 
 if(dim(d)[1] == 320) {
   ggsave("./combined_plot_ai_companion.pdf", last_plot(), dpi = 300, width = 30 * 3/5 * 3/4, height = 12 * 3/5)
 } else {
-  ggsave("./combined_plot.pdf", last_plot(), dpi = 300, width = 30 * 3/5 * 3/4, height = 12 * 3/5)
+  ggsave("./combined_plot.pdf", last_plot(), dpi = 300, width = 25 * 3/5 * 3/4, height = 12 * 3/5)
 }
 
 #### Mediation Analysis ####
@@ -392,12 +405,21 @@ d_mediation <- d
 d_mediation$change_type_num <- ifelse(d_mediation$change_type == 'control', 1, 2)
 d_mediation$revertible_num <- ifelse(d_mediation$revertible == 'True', 1, 2)
 
-# Run a serial mediation model with change_type -> identity_stability -> mourning -> devaluation
+process(data = d_mediation, y = "mourn", x = "change_type_num",
+        m = c("identity_stability"), model = 4, effsize = 1, total = 1, stand = 1, contrast = 1,
+        boot = 10000, modelbt = 1, seed = 654321)
+
 process(data = d_mediation, y = "value", x = "change_type_num",
-      m = c("identity_stability", "mourn"), model = 6, effsize = 1, total = 1, stand = 1, contrast = 1,
+      m = c("identity_stability"), model = 4, effsize = 1, total = 1, stand = 1, contrast = 1,
       boot = 10000, modelbt = 1, seed = 654321)
 
-# Moderation
+process(data = d_mediation, y = "mourn", x = "change_type_num",
+        m = c("identity_stability"), w = "revertible_num", model = 7, effsize = 1, total = 1, stand = 1,
+        boot = 10000, modelbt = 1, seed = 654321)
+
 process(data = d_mediation, y = "value", x = "change_type_num",
-    m = c("identity_stability", "mourn"), w = "revertible_num", model = 83, effsize = 1, total = 1, stand = 1,
-    boot = 10000, modelbt = 1, seed = 654321)
+        m = c("identity_stability"), w = "revertible_num", model = 7, effsize = 1, total = 1, stand = 1,
+        boot = 10000, modelbt = 1, seed = 654321)
+
+
+

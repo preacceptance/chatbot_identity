@@ -208,6 +208,14 @@ d$car_name <- tolower(d$car_name)
 d$voice_name <- tolower(d$voice_name)
 d$aicomp_name <- tolower(d$aicomp_name)
 
+d$owns
+
+# Get how many rows include "5"
+sum(grepl("5", d$owns)) / dim(d)[1]
+
+# Get how many rows include "6"
+sum(grepl("6", d$owns)) / dim(d)[1]
+
 ############### DESCRIPTIVE ANALYSIS ###############
 
 # Print the mean values for each DV, based on condition

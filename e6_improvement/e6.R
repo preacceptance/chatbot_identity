@@ -19,7 +19,7 @@ pacman::p_load('ggplot2',
                'semTools',
                'lavaan',
                'tidyverse',
-               'cSEM','seminr', 'psych', 'splithalfr')
+               'cSEM','seminr', 'psych', 'interactions', 'splithalfr')
 
 ### Read the data
 d <- read.csv('./data.csv')
@@ -29,25 +29,26 @@ d <- d[d$Finished == 1, ]
 
 ################################## Exclusions ##################################
 
+# Print IDs of failed attention check participants
+print(paste0("IDS of participants failed attention check: ", paste(d[d$att_1 != 2 | d$att_2 != 2, 'prolific_id'], collapse = ", ")))
+
+
 # Attention check
 d <- d[d$att_1 == 2 & d$att_2 == 2,]
 print(paste0("Number of participants hired: ", nrow(d)))
 
-table(d$change_type, d$subscription_status)
+table(d$change_type)
 
 # Comprehension check
-change_conditions <- c('control', 'only_visual', 'erp', 'closeness')
+change_conditions <- c('control', 'impacts_social', 'not_impacts_social')
 
 # comp_1 is numeric, i.e., index of change_condition. Change comp_1 to string format according to change_conditions vector
 # Apply to each row of d$comp_1, i.e., for each participant
-d <- d[((d$comp_1 == "1" & d$change_type == "control") & (d$comp_2 == "2" & d$subscription_status == "no_subscription")) |
-        ((d$comp_1 == "1" & d$change_type == "control") & (d$comp_2 == "4" & d$subscription_status == "lifetime")) |
-        ((d$comp_1 == "4" & d$change_type == "coldness") & (d$comp_2 == "2" & d$subscription_status == "no_subscription")) |
-        ((d$comp_1 == "4" & d$change_type == "coldness") & (d$comp_2 == "4" & d$subscription_status == "lifetime")),]
+d <- d[((d$comp_1 == "1" & d$change_type == "control") |
+        (d$comp_1 == "2" & d$change_type == "impacts_social") |
+        (d$comp_1 == "3" & d$change_type == "not_impacts_social")),]
 
 print(paste0("Number of participants after comprehension check: ", nrow(d)))
-
-print(paste0("Number of participants using AI assistant apps: ", nrow(d[d$uses_ai_assistant == 1,])))
 
 ############################ User characteristics ##############################
 
@@ -113,8 +114,8 @@ sd(as.numeric(d$months_rep), na.rm = TRUE) ## standard deviation
 
 ###########
 
-# Make all dv's numeric in 'd': value_1_1	value_2_1	mourn_1_1	mourn_2_1	identity_stability_1_1	identity_stability_2_1	abandonment_1	reassurance_need_1	closeness_scare_1	parasocial_1_1	parasocial_2_1
-dvs <- c('value_1_1', 'value_2_1', 'mourn_1_1', 'mourn_2_1', 'identity_stability_1_1', 'identity_stability_2_1', 'investment_1_1', 'investment_2_1')
+# Make all dv's numeric
+dvs <- c('value_1_1', 'value_2_1', 'mourn_1_1', 'mourn_2_1', 'identity_stability_1_1', 'identity_stability_2_1', 'app_improvement_1')
 for( dv in dvs ) {
   d[, dv] <- as.numeric(d[, dv])
 }
@@ -129,23 +130,17 @@ spearman_brown(d$mourn_1_1, d$mourn_2_1)
 cronbach.alpha(d[, c("identity_stability_1_1", "identity_stability_2_1")])
 spearman_brown(d$identity_stability_1_1, d$identity_stability_2_1)
 
-cronbach.alpha(d[, c("investment_1_1", "investment_2_1")])
-spearman_brown(d$investment_1_1, d$investment_2_1)
-
 ############### DISCRIMINANT VALIDITY TESTS ###############
 
 # Correlation matrix with all questions
 cor_matrix_all <- cor(d[, c('identity_stability_1_1', 'identity_stability_2_1', 'value_1_1', 'value_2_1', 'mourn_1_1', 'mourn_2_1')])
 print(cor_matrix_all)
 
-d$change_type_num <- ifelse(d$change_type == 'control', 1, 2)
-
 # Define the measurement model
 simple_mm <- constructs(
   composite("value", c("value_1_1", "value_2_1")),
   composite("mourn", c("mourn_1_1", "mourn_2_1")),
-  composite("identity_stability", c("identity_stability_1_1", "identity_stability_2_1")),
-  composite("investment", c("investment_1_1", "investment_2_1"))
+  composite("identity_stability", c("identity_stability_1_1", "identity_stability_2_1"))
 )
 
 # Define the structural model
@@ -211,101 +206,90 @@ for(app in apps) {
   print(paste0(app, ": ", sum(d[[app]]), " (", sum(d[[app]]) / dim(d)[1] * 100, "%)"))
 }
 
+# Remove apps that are not AI companion apps, i.e., chatgpt, alexa, gemini, googleassistant, copilot, snapchat, zoom, chatgbt, cortana, siri
+d <- d[(d$chatgpt == 0 & d$alexa == 0 & d$gemini == 0 & d$googleassistant == 0 & d$copilot == 0 & d$snapchat == 0 & d$zoom == 0 & d$chatgbt == 0 & d$cortana == 0 & d$siri == 0),]
+
 print(paste0("Number of participants using AI assistant apps: ", nrow(d[d$uses_ai_assistant == 1,])))
-
-# % of AI assistant users
-print(paste0("Percentage of AI assistant users: ", nrow(d[d$uses_ai_assistant == 1,]) / nrow(d) * 100))
-
-# Remove apps that are not AI companion apps
-# COMMENT FOR RESULTS IN THE APPENDIX
-d <- d[d$uses_ai_assistant == 0,]
-dim(d)
 
 # number of users after excluding AI assistant users
 print(paste0("Number of participants after excluding AI assistant users: ", nrow(d)))
 
-
 # Combine measures
 d$value <- (d$value_1_1 + d$value_2_1) / 2
 d$mourn <- (d$mourn_1_1 + d$mourn_2_1) / 2
-d$investment <- (d$investment_1_1 + d$investment_2_1) / 2
 d$identity_stability <- (d$identity_stability_1_1 + d$identity_stability_2_1) / 2
-
-# REPLICATING WITH ONLY THE FIRST IDENTITY STABILITY QUESTION
-if(FALSE) {
-  d$identity_stability <- d$identity_stability_1_1
-}
-
-# REPLICATING WITH ONLY THE SECOND IDENTITY STABILITY QUESTION
-if(FALSE) {
-  d$identity_stability <- d$identity_stability_2_1
-}
 
 ############### DESCRIPTIVE ANALYSIS ###############
 
 # Print the mean values for each DV, based on change_type
-d %>% group_by(subscription_status, change_type) %>% summarise (x = mean(identity_stability))
-d %>% group_by(subscription_status, change_type) %>% summarise (x = mean(value))
-d %>% group_by(subscription_status, change_type) %>% summarise (x = mean(mourn))
-d %>% group_by(subscription_status, change_type) %>% summarise (x = mean(investment))
+d %>% group_by(change_type) %>% summarise (x = mean(identity_stability))
+d %>% group_by(change_type) %>% summarise (x = mean(value))
+d %>% group_by(change_type) %>% summarise (x = mean(mourn))
+d %>% group_by(change_type) %>% summarise (x = mean(app_improvement_1))
 
-mean(d[d$change_type == 'coldness', 'value'])
-mean(d[d$change_type == 'control', 'value'])
+############### T-TESTS ###############
 
-mean(d[d$subscription_status == 'no_subscription', 'value'])
-mean(d[d$subscription_status == 'lifetime', 'value'])
-
-############### ANOVA TESTS ###############
-
-
-# Manipulation check, i.e., whether subscription status affects investment
-x <- d[d$subscription_status == 'no_subscription', 'investment']
-y <- d[d$subscription_status == 'lifetime', 'investment']
-vart <- var.test(x, y)
-t_test_result <- t.test(x, y, var.equal = vart$p.value > 0.05)
+# the app was perceived as improving in both conditions 
+x <- d[d$change_type == 'impacts_social', 'app_improvement_1']
+t_test_result <- t.test(x, mu=50)
 print(t_test_result)
-print(effectsize::cohens_d(x, y))
+cohens_d(x, 50)
 
+x <- d[d$change_type == 'not_impacts_social', 'app_improvement_1']
+t_test_result <- t.test(x, mu=50)
+print(t_test_result)
+cohens_d(x, 50)
 
-dvs <- c('mourn')
-for( dv in dvs ) {
+# ANOVA
+aov_result <- aov(mourn ~ change_type, data = d)
+summary(aov_result)
+anova_stats(aov_result)
+
+aov_result <- aov(identity_stability ~ change_type, data = d)
+summary(aov_result)
+anova_stats(aov_result)
+
+# We will run t-tests comparing identity discontinuity and mourning between the control condition and the two change type conditions separately.
+for (dv in c('identity_stability', 'mourn', 'app_improvement_1')) {
   print(paste0("*-*-*-*-*  ", dv, "  *-*-*-*-*"))
-  formula_string <- paste(dv, "~ identity_stability * subscription_status")
-  
-  aov_mod <- aov(as.formula(formula_string), data = d)
-  print(summary(aov_mod))
-  print(anova_stats(aov_mod))
-}
-
-dvs <- c('mourn')
-for( dv in dvs ) {
-  print(paste0("*-*-*-*-*  ", dv, "  *-*-*-*-*"))
-  formula_string <- paste(dv, "~ identity_stability * investment") # identity_stability * investment in appendix
-  
-  lm_mod <- lm(as.formula(formula_string), data = d)
-  print(summary(lm_mod))
-  print(anova_stats(lm_mod))
-}
-
-# T-tests comparing no subscription vs. lifetime, for each of control and coldness
-for (dv in c('mourn')) {
-  print(paste0("*-*-*-*-*  ", dv, "  *-*-*-*-*"))
-  print(paste0("No Subscription vs. Lifetime for Control"))
-  x <- d[d$change_type == 'control' & d$subscription_status == 'no_subscription', dv]
-  y <- d[d$change_type == 'control' & d$subscription_status == 'lifetime', dv]
+  print(paste0("Control vs. Impacts Social"))
+  x <- d[d$change_type == 'control', dv]
+  y <- d[d$change_type == 'impacts_social', dv]
   vart <- var.test(x, y)
   t_test_result <- t.test(x, y, var.equal = vart$p.value > 0.05)
   print(t_test_result)
   print(effectsize::cohens_d(x, y))
   
-  print(paste0("No Subscription vs. Lifetime for Coldness"))
-  x <- d[d$change_type == 'coldness' & d$subscription_status == 'no_subscription', dv]
-  y <- d[d$change_type == 'coldness' & d$subscription_status == 'lifetime', dv]
+  print(paste0("Control vs. Not Impacts Social"))
+  x <- d[d$change_type == 'control', dv]
+  y <- d[d$change_type == 'not_impacts_social', dv]
+  vart <- var.test(x, y)
+  t_test_result <- t.test(x, y, var.equal = vart$p.value > 0.05)
+  print(t_test_result)
+  print(effectsize::cohens_d(x, y))
+
+  print(paste0("Impacts Social vs. Not Impacts Social"))
+  x <- d[d$change_type == 'impacts_social', dv]
+  y <- d[d$change_type == 'not_impacts_social', dv]
   vart <- var.test(x, y)
   t_test_result <- t.test(x, y, var.equal = vart$p.value > 0.05)
   print(t_test_result)
   print(effectsize::cohens_d(x, y))
 }
+
+# Compare app_improvement in all conditions to the midpoint of the scale
+print(paste0("Control vs. Midpoint"))
+t_test_result <- t.test(d[d$change_type == 'control', 'app_improvement_1'], mu=50)
+print(t_test_result)
+
+print(paste0("Impacts Social vs. Midpoint"))
+t_test_result <- t.test(d[d$change_type == 'impacts_social', 'app_improvement_1'], mu=50)
+print(t_test_result)
+
+print(paste0("Not Impacts Social vs. Midpoint"))
+t_test_result <- t.test(d[d$change_type == 'not_impacts_social', 'app_improvement_1'], mu=50)
+print(t_test_result)
+
 
 #### Plotting ####
 toLabel <- function(x) {
@@ -314,50 +298,19 @@ toLabel <- function(x) {
     if(label == "control") {
       labels <- c(labels, "Control")
     }
-    if(label == "coldness") {
-      labels <- c(labels, "Coldness")
+    if(label == "impacts_social") {
+      labels <- c(labels, 'Social\nImpact')
+    }
+    if(label == "not_impacts_social") {
+      labels <- c(labels, 'No Social\nImpact')
     }
   }
 
   return(labels)
 }
 
-d$subscription_status <- factor(d$subscription_status, levels = c("no_subscription", "lifetime"))
-
-###### APPENDIX
-if(FALSE) {
-  # Edit d$subscription status such that if investment is < 50, set it to "Low Investment (< 50)", else, set it to "High Investment (>= 50)"
-  d$invest_binary <- ifelse(d$investment < 50, "Low Investment (< 50)", "High Investment (>= 50)")
-  d$invest_binary <- factor(d$invest_binary, levels = c("Low Investment (< 50)", "High Investment (>= 50)"))
-
-
-  for (dv in c('mourn')) {
-    print(paste0("*-*-*-*-*  ", dv, "  *-*-*-*-*"))
-    print(paste0("Control --- No Investment vs. High Investment "))
-    x <- d[d$change_type == 'control' & d$invest_binary == 'Low Investment (< 50)', dv]
-    y <- d[d$change_type == 'control' & d$invest_binary == 'High Investment (>= 50)', dv]
-    vart <- var.test(x, y)
-    t_test_result <- t.test(x, y, var.equal = vart$p.value > 0.05)
-    print(t_test_result)
-    print(effectsize::cohens_d(x, y))
-    
-    print(paste0("Coldness --- No Investment vs. High Investment "))
-    x <- d[d$change_type == 'coldness' & d$invest_binary == 'Low Investment (< 50)', dv]
-    y <- d[d$change_type == 'coldness' & d$invest_binary == 'High Investment (>= 50)', dv]
-    vart <- var.test(x, y)
-    t_test_result <- t.test(x, y, var.equal = vart$p.value > 0.05)
-    print(t_test_result)
-    print(effectsize::cohens_d(x, y))
-  }
-}
-
-
-# Uncomment for results in appendix
-#d$subscription_status <- d$invest_binary
-
-#### Bar Plot For Devaluation and Mourning, Both for Free Subscription/Lifetime Subscription and Control/Coldness ####
-positions <- c('control', 'coldness')
-labels <- c('Control', 'Coldness')
+positions <- c('control', 'impacts_social', 'not_impacts_social')
+labels <- c('Control', 'Social\nImpact', 'No Social\nImpact')
 plot_dv <- function(dv) {
 
   if(dv == "identity_stability") {
@@ -367,25 +320,22 @@ plot_dv <- function(dv) {
                  position = position_dodge(width = 0.7),
                  geom = "errorbar", width = 0.2)
   } else {
-    bar_func <- geom_bar(aes(fill = subscription_status), position="dodge", stat="summary", width = 0.7, size = 0.75)
+    bar_func <- geom_bar(position="dodge", stat="summary", width = 0.7, size = 0.75)
     summary_func <- stat_summary(fun.data = "mean_se", color = "black",
                  fun.args = list(mult = 1),
                  position = position_dodge(width = 0.7),
-                 geom = "errorbar", width = 0.2,
-                 aes(group=subscription_status))
+                 geom = "errorbar", width = 0.2)
   }
 
-  bar_func <- geom_bar(aes(fill = subscription_status), position="dodge", stat="summary", width = 0.7, size = 0.75)
+  bar_func <- geom_bar(position="dodge", stat="summary", width = 0.7, size = 0.75)
     summary_func <- stat_summary(fun.data = "mean_se", color = "black",
                  fun.args = list(mult = 1),
                  position = position_dodge(width = 0.7),
-                 geom = "errorbar", width = 0.2,
-                 aes(group=subscription_status))
+                 geom = "errorbar", width = 0.2)
 
   plt <- ggplot(d, aes(x = change_type, y = !!rlang::sym(dv)))
   plt <- plt +
     bar_func +
-    scale_fill_manual("subscription_status", values = c("no_subscription" = "grey", "lifetime" = "#4a4a4a")) + # For Investment: c("Low Investment (< 50)" = "grey", "High Investment (>= 50)" = "#4a4a4a")
     labs(x = "Change Type Condition", y = dv) +
     theme(legend.position = "none") +
     theme_classic() +
@@ -409,27 +359,24 @@ plot_dv <- function(dv) {
   if(dv == "mourn") {
     plt <- plt + ylab("Mourning")
   }
-
-  if(dv == "investment") {
-    plt <- plt + ylab("Investment")
-  }
   
   return(plt)
 }
 
 plt1 <- plot_dv("identity_stability")
 plt2 <- plot_dv("mourn")
+plt3 <- plot_dv("value")
 
 # Arrange all plots:
-dev.new(width = 15, height = 12 * 3/5, noRStudioGD = TRUE)
+dev.new(width = 10, height = 12 * 3/5, noRStudioGD = TRUE)
 
 figure <- ggarrange(plt1, plt2, nrow = 1, ncol = 2, common.legend = TRUE, legend = "top", vjust = 1.0, hjust = 0.5)
 annotate_figure(figure, bottom = text_grob("Change Type", color = "black", face = "plain", size = 26, margin(b = 2), hjust = 0.25))
 
-if(dim(d)[1] == 340) {
-  ggsave("./combined_plot_ai_companion.pdf", last_plot(), dpi = 300, width = 15 * 3/5, height = 12 * 3/5)
+if(dim(d)[1] == 320) {
+  ggsave("./combined_plot_ai_companion.pdf", last_plot(), dpi = 300, width = 15, height = 12 * 3/5)
 } else {
-  ggsave("./combined_plot.pdf", last_plot(), dpi = 300, width = 15 * 3/5, height = 12 * 3/5)
+  ggsave("./combined_plot.pdf", last_plot(), dpi = 300, width = 10, height = 12 * 3/5,)
 }
 
 #### Mediation Analysis ####
@@ -437,23 +384,12 @@ if(dim(d)[1] == 340) {
 source("process.R")
 d_mediation <- d
 
-# If change_type is control, set it to 1. If it's ERP set it to 2. If it's closeness, set it to 3
-d_mediation$change_type_num <- ifelse(d_mediation$change_type == 'control', 1, 2)
-d_mediation$subscription_status <- ifelse(d_mediation$subscription_status == 'no_subscription', 1, 2)
+d_mediation$change_type_num <- ifelse(d_mediation$change_type == 'control', 1, ifelse(d_mediation$change_type == 'impacts_social', 2, 3))
 
-# Run a serial mediation model with change_type -> identity_stability -> mourning -> devaluation
+process(data = d_mediation, y = "mourn", x = "change_type_num",
+        m = c("identity_stability"), model = 4, mcx = 1, effsize = 1, total = 1, stand = 1, contrast = 1,
+        boot = 10000, modelbt = 1, seed = 654321)
+
 process(data = d_mediation, y = "value", x = "change_type_num",
-      m = c("identity_stability", "mourn"), model = 6, effsize = 1, total = 1, stand = 1, contrast = 1,
+      m = c("identity_stability"), model = 4, mcx = 1, effsize = 1, total = 1, stand = 1, contrast = 1,
       boot = 10000, modelbt = 1, seed = 654321)
-
-# On 'identity_stability' -> 'mourning
-# w = "subscription_status" in manuscript
-# w = "investment" in appendix
-process(data = d_mediation, y = "value", x = "change_type_num",
-    m = c("identity_stability", "mourn"), w = "subscription_status", model = 91, effsize = 1, total = 1, stand = 1,
-    boot = 10000, modelbt = 1, seed = 654321)
-
-# Appendix:
-process(data = d_mediation, y = "value", x = "change_type_num",
-    m = c("identity_stability", "mourn"), w = "investment", model = 91, effsize = 1, total = 1, stand = 1,
-    boot = 10000, modelbt = 1, seed = 654321)

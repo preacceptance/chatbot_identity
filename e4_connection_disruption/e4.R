@@ -12,26 +12,33 @@ library(rstatix)
 if (!require(pacman)) {install.packages("pacman")}
 pacman::p_load('ggplot2',         # plotting
                'ggsignif',        # plotting significance bars
-               'stats',           # use function to adjust for multiple comparisons
                'filesstrings',    # create and move files
                'effsize',         # another effect size package
-               'LDAvis',          # Topic model visualization
-               'tm',
-               'lda',
-               'ltm',
-               'servr',
-               'wordcloud',
-               'vader',
                'dplyr',
-               'topicmodels',
-               'gridExtra',
-               'textstem',
-               'syuzhet',
-               'ggpubr',
-               'rstatix',
-               'textstem', 'ggplot2','tidytext','quanteda', 'interactions',
-               'seminr', 'lavaan', 'semTools', 'tidyverse',
-               'sjPlot', 'corrr', 'ggcorrplot', 'FactoMineR', 'factoextra', 'lpSolve')
+               'corrplot',        # correlation plots
+               'RColorBrewer',    # color schemes for plots
+               'tidytext',        # text mining
+               'quanteda',        # text analysis
+               'topicmodels',     # topic modeling
+               'gridExtra',       # for combining plots
+               'ggpubr',          # publication ready plots
+               'rstatix',         # statistical tests
+               'FactoMineR',      # for factor analysis
+               'factoextra',      # for visualizing factor analysis
+               'lpSolve',         # linear programming
+               'tm',              # text mining
+               'ltm',
+               'lda',             # LDA topic models
+               'vader',           # sentiment analysis
+               'syuzhet',         # sentiment analysis
+               'textstem',        # text stemming
+               'seminr',          # SEM modeling
+               'lavaan',          # SEM
+               'semTools',        # SEM tools
+               'sjPlot',          # regression and SEM plots
+               'ggcorrplot',      # correlation plots
+               'corrr',           # correlation analysis
+               'tidyverse')       # for general data manipulation
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 ##### POWER ANALYSIS #####
@@ -135,13 +142,15 @@ sum(d$relation_status == "4"); 100*sum(d$relation_status == "4") / dim(d)[1] # P
 sum(d$relation_status == "5"); 100*sum(d$relation_status == "5") / dim(d)[1] # Percentage of widowed
 sum(d$relation_status == "8"); 100*sum(d$relation_status == "8") / dim(d)[1] # Percentage of other
 
+d$has_human_relationship <- ifelse(d$relation_status %in% c("1", "7", "2"), 1, 0)
+
 ## user friends
 mean(as.numeric(d$close_friends), trim = 0, na.rm = TRUE) ## mean number of friends
 sd(as.numeric(d$close_friends), na.rm = TRUE) ## standard deviation
 
 ## replika restore
-table(d$restore)[1]/sum(table(d$restore)) ## percentage did not restore
-table(d$restore)[2]/sum(table(d$restore)) ## percentage did restore
+table(d$restore)[1] / sum(table(d$restore)) ## percentage did not restore
+table(d$restore)[2] / sum(table(d$restore)) ## percentage did restore
 
 ## ---- Replika companion characteristics
 
@@ -151,22 +160,23 @@ sd(as.numeric(d$age_rep), na.rm = TRUE) ## standard deviation
 
 ## replika gender
 table(d$gender_rep)
-100*table(d$gender_rep)[1]/sum(table(d$gender_rep)) ## percentage of males
-100*table(d$gender_rep)[2]/sum(table(d$gender_rep)) ## percentage of females
-100*table(d$gender_rep)[3]/sum(table(d$gender_rep)) ## percentage of non-binary
+100 * table(d$gender_rep)[1] / sum(table(d$gender_rep)) ## percentage of males
+100 * table(d$gender_rep)[2] / sum(table(d$gender_rep)) ## percentage of females
+100 * table(d$gender_rep)[3] / sum(table(d$gender_rep)) ## percentage of non-binary
 
 ## replika relationship
 table(d$relationship_rep)
-100*table(d$relationship_rep)[1]/sum(table(d$relationship_rep)) ## percentage of friends
-100*table(d$relationship_rep)[2]/sum(table(d$relationship_rep)) ## percentage of partners
-100*table(d$relationship_rep)[3]/sum(table(d$relationship_rep)) ## percentage of see how it goes
+100 * table(d$relationship_rep)[1] / sum(table(d$relationship_rep)) ## percentage of friends
+100 * table(d$relationship_rep)[2] / sum(table(d$relationship_rep)) ## percentage of partners
+100 * table(d$relationship_rep)[3] / sum(table(d$relationship_rep)) ## percentage of see how it goes
 
 ## replika subscription
 table(d$subscription_rep)
-100*table(d$subscription_rep)[1]/sum(table(d$subscription_rep)) ## percentage of none
-100*table(d$subscription_rep)[2]/sum(table(d$subscription_rep)) ## percentage of monthly 
-100*table(d$subscription_rep)[3]/sum(table(d$subscription_rep)) ## percentage of yearly
-100*table(d$subscription_rep)[4]/sum(table(d$subscription_rep)) ## percentage of lifetime
+100 * table(d$subscription_rep)[1] / sum(table(d$subscription_rep)) ## percentage of none -- 1
+100 * table(d$subscription_rep)[2] / sum(table(d$subscription_rep)) ## percentage of monthly -- 2
+100 * table(d$subscription_rep)[3] / sum(table(d$subscription_rep)) ## percentage of yearly -- 3
+100 * table(d$subscription_rep)[4] / sum(table(d$subscription_rep)) ## percentage of lifetime -- 5
+
 
 ## replika experience
 mean(as.numeric(d$exp_level_rep), trim = 0, na.rm = TRUE) ## mean level
@@ -266,17 +276,31 @@ corrplot(cor(d[c("age", "value_1", "refund_1", "petition_1", "cold_1", "mourn_1"
 
 ## multiple regressions
 # Mean center invest_1, autonomy_m, and essence_1 before the analysis:
+
+# is_partner is binary
 d$is_partner <- as.factor(d$is_partner)
+
+d$essence_mc <- d$essence_1 - mean(d$essence_1, na.rm = TRUE)
 
 run_model <- function(dependent_var, dat) {
   print(paste0("*-*-*-*-*-*", dependent_var, "*-*-*-*-*-*"))
-  formula <- as.formula(paste(dependent_var, "~ essence_1")) # essence_mc * is_partner
+  formula <- as.formula(paste(dependent_var, "~ essence_mc * is_partner")) # essence_mc * is_partner
   model <- lm(formula, data = dat)
   print(summary(model))
 }
 
 variables <- c("mourn_1", "mental_health_1", "well_m", "value_1", "refund_1", "petition_1", "cold_1")
 lapply(variables, run_model, d)
+
+
+for (dv in c("value_1", "refund_1", "petition_1", "mourn_1", "mental_health_1", "well_m", "invest_1", "essence_1", "autonomy_m")) {
+  print(paste0("*-*-*-*-*-*", dv, "*-*-*-*-*-*"))
+  x <- d[d$is_partner == 1, dv]
+  y <- d[d$is_partner == 0, dv]
+  vart <- var.test(x, y)
+  tt <- t.test(x, y, paired = FALSE, var.equal = vart$p.value > 0.05); print(tt)
+  print(cohen.d(x, y, paired = FALSE, hedges.correction = TRUE))
+}
 
 ## ================================================================================================================
 ##                                              EXPLORATORY ANALYSES                
@@ -310,32 +334,189 @@ for (dv in c("value_1", "refund_1", "petition_1", "mourn_1", "mental_health_1", 
 }
 
 
+############# MODERATION WITH AUTONOMY ##############
+
+# Mean center autonomy and essence before the analysis:
+d$autonomy_mc <- d$autonomy_m - mean(d$autonomy_m, na.rm = TRUE)
+d$essence_mc <- d$essence_1 - mean(d$essence_1, na.rm = TRUE)
+
+run_model <- function(dependent_var, dat) {
+  print(paste0("*-*-*-*-*-*", dependent_var, "*-*-*-*-*-*"))
+  formula <- as.formula(paste(dependent_var, "~ essence_mc * autonomy_mc"))
+  model <- lm(formula, data = dat)
+  print(summary(model))
+}
+
+variables <- c("mourn_1", "mental_health_1", "well_m", "value_1", "refund_1", "petition_1", "cold_1")
+lapply(variables, run_model, d)
+
+
+################ MODERATION WITH INVESTMENT ################
+
+# Mean center invest_1, autonomy_m, and essence_1 before the analysis:
+d$invest_mc <- d$invest_1 - mean(d$invest_1, na.rm = TRUE)
+d$essence_mc <- d$essence_1 - mean(d$essence_1, na.rm = TRUE)
+
+run_model <- function(dependent_var, dat) {
+  print(paste0("*-*-*-*-*-*", dependent_var, "*-*-*-*-*-*"))
+  formula <- as.formula(paste(dependent_var, "~ essence_mc * invest_mc"))
+  model <- lm(formula, data = dat)
+  print(summary(model))
+}
+
+variables <- c("mourn_1", "mental_health_1", "well_m", "value_1", "refund_1", "petition_1", "cold_1")
+lapply(variables, run_model, d)
+
+# Subscription types: none (1), monthly (2), yearly (3), lifetime (5)
+################ MODERATION WITH SUBSCRIPTION ################
+
+d$subscription_rep <- ifelse(d$subscription_rep == "1", "none", ifelse(d$subscription_rep == "2", "monthly", ifelse(d$subscription_rep == "3", "yearly", "lifetime")))
+
+# Convert subscription to a factor for ANOVA
+d$subscription_rep <- factor(d$subscription_rep, levels = c("none", "monthly", "yearly", "lifetime"))
+
+# Check the distribution of mourn_1 by subscription level
+table(d$subscription_rep)
+
+# Run an ANOVA to test if subscription levels impact mourning levels
+anova_model <- aov(mourn_1 ~ subscription_rep, data = d)
+summary(anova_model)
+
+anova_model <- aov(mental_health_1 ~ subscription_rep, data = d)
+summary(anova_model)
+
+# Print mean mourning for each subscription group
+print(aggregate(d$mourn_1, by = list(d$subscription_rep), FUN = mean))
+print(aggregate(d$mental_health_1, by = list(d$subscription_rep), FUN = mean))
+print(aggregate(d$well_m, by = list(d$subscription_rep), FUN = mean))
+print(aggregate(d$value_1, by = list(d$subscription_rep), FUN = mean))
+print(aggregate(d$refund_1, by = list(d$subscription_rep), FUN = mean))
+print(aggregate(d$petition_1, by = list(d$subscription_rep), FUN = mean))
+print(aggregate(d$cold_1, by = list(d$subscription_rep), FUN = mean))
+print(aggregate(d$essence_1, by = list(d$subscription_rep), FUN = mean))
+
+# Compare mourning in monthly and yearly vs lifetime
+for (Dv in c("mourn_1", "mental_health_1", "well_m", "value_1", "refund_1", "petition_1", "cold_1")) {
+  print(paste0("*-*-*-*-*-*", Dv, "*-*-*-*-*-*"))
+  print(t.test(d[d$subscription_rep %in% c("monthly", "yearly"), Dv], d[d$subscription_rep == "lifetime", Dv]))
+}
+
+
+
+# Plot each DV with each subscription group (mourning, deval, identity, etc.), with DV type on the legend with colors (e.g., mourning red and identity blue)
+# and subscription groups on the x-axis
+# We can plot the mean values with points
+ggplot(d, aes(x = subscription_rep, y = mourn_1, color = "Mourning")) +
+    geom_point() +
+    theme_minimal() +
+    labs(x = "Subscription Type", y = "Mourning Levels", title = "Mourning Levels by Subscription Type")
+
+# Post-hoc test (Tukey's HSD) to identify which groups differ
+TukeyHSD(anova_model)
+
+# Correlation between subscription level (numeric) and mourning
+# Assuming subscription_rep is coded as: none=0, monthly=1, yearly=2, lifetime=3
+d$subscription_num <- as.numeric(d$subscription_rep) - 1
+cor_test <- cor.test(d$subscription_num, d$mourn_1, method = "pearson")
+print(cor_test)
+
+# Visualization of the mean mourning levels by subscription group
+library(ggplot2)
+ggplot(d, aes(x = subscription_rep, y = mourn_1)) +
+    geom_boxplot() +
+    theme_minimal() +
+    labs(x = "Subscription Type", y = "Mourning Levels", title = "Mourning Levels by Subscription Type")
+
+
+
+
+
+# Make subscription_rep numeric with no=0, monthly=1, yearly=2, lifetime=3
+d$subscription_rep_num <- as.numeric(d$subscription_rep) - 1
+
+# Mean center invest_1, autonomy_m, and essence_1 before the analysis:
+d$essence_mc <- d$essence_1 - mean(d$essence_1, na.rm = TRUE)
+
+run_model <- function(dependent_var, dat) {
+  print(paste0("*-*-*-*-*-*", dependent_var, "*-*-*-*-*-*"))
+  formula <- as.formula(paste(dependent_var, "~ essence_mc * subscription_rep_num"))
+  model <- lm(formula, data = dat)
+  print(summary(model))
+}
+
+variables <- c("mourn_1", "mental_health_1", "well_m", "value_1", "refund_1", "petition_1", "cold_1")
+lapply(variables, run_model, d)
+
 ## ================================================================================================================
 ##                                              DATA ANALYSIS - MANUAL RATINGS                
 ## ================================================================================================================
 
-identity <- data.frame(X2=na.omit(d$rater_2_identity), X1=na.omit(d$rater_1_identity))
-devaluation <- data.frame(X2=na.omit(d$rater_2_devaluation), X1=na.omit(d$rater_1_devaluation))
-mourning <- data.frame(X2=na.omit(d$rater_2_mourning), X1=na.omit(d$rater_1_mourning))
-
-# calculate cronbach's alpha
-cronbach.alpha(identity)
-cronbach.alpha(devaluation)
-cronbach.alpha(mourning)
-
 # IDENTITY
+identity <- data.frame(X2=na.omit(d$rater_2_identity), X1=na.omit(d$rater_1_identity))
+cronbach.alpha(identity)
 mean(na.omit(d[d$rater_2_identity == d$rater_1_identity, 'rater_1_identity']))
+table(d[(d$rater_2_identity == d$rater_1_identity) & d$rater_1_identity == 1, 'rater_1_identity_change_type'])
 
 # DEVALUATION
+devaluation <- data.frame(X2=na.omit(d$rater_2_devaluation), X1=na.omit(d$rater_1_devaluation))
+cronbach.alpha(devaluation)
 mean(na.omit(d[d$rater_2_devaluation == d$rater_1_devaluation, 'rater_1_devaluation']))
+table(d[(d$rater_2_devaluation == d$rater_1_devaluation) & d$rater_1_devaluation == 1, 'rater_1_devaluation_type'])
 
 # MOURNING
-mean(na.omit(d[d$rater_2_mourning == d$rater_1_mourning, 'rater_1_mourning']))
+# For mourning, we have several columns that we want to combine: r1_mentalhealth, r2_mentalhealth, r1_senseofloss, r2_senseofloss, r1_wellbeing, r2_wellbeing
+mentalhealth <- data.frame(X2=na.omit(d$r2_mentalhealth), X1=na.omit(d$r1_mentalhealth))
+cronbach.alpha(mentalhealth)
+mean(na.omit(d[d$r2_mentalhealth == d$r1_mentalhealth, 'r1_mentalhealth']))
+
+wellbeing <- data.frame(X2=na.omit(d$r2_wellbeing), X1=na.omit(d$r1_wellbeing))
+cronbach.alpha(wellbeing)
+mean(na.omit(d[d$r2_wellbeing == d$r1_wellbeing, 'r1_wellbeing']))
+
+# Get the OR for mental health and well being
+# Create a data frame from the agreed-upon ratings for mental health and well-being
+mhealth_or_wellbeing <- data.frame(
+  rater2_mhealth = na.omit(d$r2_mentalhealth),
+  rater1_mhealth = na.omit(d$r1_mentalhealth),
+  rater2_wellbeing = na.omit(d$r2_wellbeing),
+  rater1_wellbeing = na.omit(d$r1_wellbeing),
+  rater1_senseofloss = na.omit(d$r1_senseofloss),
+  rater2_senseofloss = na.omit(d$r2_senseofloss)
+)
+
+# Filter rows where both raters agreed on mental health and well-being ratings
+# We use a logical OR to capture cases where either mental health or well-being is rated 1
+agreed_mourning <- mhealth_or_wellbeing %>%
+  filter(
+    rater1_mhealth == rater2_mhealth | rater1_wellbeing == rater2_wellbeing,   # Agreement
+    (rater1_mhealth == 1 | rater1_wellbeing == 1)                              # Either mental health or well-being is 1
+  )
+
+# How many percentage of cases have a rating of 1 for mental health or well-being?
+prop_1 <- nrow(agreed_mourning) / nrow(mhealth_or_wellbeing)
+prop_1
+
+# How many percentage of cases that have a rating of 1 for mental health or well-being also have 1 for sense of loss?
+prop_1_senseofloss <- nrow(agreed_mourning[agreed_mourning$rater1_senseofloss == 1, ]) / nrow(agreed_mourning)
+prop_1_senseofloss
 
 
-table(d[(d$rater_2_identity == d$rater_1_identity) & d$rater_1_identity == 1, 'rater_1_identity_change_type'])
-table(d[(d$rater_2_devaluation == d$rater_1_devaluation) & d$rater_1_devaluation == 1, 'rater_1_devaluation_type'])
-table(d[(d$rater_2_mourning == d$rater_1_mourning) & d$rater_1_mourning == 1, 'rater_1_mourning_type'])
+# An additional one is sense of loss
+senseofloss <- data.frame(X2=na.omit(d$r2_senseofloss), X1=na.omit(d$r1_senseofloss))
+cronbach.alpha(senseofloss)
+mean(na.omit(d[d$r2_senseofloss == d$r1_senseofloss, 'r1_senseofloss']))
+
+
+
+# DISAPPOINTMENT
+disappointment <- data.frame(X2=na.omit(d$r2_disappointment), X1=na.omit(d$r1_disappointment))
+cronbach.alpha(disappointment)
+mean(na.omit(d[d$r2_disappointment == d$r1_disappointment, 'r1_disappointment']))
+
+
+
+
+
 
 ## =============================================================================
 ##                        DATA ANALYSIS - TOPIC MODELLING                
