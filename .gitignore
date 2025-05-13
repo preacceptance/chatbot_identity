@@ -1,0 +1,84 @@
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+.RDataTmp
+
+# User-specific files
+.Ruserdata
+
+# Example code in package build process
+*-Ex.R
+
+# Output files from R CMD build
+/*.tar.gz
+
+# Output files from R CMD check
+/*.Rcheck/
+
+# RStudio files
+.Rproj.user/
+
+# produced vignettes
+vignettes/*.html
+vignettes/*.pdf
+
+# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+.httr-oauth
+
+# knitr and R markdown default cache directories
+*_cache/
+/cache/
+
+# Temporary files created by R markdown
+*.utf8.md
+*.knit.md
+
+# R Environment Variables
+.Renviron
+
+# pkgdown site
+docs/
+
+# translation temp files
+po/*~
+
+# RStudio Connect folder
+rsconnect/
+
+**/*.png
+*.jpg
+*.jpeg
+**/*.pdf
+.DS_Store
+*.png
+e3_field_study/.DS_Store
+.vscode/settings.json
+chatbot_identity.Rproj
+e3_field_study/.DS_Store
+e3_field_study/images/combined_plot.png
+e3_field_study/images/emotions.png
+e3_field_study/images/emotions_comments.png
+e3_field_study/images/wc_comments.png
+e3_field_study/images/wc_submissions.png
+e4_connection_disruption/vis/d3.v3.js
+e4_connection_disruption/vis/index.html
+e4_connection_disruption/vis/lda.css
+e4_connection_disruption/vis/lda.json
+e4_connection_disruption/vis/ldavis.js
+e4_connection_disruption/get_locations.py
+e4_connection_disruption/data.numbers
+e4_connection_disruption/data.csv
+pilot_field_study/archive/
+pilot_field_study/data/archive/
+pilot_field_study/data/jsonl/
+pilot_field_study/data/raw/
+pilot_field_study/data/replika/do_not_push/
+
+e4_causal/archive
+
+e3_field_study/data/jsonl
+.env
+e3_field_study/data/replika/posts_upto_2022_12_replika.csv
