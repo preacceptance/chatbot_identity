@@ -214,6 +214,9 @@ print(paste0("Number of participants using AI assistant apps: ", nrow(d[d$uses_a
 # number of users after excluding AI assistant users
 print(paste0("Number of participants after excluding AI assistant users: ", nrow(d)))
 
+# Print number of users in each condition with table
+print(table(d$change_type))
+
 # Combine measures
 d$value <- (d$value_1_1 + d$value_2_1) / 2
 d$mourn <- (d$mourn_1_1 + d$mourn_2_1) / 2

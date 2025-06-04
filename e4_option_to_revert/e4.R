@@ -227,6 +227,10 @@ d$value <- (d$value_1_1 + d$value_2_1) / 2
 d$mourn <- (d$mourn_1_1 + d$mourn_2_1) / 2
 d$identity_stability <- (d$identity_stability_1_1 + d$identity_stability_2_1) / 2
 
+# Print how many participants are in each condition with table
+print(table(d$change_type, d$revertible))
+
+
 ############### DESCRIPTIVE ANALYSIS ###############
 
 # Print the mean values for each DV, based on change_type
