@@ -132,18 +132,6 @@ d_after_erp <- d_after_erp[sample(nrow(d_after_erp), 100), ]
 
 write.csv(d_after_erp, './data/replika/posts_after_erp_sample.csv', row.names=FALSE)
 
-
-# Get all posts that are posted by the user Kuyda
-#a <- d_all[['posts']][d_all[['posts']][, 'author'] == 'Kuyda', c('titlencontent', 'created_date')]
-
-#b <- d_all[['comments']][d_all[['comments']][, 'author'] == 'Kuyda', c('titlencontent', 'created_date', 'permalink')]
-
-# Search all posts that contain 'new feature' or 'new features'
-#c <- d_all[['posts']][grepl('new feature', d_all[['posts']][, 'titlencontent'], fixed = TRUE) | grepl('new features', d_all[['posts']][, 'titlencontent'], fixed = TRUE) | grepl('update', d_all[['posts']][, 'titlencontent'], fixed = TRUE), c('titlencontent', 'created_date', 'sentiment_label', 'emotion')]
-
-# Find all posts that contain 'cold' or 'identity' and 'new feature'
-#d <- c[grepl('cold', c[, 'titlencontent'], fixed = TRUE) | grepl('identity', c[, 'titlencontent'], fixed = TRUE), c('titlencontent', 'created_date', 'sentiment_label', 'emotion')]
-
 ######################### Descriptive Stats #########################
 
 # How many distinct users are there before the ERP update?

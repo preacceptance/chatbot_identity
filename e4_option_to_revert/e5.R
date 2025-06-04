@@ -413,6 +413,15 @@ process(data = d_mediation, y = "value", x = "change_type_num",
       m = c("identity_stability"), model = 4, effsize = 1, total = 1, stand = 1, contrast = 1,
       boot = 10000, modelbt = 1, seed = 654321)
 
+
+
+process(data = d_mediation, y = "value", x = "change_type_num",
+        m = c("identity_stability", "mourn"), model = 6, effsize = 1, total = 1, stand = 1, contrast = 1,
+        boot = 10000, modelbt = 1, seed = 654321)
+
+
+
+
 process(data = d_mediation, y = "mourn", x = "change_type_num",
         m = c("identity_stability"), w = "revertible_num", model = 7, effsize = 1, total = 1, stand = 1,
         boot = 10000, modelbt = 1, seed = 654321)
