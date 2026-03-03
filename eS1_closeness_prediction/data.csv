@@ -1,0 +1,359 @@
+StartDate,EndDate,Status,IPAddress,Progress,Duration (in seconds),Finished,RecordedDate,ResponseId,RecipientLastName,RecipientFirstName,RecipientEmail,ExternalReference,LocationLatitude,LocationLongitude,DistributionChannel,UserLanguage,consent,att_1,att_2,worker_id,Q136_First Click,Q136_Last Click,Q136_Page Submit,Q136_Click Count,order_1,order_2,order_3,order_4,order_5,order_6,order_7,order_8,comp_1,age,gender,gender_4_TEXT,ethnicity,ethnicity_6_TEXT,edu,edu_8_TEXT,participantId
+Start Date,End Date,Response Type,Anonymized,Progress,Duration (in seconds),Finished,Recorded Date,Response ID,Recipient Last Name,Recipient First Name,Recipient Email,External Data Reference,Anonymized,Anonymized,Distribution Channel,User Language,"Study Title: Judgment Task
+
+Researcher: Julian De Freitas
+
+Version Date: 26 January 2026
+
+ 
+
+Key Information
+
+Short Study that involves judgment tasks. The following is a short summary of this study to help you decide whether to be a part of this study.
+
+
+
+More detailed information is listed later in this form.
+
+ 
+
+Why am I being invited to take part in a research study?
+
+We invite you to take part in a research study because you are over the age of 18 and are based in the United States.
+
+
+
+What should I know about a research study?
+
+• Someone will explain this research study to you.
+
+• Whether or not you take part is up to you. 
+
+• Your participation is completely voluntary.
+
+• You can choose not to take part.
+
+• You can agree to take part and later change your mind.
+
+• Your decision will not be held against you.
+
+• Your refusal to participate will not result in any consequences or any loss of benefits that you are otherwise entitled to receive.
+
+• You can ask all the questions you want before you decide.
+
+ 
+
+Why is this research being done?
+
+The purpose of this research is to examine human judgments of automated systems. All data from this experiment are gathered for scientific purposes and will contribute to our eventual understanding of judgments of automated systems. These data may be published in scientific journals so that other researchers may have access to these data.
+
+
+
+How long will the research last and what will I need to do?
+
+
+
+We expect that you will be in this research study for 5 minutes. You will be asked to answer several questions. Your response may involve making a value judgment or providing your opinion.
+
+  
+
+
+
+For all participants
+
+You will also be asked to complete a demographics form at the end of the survey. 
+
+ 
+
+Is there any way being in this study could be bad for me?
+
+We don’t believe there are any risks from participating in this research.
+
+
+
+Will being in this study help me in any way?
+
+There are no benefits to you from your taking part in this research. We cannot promise any benefits to others from your taking part in this research. However, possible benefits to others include a deeper understanding in behavioral sciences that can help with better judgment and decision making
+
+  
+
+What happens if I do not want to be in this research?
+
+Participation in research is completely voluntary. You can decide to participate, not participate, or discontinue participation at any time without penalty or loss of benefits to which you are otherwise entitled.
+
+ 
+
+Your alternative to participating in this research study is to not participate.
+
+ 
+
+Detailed Information
+
+The following is more detailed information about this study in addition to the information listed above.
+
+ 
+
+What happens if I say yes, but I change my mind later?
+
+You can leave the research at any time; it will not be held against you. Stopping your participation will involve no penalty or loss of benefits to which you are otherwise entitled.
+
+ 
+
+If I take part in this research, how will my privacy be protected? What happens to the information you collect?
+
+ 
+Efforts will be made to limit the use and disclosure of your Personal Information, including research study records, to people who have a need to review this information. We cannot promise complete secrecy. Organizations that may inspect and copy your information include the IRB and other representatives of this organization.
+
+
+
+If identifiers are removed from your identifiable private information that are collected during this research, that information could be used for future research studies or distributed to another investigator for future research studies without your additional informed consent.
+
+
+ 
+
+What else do I need to know?
+
+Compensation - If you agree to take part in this research study, we will pay you $0.7 for your time and effort.
+
+ 
+
+
+
+Who can I talk to?
+
+If you have questions, concerns, or complaints, or think the research has hurt you, talk to the research
+
+team at jdefreitas@hbs.edu.
+
+ 
+
+This research has been reviewed and approved by the Harvard University Area Institutional Review
+
+Board (“IRB”). You may talk to them at (617) 496-2847 or cuhs@harvard.edu if:
+
+ 
+
+• Your questions, concerns, or complaints are not being answered by the research team.
+
+• You cannot reach the research team.
+
+• You want to talk to someone besides the research team.
+
+• You have questions about your rights as a research subject.
+
+• You want to get information or provide input about this research.","This is an attention check. 
+
+ John is taller than Paul. Who is shorter?","What color is grass?
+
+ The fresh, uncut grass, not leaves or hay. Please make sure to select purple, so that we know you're paying attention.",Anonymized,Timing - First Click,Timing - Last Click,Timing - Page Submit,Timing - Click Count,order - A stranger you have seen,order - An acquaintance of yours,order - A BRAND you frequently buy from other than Replika,order - An APP you frequently use other than Replika,order - A colleague you know,order - A close friend of yours other than your Replika,order - A close family member of yours,order - Your Replika,Whose feelings were you asked to consider in the previous task?,What is your age (in years)?,What is your biological sex? - Selected Choice,What is your biological sex? - Other (please specify) - Text,What is your race/ ethnicity? Please check all that apply. - Selected Choice,What is your race/ ethnicity? Please check all that apply. - Other (please specify) - Text,What is the highest level of education you have completed? - Selected Choice,What is the highest level of education you have completed? - Other (please specify) - Text,Anonymized
+"{""ImportId"":""startDate"",""timeZone"":""America/Denver""}","{""ImportId"":""endDate"",""timeZone"":""America/Denver""}","{""ImportId"":""status""}",Anonymized,"{""ImportId"":""progress""}","{""ImportId"":""duration""}","{""ImportId"":""finished""}","{""ImportId"":""recordedDate"",""timeZone"":""America/Denver""}","{""ImportId"":""_recordId""}","{""ImportId"":""recipientLastName""}","{""ImportId"":""recipientFirstName""}","{""ImportId"":""recipientEmail""}","{""ImportId"":""externalDataReference""}",Anonymized,Anonymized,"{""ImportId"":""distributionChannel""}","{""ImportId"":""userLanguage""}","{""ImportId"":""QID19""}","{""ImportId"":""QID30""}","{""ImportId"":""QID31""}",Anonymized,"{""ImportId"":""QID225_FIRST_CLICK""}","{""ImportId"":""QID225_LAST_CLICK""}","{""ImportId"":""QID225_PAGE_SUBMIT""}","{""ImportId"":""QID225_CLICK_COUNT""}","{""ImportId"":""QID226_1""}","{""ImportId"":""QID226_2""}","{""ImportId"":""QID226_3""}","{""ImportId"":""QID226_4""}","{""ImportId"":""QID226_5""}","{""ImportId"":""QID226_6""}","{""ImportId"":""QID226_7""}","{""ImportId"":""QID226_8""}","{""ImportId"":""QID202""}","{""ImportId"":""QID14_TEXT""}","{""ImportId"":""QID12""}","{""ImportId"":""QID12_4_TEXT""}","{""ImportId"":""QID13""}","{""ImportId"":""QID13_6_TEXT""}","{""ImportId"":""QID15""}","{""ImportId"":""QID15_8_TEXT""}",Anonymized
+2026-02-08 01:12:35,2026-02-08 01:13:11,0,Anonymized,100,36,1,2026-02-08 01:13:12,R_1ccnungJcXSM0fm,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,1,2,Anonymized,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Anonymized
+2026-02-08 01:12:45,2026-02-08 01:14:20,0,Anonymized,100,95,1,2026-02-08 01:14:20,R_1rx8gGDTHwNHkvf,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,14.656,0,8,3,7,5,4,2,1,6,2,18,1,NA,2,NA,3,NA,Anonymized
+2026-02-08 01:13:25,2026-02-08 01:14:28,0,Anonymized,100,63,1,2026-02-08 01:14:28,R_3PjblKMwBdetcvr,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,3.084,4.999,11.974,3,8,2,7,5,6,3,4,1,2,40,4,nonbinary,2,NA,3,NA,Anonymized
+2026-02-08 01:13:56,2026-02-08 01:15:04,0,Anonymized,100,68,1,2026-02-08 01:15:05,R_3ii8AG2aUXn8pyx,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,1,Anonymized,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Anonymized
+2026-02-08 01:12:23,2026-02-08 01:15:49,0,Anonymized,100,206,1,2026-02-08 01:15:50,R_7n7TCTbllwKi1B8,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,41.088,0,8,5,7,6,3,2,1,4,2,62,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:12:08,2026-02-08 01:16:04,0,Anonymized,100,236,1,2026-02-08 01:16:05,R_6R8d2M86asLs1p9,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.844,0,6,4,8,7,5,2,1,3,2,33,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:14:25,2026-02-08 01:16:46,0,Anonymized,100,141,1,2026-02-08 01:16:47,R_1upNKqCa0s9Fbf0,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,19.439,20.204,21.418,2,8,5,6,4,7,2,1,3,2,23,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:13:34,2026-02-08 01:16:54,0,Anonymized,100,199,1,2026-02-08 01:16:54,R_38Hb7K6800N9RB4,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,13.158,22.209,22.829,2,2,6,8,5,7,4,3,1,2,42,1,NA,2,NA,5,NA,Anonymized
+2026-02-08 01:12:11,2026-02-08 01:16:56,0,Anonymized,100,285,1,2026-02-08 01:16:57,R_66bZn14CqLi3NcZ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,14.8,0,8,5,7,6,4,1,2,3,2,58,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:15:47,2026-02-08 01:17:16,0,Anonymized,100,89,1,2026-02-08 01:17:17,R_3dVPU18yNOnplkl,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,1,2,Anonymized,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Anonymized
+2026-02-08 01:15:12,2026-02-08 01:17:44,0,Anonymized,100,152,1,2026-02-08 01:17:44,R_1yfNOyQ9loxEePX,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,16.665,16.753,17.237,2,8,4,5,6,3,2,1,7,2,37,1,NA,3,NA,5,NA,Anonymized
+2026-02-08 01:15:35,2026-02-08 01:17:48,0,Anonymized,100,132,1,2026-02-08 01:17:48,R_3M0vLLyCmXAncV9,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,13.741,13.741,27.755,1,8,6,3,2,7,4,5,1,2,28,3,NA,3,NA,1,NA,Anonymized
+2026-02-08 01:15:01,2026-02-08 01:18:08,0,Anonymized,100,186,1,2026-02-08 01:18:08,R_1WunWvqWwKWsLg3,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,13.237,13.896,46.252,2,8,2,7,6,4,1,3,5,2,35,1,NA,5,NA,4,NA,Anonymized
+2026-02-08 01:17:08,2026-02-08 01:19:13,0,Anonymized,100,125,1,2026-02-08 01:19:14,R_6easftHAfxMI0Op,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,19.736,0,5,2,6,7,4,1,3,8,2,45,1,NA,3,NA,6,NA,Anonymized
+2026-02-08 01:14:43,2026-02-08 01:19:24,0,Anonymized,100,281,1,2026-02-08 01:19:24,R_1M6xLn6ufsFAwkH,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,29.785,0,8,3,7,6,4,2,1,5,2,27,1,NA,1,NA,4,NA,Anonymized
+2026-02-08 01:17:09,2026-02-08 01:19:31,0,Anonymized,100,142,1,2026-02-08 01:19:31,R_5lrQmCVvm4WygCd,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,35.824,0,8,6,7,5,4,2,1,3,2,53,1,NA,3,NA,1,NA,Anonymized
+2026-02-08 01:18:17,2026-02-08 01:20:01,0,Anonymized,100,103,1,2026-02-08 01:20:01,R_57ijt0TjYDgCZtD,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,3.654,5.43,32.147,2,5,4,8,7,3,2,1,6,2,39,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:18:02,2026-02-08 01:20:29,0,Anonymized,100,147,1,2026-02-08 01:20:30,R_6QYTfaoeifW5wpi,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,12.439,0,8,6,7,4,5,3,2,1,2,28,2,NA,1,NA,3,NA,Anonymized
+2026-02-08 01:20:11,2026-02-08 01:21:56,0,Anonymized,100,105,1,2026-02-08 01:21:57,R_3HTtBuqlAeMCU1y,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,16.049,0,8,3,7,6,5,2,1,4,2,29,3,NA,"1,2,3,5,6",Native American - Cherokee,3,NA,Anonymized
+2026-02-08 01:17:08,2026-02-08 01:22:28,0,Anonymized,100,319,1,2026-02-08 01:22:28,R_5qX0PFSln9FJ2GH,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,90.616,102.916,104.042,2,8,6,5,1,7,2,4,3,2,49,1,NA,3,NA,5,NA,Anonymized
+2026-02-08 01:20:23,2026-02-08 01:23:41,0,Anonymized,100,198,1,2026-02-08 01:23:42,R_1Emow3WJE75pVSA,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,14.406,55.142,56.486,2,8,6,7,3,5,2,1,4,2,45,1,NA,2,NA,4,NA,Anonymized
+2026-02-08 01:23:32,2026-02-08 01:24:55,0,Anonymized,100,83,1,2026-02-08 01:24:55,R_3QmMJFz22fP6Io3,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,10.469,11.031,11.801,2,5,3,6,7,4,2,1,8,2,36,1,NA,3,NA,1,NA,Anonymized
+2026-02-08 01:24:41,2026-02-08 01:26:37,0,Anonymized,100,116,1,2026-02-08 01:26:38,R_6ATFau9byqlvMGn,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,6.613,7.035,10.555,2,8,4,7,6,5,2,1,3,2,35,1,NA,2,NA,4,NA,Anonymized
+2026-02-08 01:25:36,2026-02-08 01:27:25,0,Anonymized,100,108,1,2026-02-08 01:27:25,R_5adxGcGKTBcTkgV,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,4.887,15.495,16.749,4,8,7,6,5,4,1,2,3,2,55,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 01:25:35,2026-02-08 01:27:53,0,Anonymized,100,137,1,2026-02-08 01:27:53,R_6Mi0ukR4s5DQOTr,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,17.33,17.33,21.41,1,6,5,8,1,7,2,4,3,2,33,2,NA,4,NA,3,NA,Anonymized
+2026-02-08 01:26:45,2026-02-08 01:28:41,0,Anonymized,100,116,1,2026-02-08 01:28:42,R_3FR5I3vNkLmGXXZ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,38.944,0,8,7,5,4,6,3,1,2,2,35,1,NA,3,NA,5,NA,Anonymized
+2026-02-08 01:27:21,2026-02-08 01:28:46,0,Anonymized,100,85,1,2026-02-08 01:28:47,R_7lsReVdvvNZe6Nr,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.854,0,5,3,8,7,4,1,2,6,1,19,1,NA,2,NA,3,NA,Anonymized
+2026-02-08 01:26:47,2026-02-08 01:28:55,0,Anonymized,100,127,1,2026-02-08 01:28:55,R_5VRfrXOWY5a8P16,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,22.175,0,8,4,5,7,3,2,1,6,1,54,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 01:27:30,2026-02-08 01:29:00,0,Anonymized,100,89,1,2026-02-08 01:29:00,R_7xQsNmdQrQwG1bO,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,15.889,0,4,7,6,2,3,1,8,5,2,35,1,NA,2,NA,5,NA,Anonymized
+2026-02-08 01:26:37,2026-02-08 01:29:07,0,Anonymized,100,149,1,2026-02-08 01:29:07,R_6wgAqXqpBWiQV1X,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,2.61,10.846,23.168,4,5,4,8,7,3,2,1,6,2,36,2,NA,2,NA,4,NA,Anonymized
+2026-02-08 01:27:41,2026-02-08 01:29:25,0,Anonymized,100,104,1,2026-02-08 01:29:25,R_1MQcfhiS5Htw6w6,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,13.142,0,4,2,8,5,3,7,1,6,1,39,1,NA,3,NA,1,NA,Anonymized
+2026-02-08 01:26:57,2026-02-08 01:29:28,0,Anonymized,100,150,1,2026-02-08 01:29:28,R_5EwHNvtLEmczDvb,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,21.809,0,8,4,5,6,7,1,2,3,2,25,1,NA,1,NA,4,NA,Anonymized
+2026-02-08 01:28:12,2026-02-08 01:29:41,0,Anonymized,100,89,1,2026-02-08 01:29:41,R_3YKF1GOVLv8otoy,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,1,Anonymized,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Anonymized
+2026-02-08 01:28:34,2026-02-08 01:29:58,0,Anonymized,100,84,1,2026-02-08 01:29:58,R_6Xd6dSIFEY3pMtC,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,14.346,0,8,4,6,5,3,2,1,7,2,24,1,NA,2,NA,4,NA,Anonymized
+2026-02-08 01:28:25,2026-02-08 01:30:42,0,Anonymized,100,137,1,2026-02-08 01:30:42,R_60NOBP4WvclYoZb,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,43.53,0,8,5,7,6,4,2,1,3,2,29,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:28:20,2026-02-08 01:30:46,0,Anonymized,100,145,1,2026-02-08 01:30:46,R_6HkWCwmdtfZ1I0V,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,18.647,0,5,4,6,8,3,2,1,7,2,55,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 01:28:35,2026-02-08 01:30:48,0,Anonymized,100,132,1,2026-02-08 01:30:48,R_6Bh5s0cOpTOl1qR,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,18.458,0,8,5,7,6,4,1,2,3,2,40,1,NA,"1,3",NA,4,NA,Anonymized
+2026-02-08 01:28:56,2026-02-08 01:31:03,0,Anonymized,100,127,1,2026-02-08 01:31:04,R_3CD9XK4ydHdhmg5,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,1.939,6.571,20.984,3,7,6,5,8,3,2,1,4,2,24,1,NA,3,NA,2,NA,Anonymized
+2026-02-08 01:30:19,2026-02-08 01:32:10,0,Anonymized,100,111,1,2026-02-08 01:32:10,R_1rBzk0iVQ0XYu8x,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,27.958,0,8,3,7,6,5,2,1,4,2,43,1,NA,"3,4",NA,3,NA,Anonymized
+2026-02-08 01:30:17,2026-02-08 01:32:15,0,Anonymized,100,117,1,2026-02-08 01:32:16,R_6oN2yzE3djyBQUV,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,28.677,0,7,3,6,8,5,2,1,4,2,45,1,NA,3,NA,5,NA,Anonymized
+2026-02-08 01:28:59,2026-02-08 01:32:16,0,Anonymized,100,196,1,2026-02-08 01:32:16,R_1cvLjqrCAZtOsvt,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,34.966,43.844,48.368,5,7,5,6,8,4,3,2,1,2,56,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:23:39,2026-02-08 01:32:47,0,Anonymized,100,547,1,2026-02-08 01:32:47,R_5pgaX9jzDsKpPma,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,86.742,86.742,89.939,1,8,7,6,3,4,2,1,5,2,56,2,NA,3,NA,2,NA,Anonymized
+2026-02-08 01:29:39,2026-02-08 01:32:49,0,Anonymized,100,190,1,2026-02-08 01:32:49,R_6hSi13ixLOeUzMh,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,19.862,0,8,7,5,6,4,1,2,3,2,37,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 01:28:50,2026-02-08 01:33:08,0,Anonymized,100,257,1,2026-02-08 01:33:08,R_61fmLzXhW3VNNSh,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,19.614,19.614,27.926,1,8,5,7,6,3,2,1,4,2,41,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 01:28:03,2026-02-08 01:33:39,0,Anonymized,100,336,1,2026-02-08 01:33:40,R_3lShHwcLlQhz3u9,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,44.451,44.451,45.878,1,8,7,5,4,6,2,1,3,2,41,1,NA,3,NA,1,NA,Anonymized
+2026-02-08 01:28:20,2026-02-08 01:33:52,0,Anonymized,100,331,1,2026-02-08 01:33:52,R_6dYBzCpiDbj42pp,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,44.305,46.388,61.091,2,8,4,7,6,3,2,1,5,1,45,2,NA,1,NA,4,NA,Anonymized
+2026-02-08 01:30:32,2026-02-08 01:34:15,0,Anonymized,100,222,1,2026-02-08 01:34:15,R_3rzovbWORv0FjBT,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,23.566,0,7,6,8,4,3,2,1,5,2,41,1,NA,1,NA,4,NA,Anonymized
+2026-02-08 01:28:31,2026-02-08 01:34:47,0,Anonymized,100,375,1,2026-02-08 01:34:47,R_5HMoqkK2NQcy5Ao,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,2.811,67.096,69.643,7,7,3,5,6,4,2,1,8,2,28,2,NA,"1,3",NA,3,NA,Anonymized
+2026-02-08 01:30:18,2026-02-08 01:34:47,0,Anonymized,100,269,1,2026-02-08 01:34:47,R_73rUlcaexWsvKUj,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,61.174,0,8,6,1,3,7,4,5,2,1,59,2,NA,5,NA,3,NA,Anonymized
+2026-02-08 01:30:44,2026-02-08 01:35:08,0,Anonymized,100,264,1,2026-02-08 01:35:08,R_6n1L7bKOEOjlJM3,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,21,0,8,5,7,6,4,1,2,3,2,29,2,NA,3,NA,5,NA,Anonymized
+2026-02-08 01:30:13,2026-02-08 01:38:15,0,Anonymized,100,481,1,2026-02-08 01:38:15,R_1Csup3xEUchuPWD,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,45.226,0,4,3,7,6,5,2,1,8,2,21,1,NA,1,NA,4,NA,Anonymized
+2026-02-08 01:36:41,2026-02-08 01:38:40,0,Anonymized,100,119,1,2026-02-08 01:38:40,R_53r5ywHdR2db5XX,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,15.832,15.832,22.228,1,8,6,5,7,4,2,1,3,2,34,1,NA,"3,4",NA,4,NA,Anonymized
+2026-02-08 01:47:31,2026-02-08 01:50:01,0,Anonymized,100,150,1,2026-02-08 01:50:02,R_3tMARRkyChbq97l,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,41.725,0,7,4,8,6,3,2,1,5,2,36,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:51:49,2026-02-08 01:52:14,0,Anonymized,100,24,1,2026-02-08 01:52:14,R_1ag9FD0lhut7NBY,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,1,Anonymized,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Anonymized
+2026-02-08 01:51:47,2026-02-08 01:52:32,0,Anonymized,100,45,1,2026-02-08 01:52:33,R_18D8olAGEzUHtlQ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,1,2,Anonymized,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Anonymized
+2026-02-08 01:51:49,2026-02-08 01:54:09,0,Anonymized,100,139,1,2026-02-08 01:54:09,R_6wHVIi7R7m3UopU,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,1.559,10.954,20.418,2,8,5,6,7,4,2,1,3,2,64,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 01:51:42,2026-02-08 01:54:16,0,Anonymized,100,154,1,2026-02-08 01:54:17,R_1Rre4KmrVdTWek0,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,29.519,0,6,3,8,7,4,2,1,5,2,21,2,NA,3,NA,8,Less than High School,Anonymized
+2026-02-08 01:54:20,2026-02-08 01:55:39,0,Anonymized,100,78,1,2026-02-08 01:55:39,R_7LbX4dPMifCVVPV,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.111,0,8,6,4,7,5,1,2,3,2,43,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:52:50,2026-02-08 01:55:46,0,Anonymized,100,175,1,2026-02-08 01:55:46,R_5CIrAzpY7R4Pmg2,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,36.764,0,8,4,5,7,3,2,1,6,2,79,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 01:55:17,2026-02-08 01:55:46,0,Anonymized,100,28,1,2026-02-08 01:55:46,R_62Mef9eZAATqecg,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,1,Anonymized,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Anonymized
+2026-02-08 01:54:47,2026-02-08 01:55:48,0,Anonymized,100,61,1,2026-02-08 01:55:49,R_5riknF5WnMH8kCc,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,6.901,11.359,11.851,3,8,5,7,6,3,2,1,4,2,39,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:54:35,2026-02-08 01:55:51,0,Anonymized,100,75,1,2026-02-08 01:55:51,R_6MQzeVYnaanXqo1,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.3,0,8,6,7,3,5,2,4,1,2,39,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:54:54,2026-02-08 01:56:37,0,Anonymized,100,102,1,2026-02-08 01:56:37,R_7F29OKKnoAdKuVq,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,18.045,0,8,3,5,6,4,2,1,7,2,38,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 01:51:45,2026-02-08 01:56:46,0,Anonymized,100,300,1,2026-02-08 01:56:46,R_5TBEx7evNzE0sTT,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,42.815,0,6,4,8,7,3,2,1,5,2,30,1,NA,1,NA,4,NA,Anonymized
+2026-02-08 01:55:36,2026-02-08 01:57:43,0,Anonymized,100,126,1,2026-02-08 01:57:44,R_6LZIylx3wSNnhUu,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,17.614,0,7,6,8,4,5,2,1,3,2,32,1,NA,2,NA,6,NA,Anonymized
+2026-02-08 01:53:28,2026-02-08 01:57:56,0,Anonymized,100,268,1,2026-02-08 01:57:57,R_5t4ntF6Ekp8mbtf,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,22.882,49.609,51.625,4,5,3,8,6,4,2,7,1,2,25,1,NA,1,NA,1,NA,Anonymized
+2026-02-08 01:53:49,2026-02-08 01:58:12,0,Anonymized,100,262,1,2026-02-08 01:58:12,R_7Sq9we1dx08spMX,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,1.62,4.792,11.446,4,4,8,6,7,2,5,1,3,2,45,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 01:53:54,2026-02-08 01:58:17,0,Anonymized,100,262,1,2026-02-08 01:58:17,R_7UVqu8MTcrpVWwM,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,75.299,0,8,5,6,7,3,1,2,4,2,20,1,NA,1,NA,3,NA,Anonymized
+2026-02-08 01:53:57,2026-02-08 01:58:31,0,Anonymized,100,273,1,2026-02-08 01:58:32,R_7qZZnvlqWejRqYJ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,66.193,66.193,67.231,1,8,4,6,7,3,2,1,5,2,29,1,NA,1,NA,4,NA,Anonymized
+2026-02-08 01:57:28,2026-02-08 01:58:43,0,Anonymized,100,75,1,2026-02-08 01:58:44,R_6CURvVTTokNpCPz,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,2.54,8.74,13.374,7,8,4,7,6,3,2,1,5,2,35,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:52:19,2026-02-08 01:58:53,0,Anonymized,100,393,1,2026-02-08 01:58:53,R_6gNmlaV5m0zlbPl,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.45,0,5,3,6,8,4,2,1,7,1,25,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 01:52:14,2026-02-08 01:59:17,0,Anonymized,100,423,1,2026-02-08 01:59:17,R_1BRD9llobJfZG9c,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,45.041,0,5,1,6,8,3,7,2,4,2,80,2,NA,3,NA,5,NA,Anonymized
+2026-02-08 01:57:51,2026-02-08 01:59:25,0,Anonymized,100,93,1,2026-02-08 01:59:25,R_3CUTlzGKmszon9V,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,14.977,0,8,5,7,6,3,2,1,4,2,27,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:51:59,2026-02-08 01:59:28,0,Anonymized,100,449,1,2026-02-08 01:59:28,R_5c1TfAIoObsndRa,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,3.201,17.366,17.998,3,8,6,7,4,5,2,3,1,2,35,1,NA,3,NA,5,NA,Anonymized
+2026-02-08 01:55:20,2026-02-08 01:59:39,0,Anonymized,100,259,1,2026-02-08 01:59:40,R_69gHwdAnbgd5k5z,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,31.533,31.533,39.601,1,8,7,6,4,3,2,1,5,2,43,1,NA,4,NA,4,NA,Anonymized
+2026-02-08 01:54:35,2026-02-08 01:59:51,0,Anonymized,100,316,1,2026-02-08 01:59:52,R_5BkstUvNbHDPtfb,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,95.137,95.137,96.004,1,7,2,6,8,4,3,1,5,2,38,1,NA,1,NA,4,NA,Anonymized
+2026-02-08 01:56:45,2026-02-08 01:59:58,0,Anonymized,100,192,1,2026-02-08 01:59:58,R_6RymTXVWOzJo9nR,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,2.028,8.881,46.521,3,6,4,8,7,5,2,1,3,2,42,1,NA,1,NA,4,NA,Anonymized
+2026-02-08 01:54:53,2026-02-08 02:00:06,0,Anonymized,100,313,1,2026-02-08 02:00:07,R_5dFwvI1Ahrm5BHd,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,7.202,88.443,89.494,2,8,1,6,7,4,3,2,5,2,35,1,NA,1,NA,4,NA,Anonymized
+2026-02-08 01:57:43,2026-02-08 02:00:28,0,Anonymized,100,164,1,2026-02-08 02:00:28,R_1qVSJQrNia8gBBr,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,24.574,24.574,33.463,1,8,7,3,6,5,2,1,4,2,53,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:55:18,2026-02-08 02:00:30,0,Anonymized,100,311,1,2026-02-08 02:00:30,R_7D1bPKThZ8Xz52G,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,204.796,0,8,3,7,6,4,2,1,5,1,38,2,NA,"3,4",NA,3,NA,Anonymized
+2026-02-08 01:53:57,2026-02-08 02:00:54,0,Anonymized,100,417,1,2026-02-08 02:00:55,R_5FlwNWSNgHdB9Wq,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,29.671,29.671,31.465,1,8,4,7,6,5,2,3,1,2,61,1,NA,3,NA,1,NA,Anonymized
+2026-02-08 01:58:14,2026-02-08 02:01:24,0,Anonymized,100,189,1,2026-02-08 02:01:24,R_5qsWybLheoJK3xk,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,55.014,0,8,6,3,4,7,2,1,5,2,62,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 01:58:09,2026-02-08 02:02:39,0,Anonymized,100,269,1,2026-02-08 02:02:39,R_5Rw7RvtFFoKOf1t,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,28.78,28.78,32.101,1,8,7,5,2,6,4,3,1,2,41,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:00:57,2026-02-08 02:02:44,0,Anonymized,100,107,1,2026-02-08 02:02:45,R_6Q0kQXyePEFXBcD,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,7.257,7.257,16.638,1,7,3,5,6,4,2,1,8,2,39,1,NA,3,NA,1,NA,Anonymized
+2026-02-08 02:02:09,2026-02-08 02:04:43,0,Anonymized,100,153,1,2026-02-08 02:04:43,R_5U929eRYgz8g6en,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,8.603,12.489,15.041,3,5,4,7,8,3,2,1,6,2,56,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:01:17,2026-02-08 02:04:47,0,Anonymized,100,210,1,2026-02-08 02:04:47,R_7f7E52SeUOBLKa4,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,3,2,Anonymized,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Anonymized
+2026-02-08 02:03:18,2026-02-08 02:05:29,0,Anonymized,100,131,1,2026-02-08 02:05:30,R_5odmd8QXTc0IaRP,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,9.09,12.868,27.518,2,8,4,7,6,5,1,2,3,2,36,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:03:39,2026-02-08 02:05:39,0,Anonymized,100,119,1,2026-02-08 02:05:39,R_7mfEvknctupZokN,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,31.392,0,5,2,8,7,3,4,1,6,2,56,2,NA,3,NA,1,NA,Anonymized
+2026-02-08 02:03:07,2026-02-08 02:05:57,0,Anonymized,100,169,1,2026-02-08 02:05:57,R_3IAuqOTdz87ONit,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,24.922,0,8,3,7,5,6,1,2,4,2,29,1,NA,2,NA,4,NA,Anonymized
+2026-02-08 01:58:18,2026-02-08 02:06:01,0,Anonymized,100,463,1,2026-02-08 02:06:02,R_1CrngiQ4BOdCQYH,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,16.852,0,8,1,5,7,3,2,6,4,2,34,1,NA,2,NA,4,NA,Anonymized
+2026-02-08 01:59:58,2026-02-08 02:06:07,0,Anonymized,100,369,1,2026-02-08 02:06:08,R_6QFcLMBeUIIICf9,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,191.978,0,8,3,6,7,4,2,1,5,2,47,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:05:41,2026-02-08 02:06:51,0,Anonymized,100,70,1,2026-02-08 02:06:52,R_6nN4ne8yq2GhEJ3,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.196,0,3,1,5,8,7,2,4,6,1,27,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:04:55,2026-02-08 02:07:00,0,Anonymized,100,125,1,2026-02-08 02:07:00,R_5PUIsjaSLYF7wQg,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,16.803,0,8,3,5,7,4,1,2,6,2,52,2,NA,3,NA,8,Associate's degree,Anonymized
+2026-02-08 02:02:52,2026-02-08 02:07:03,0,Anonymized,100,250,1,2026-02-08 02:07:03,R_5abBuE6iSZ3cT05,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.612,0,8,4,7,6,5,3,2,1,2,22,1,NA,1,NA,5,NA,Anonymized
+2026-02-08 02:05:40,2026-02-08 02:07:45,0,Anonymized,100,125,1,2026-02-08 02:07:46,R_710djff23j25ERY,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,22.039,0,8,6,4,5,7,2,1,3,2,21,2,NA,"1,3",NA,3,NA,Anonymized
+2026-02-08 02:06:25,2026-02-08 02:08:07,0,Anonymized,100,101,1,2026-02-08 02:08:07,R_74GUfWKhgsIAg1S,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,13.125,0,8,5,7,6,3,2,1,4,2,26,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:06:24,2026-02-08 02:08:07,0,Anonymized,100,103,1,2026-02-08 02:08:08,R_74YqxhNUasE3ZtL,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,3.779,7.937,15.252,4,8,3,7,6,4,2,1,5,2,24,1,NA,4,NA,4,NA,Anonymized
+2026-02-08 02:06:48,2026-02-08 02:08:35,0,Anonymized,100,106,1,2026-02-08 02:08:35,R_1Y1Nei02iucaU6d,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,20.229,0,8,5,6,7,4,2,1,3,2,42,1,NA,3,NA,1,NA,Anonymized
+2026-02-08 02:04:11,2026-02-08 02:09:15,0,Anonymized,100,303,1,2026-02-08 02:09:15,R_3iaCvaOKDzgpA4Z,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,7.46,157.909,161.876,19,2,3,6,5,4,8,7,1,2,49,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:02:38,2026-02-08 02:09:18,0,Anonymized,100,399,1,2026-02-08 02:09:18,R_39ajGafH1feWGB3,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,9.209,13.417,16.455,5,8,4,6,5,7,2,1,3,1,42,1,NA,1,NA,4,NA,Anonymized
+2026-02-08 02:03:58,2026-02-08 02:09:32,0,Anonymized,100,333,1,2026-02-08 02:09:32,R_3J6gIk0lDNUEhVv,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,16.922,0,8,7,6,4,3,5,1,2,2,26,2,NA,1,NA,4,NA,Anonymized
+2026-02-08 02:04:22,2026-02-08 02:09:41,0,Anonymized,100,319,1,2026-02-08 02:09:41,R_7SwO5sFbbtUpQuG,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,40.648,0,8,4,7,6,5,2,1,3,2,55,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:07:18,2026-02-08 02:09:47,0,Anonymized,100,148,1,2026-02-08 02:09:47,R_3H5xEk5yUdZmakh,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,33.689,33.689,36.9,1,8,4,6,5,3,2,1,7,2,49,2,NA,2,NA,5,NA,Anonymized
+2026-02-08 02:07:07,2026-02-08 02:09:49,0,Anonymized,100,162,1,2026-02-08 02:09:49,R_38HT9aISuJydEHC,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,44.31,0,4,5,7,8,3,2,1,6,2,54,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:06:24,2026-02-08 02:10:13,0,Anonymized,100,229,1,2026-02-08 02:10:14,R_6lmdd5aOUF9ChgJ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,4.628,13.302,23.464,3,8,6,5,7,4,3,1,2,2,46,2,NA,2,NA,4,NA,Anonymized
+2026-02-08 02:09:15,2026-02-08 02:10:28,0,Anonymized,100,73,1,2026-02-08 02:10:29,R_3gSGA8pPzDuUkUu,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,1,Anonymized,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Anonymized
+2026-02-08 02:08:17,2026-02-08 02:10:29,0,Anonymized,100,131,1,2026-02-08 02:10:29,R_3MLrVESk0HTEXE9,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,20.081,0,8,5,6,7,4,1,2,3,2,74,2,NA,3,NA,1,NA,Anonymized
+2026-02-08 02:07:05,2026-02-08 02:10:36,0,Anonymized,100,211,1,2026-02-08 02:10:37,R_7ePeauroV0NA9SC,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,1.291,32.207,32.801,6,7,6,3,4,5,8,1,2,2,55,1,NA,"1,2",NA,4,NA,Anonymized
+2026-02-08 02:09:34,2026-02-08 02:11:48,0,Anonymized,100,134,1,2026-02-08 02:11:49,R_6MQzwssflxDej1y,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,10.187,10.187,25.437,1,6,3,8,7,5,2,1,4,2,47,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:10:21,2026-02-08 02:12:20,0,Anonymized,100,118,1,2026-02-08 02:12:21,R_6JDIqJQKY1gqgEz,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,32.69,0,8,5,7,6,3,2,1,4,2,31,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:09:03,2026-02-08 02:12:33,0,Anonymized,100,210,1,2026-02-08 02:12:34,R_3uqfw4HMgYAOnci,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,34.7,0,8,3,7,6,4,2,1,5,2,55,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:09:01,2026-02-08 02:12:42,0,Anonymized,100,220,1,2026-02-08 02:12:42,R_7Agavk8ojAA2HXH,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,109.261,0,6,4,8,7,5,2,1,3,2,42,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:06:30,2026-02-08 02:13:09,0,Anonymized,100,399,1,2026-02-08 02:13:10,R_11TAihKHtQwcFOo,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,31.22,37.921,38.874,3,1,6,8,5,3,4,2,7,2,45,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:11:17,2026-02-08 02:13:29,0,Anonymized,100,132,1,2026-02-08 02:13:29,R_3gNoV0YRiJyBxgk,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,16.493,16.493,27.897,1,7,3,8,6,5,1,2,4,2,21,4,nonbinary,3,NA,2,NA,Anonymized
+2026-02-08 02:11:11,2026-02-08 02:14:13,0,Anonymized,100,182,1,2026-02-08 02:14:14,R_3p99CEs4EK6Ln4l,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,76.278,0,7,5,3,2,6,4,1,8,1,48,2,NA,"3,4,5",NA,1,NA,Anonymized
+2026-02-08 02:12:45,2026-02-08 02:14:27,0,Anonymized,100,101,1,2026-02-08 02:14:28,R_6hnoNOClbHmtYyY,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,16.778,0,6,4,8,7,3,1,2,5,2,35,1,NA,1,NA,3,NA,Anonymized
+2026-02-08 02:15:15,2026-02-08 02:16:23,0,Anonymized,100,68,1,2026-02-08 02:16:24,R_7SEjBp2VxksQpfH,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.347,0,6,3,7,8,5,2,1,4,2,34,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:09:18,2026-02-08 02:16:59,0,Anonymized,100,460,1,2026-02-08 02:16:59,R_3LpQHh2njftfcgp,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,183.716,184.02,188.861,2,8,5,3,7,2,6,1,4,2,34,2,NA,1,NA,2,NA,Anonymized
+2026-02-08 02:14:59,2026-02-08 02:17:11,0,Anonymized,100,132,1,2026-02-08 02:17:11,R_1MMpB5HaOQAW0Kr,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,30.864,0,8,4,7,6,3,2,1,5,2,49,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:15:21,2026-02-08 02:17:29,0,Anonymized,100,127,1,2026-02-08 02:17:29,R_62rHXemQelze4ye,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,14.362,0,7,5,6,3,4,2,1,8,2,35,2,NA,2,NA,4,NA,Anonymized
+2026-02-08 02:10:40,2026-02-08 02:18:23,0,Anonymized,100,462,1,2026-02-08 02:18:23,R_6oTykf5DrZxiPzH,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,39.648,0,8,3,6,5,7,2,4,1,2,48,2,NA,3,NA,2,NA,Anonymized
+2026-02-08 02:16:20,2026-02-08 02:18:57,0,Anonymized,100,156,1,2026-02-08 02:18:57,R_1hiQBAlpuKohtiY,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,49.163,0,8,7,4,3,6,2,1,5,2,33,1,NA,3,NA,1,NA,Anonymized
+2026-02-08 02:16:03,2026-02-08 02:19:06,0,Anonymized,100,182,1,2026-02-08 02:19:06,R_5FL00JZ6LkfVOVR,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,32.275,0,8,7,5,4,3,2,1,6,2,35,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:16:55,2026-02-08 02:20:03,0,Anonymized,100,188,1,2026-02-08 02:20:04,R_6OqaV9K97m4DMkQ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,21.473,21.473,23.87,1,8,5,7,3,4,2,1,6,2,41,2,NA,3,NA,7,NA,Anonymized
+2026-02-08 02:12:19,2026-02-08 02:20:08,0,Anonymized,100,468,1,2026-02-08 02:20:08,R_5nHEUrDTlZYKvLD,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,109.498,0,5,6,3,1,7,4,8,2,2,52,1,NA,3,NA,5,NA,Anonymized
+2026-02-08 02:18:47,2026-02-08 02:20:23,0,Anonymized,100,96,1,2026-02-08 02:20:23,R_7mt3bfUvQTtHRYy,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,12.57,0,8,5,6,7,4,2,1,3,2,23,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:16:56,2026-02-08 02:22:08,0,Anonymized,100,312,1,2026-02-08 02:22:09,R_1UkNvHSlIAQHjP3,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,3.979,3.979,14.157,1,6,5,8,3,4,7,2,1,2,36,2,NA,3,NA,2,NA,Anonymized
+2026-02-08 02:20:56,2026-02-08 02:23:09,0,Anonymized,100,132,1,2026-02-08 02:23:10,R_61v0742umDBzTdM,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,35.051,0,8,4,7,5,6,1,2,3,2,51,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:21:56,2026-02-08 02:23:15,0,Anonymized,100,78,1,2026-02-08 02:23:15,R_3teSxXs0Lw1Nh5e,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.234,0,7,3,8,6,4,1,2,5,2,40,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:20:30,2026-02-08 02:24:01,0,Anonymized,100,211,1,2026-02-08 02:24:01,R_1ITByKda9FAOJkR,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,24.214,0,7,4,6,5,3,2,1,8,2,58,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:21:39,2026-02-08 02:24:27,0,Anonymized,100,167,1,2026-02-08 02:24:28,R_6DXJTCVbNdgeZu9,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,34.75,0,7,6,4,8,3,5,2,1,2,33,2,NA,1,NA,3,NA,Anonymized
+2026-02-08 02:21:28,2026-02-08 02:25:06,0,Anonymized,100,218,1,2026-02-08 02:25:07,R_3qg81SDhfAhK1pv,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,30.804,0,8,4,5,7,6,2,1,3,2,36,2,NA,1,NA,3,NA,Anonymized
+2026-02-08 02:24:12,2026-02-08 02:25:49,0,Anonymized,100,97,1,2026-02-08 02:25:49,R_11n2xbFgAQthDHQ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,4.195,29.328,29.353,3,3,7,5,8,6,2,1,4,2,26,1,NA,1,NA,3,NA,Anonymized
+2026-02-08 02:22:24,2026-02-08 02:27:07,0,Anonymized,100,283,1,2026-02-08 02:27:08,R_6RQubOeyTI6z9U8,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,63.451,0,8,5,6,7,4,2,1,3,2,43,1,NA,1,NA,3,NA,Anonymized
+2026-02-08 02:24:24,2026-02-08 02:27:35,0,Anonymized,100,191,1,2026-02-08 02:27:36,R_5qx4E2o5YJc0BlH,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,14.552,16.148,29.106,2,8,3,6,7,4,2,1,5,2,26,2,NA,1,NA,1,NA,Anonymized
+2026-02-08 02:25:44,2026-02-08 02:28:49,0,Anonymized,100,184,1,2026-02-08 02:28:49,R_7N4csDDugqHlVV4,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,15.429,15.429,26.092,1,8,4,7,6,3,2,1,5,2,65,1,NA,"3,4,5",NA,4,NA,Anonymized
+2026-02-08 02:27:04,2026-02-08 02:29:28,0,Anonymized,100,143,1,2026-02-08 02:29:28,R_53UjOprt8IVVoiQ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,20.641000000000002,20.641000000000002,28.686,1,8,4,7,6,3,2,1,5,2,52,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:26:11,2026-02-08 02:29:57,0,Anonymized,100,226,1,2026-02-08 02:29:57,R_7aAE59ShUUxjaTv,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,25.195,0,5,3,6,7,4,2,1,8,2,38,1,NA,4,NA,3,NA,Anonymized
+2026-02-08 02:27:03,2026-02-08 02:30:22,0,Anonymized,100,199,1,2026-02-08 02:30:23,R_5LNFGANJR6UEBIP,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,18.625,21.055,21.898,3,8,6,7,5,4,2,1,3,2,25,1,NA,"2,3,5",NA,3,NA,Anonymized
+2026-02-08 02:29:11,2026-02-08 02:30:40,0,Anonymized,100,88,1,2026-02-08 02:30:40,R_5PLrsZAy3otBnQR,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,5.675,6.37,10.864,2,8,3,7,5,4,2,1,6,2,24,2,NA,4,NA,4,NA,Anonymized
+2026-02-08 02:24:31,2026-02-08 02:32:28,0,Anonymized,100,477,1,2026-02-08 02:32:29,R_1uJQvT566nb0OxK,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,22.202,0,8,3,6,7,5,1,2,4,2,30,1,NA,2,NA,3,NA,Anonymized
+2026-02-08 02:30:12,2026-02-08 02:32:37,0,Anonymized,100,144,1,2026-02-08 02:32:37,R_5DMLY82yQ23izf3,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,24.439,0,8,6,7,5,4,2,1,3,2,37,1,NA,4,NA,1,NA,Anonymized
+2026-02-08 02:28:48,2026-02-08 02:33:06,0,Anonymized,100,258,1,2026-02-08 02:33:06,R_3HjiIf5UJl80tBc,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,18.502,0,8,6,2,3,7,5,4,1,2,44,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:32:28,2026-02-08 02:34:06,0,Anonymized,100,97,1,2026-02-08 02:34:06,R_7fAIPMi0BgZ4uf0,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,3.951,5.189,17.006,4,7,5,6,8,3,2,1,4,2,31,1,NA,3,NA,1,NA,Anonymized
+2026-02-08 02:31:31,2026-02-08 02:34:35,0,Anonymized,100,183,1,2026-02-08 02:34:35,R_1haqFwyejbYy5H3,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,60.829,0,6,5,8,7,3,2,1,4,2,30,1,NA,4,NA,3,NA,Anonymized
+2026-02-08 02:34:59,2026-02-08 02:37:07,0,Anonymized,100,127,1,2026-02-08 02:37:08,R_1NIZfmIFXBds0ql,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,22.501,0,8,7,4,5,6,2,1,3,2,44,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:36:26,2026-02-08 02:38:26,0,Anonymized,100,120,1,2026-02-08 02:38:26,R_5q1kpkUrQKx8RBT,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,19.875,0,8,6,4,5,7,2,1,3,2,23,2,NA,2,NA,4,NA,Anonymized
+2026-02-08 02:36:29,2026-02-08 02:38:48,0,Anonymized,100,138,1,2026-02-08 02:38:48,R_7KsgoO8S3gk2XBf,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,13.051,14.711,18.201,2,5,4,7,8,3,2,1,6,2,38,1,NA,1,NA,1,NA,Anonymized
+2026-02-08 02:35:13,2026-02-08 02:38:51,0,Anonymized,100,217,1,2026-02-08 02:38:51,R_63WDjxJ3i4pdGZl,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,19.659,19.659,32.478,1,8,3,4,6,5,7,2,1,2,35,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:36:12,2026-02-08 02:38:53,0,Anonymized,100,161,1,2026-02-08 02:38:53,R_7NrAUnN12gOJDoo,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,37.976,0,8,5,7,6,4,3,2,1,2,78,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:37:10,2026-02-08 02:39:09,0,Anonymized,100,119,1,2026-02-08 02:39:09,R_7whdu6Se13liXBf,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,24.385,0,8,4,7,6,5,2,1,3,2,36,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:22:59,2026-02-08 02:39:22,0,Anonymized,100,983,1,2026-02-08 02:39:23,R_5GNYTFGhOi31j3Z,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,62.547,0,8,4,7,6,3,2,1,5,1,28,1,NA,3,NA,5,NA,Anonymized
+2026-02-08 02:36:41,2026-02-08 02:39:25,0,Anonymized,100,163,1,2026-02-08 02:39:25,R_7OP4r7jjQRfJF4U,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,37.547,0,8,4,7,6,5,2,1,3,2,34,2,NA,2,NA,6,NA,Anonymized
+2026-02-08 02:35:35,2026-02-08 02:39:37,0,Anonymized,100,242,1,2026-02-08 02:39:37,R_7uPAciLBoKpp4UZ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,19.483,19.483,22.317,1,8,7,5,4,6,2,1,3,2,41,2,NA,1,NA,4,NA,Anonymized
+2026-02-08 02:38:37,2026-02-08 02:39:49,0,Anonymized,100,71,1,2026-02-08 02:39:50,R_1X0OZNvO7cHqgTL,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,1.224,5.149,11.423,4,6,4,8,5,3,2,1,7,2,27,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:38:00,2026-02-08 02:41:07,0,Anonymized,100,186,1,2026-02-08 02:41:08,R_5k6abkC53IPQTSJ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,21.465,0,6,3,8,1,5,4,2,7,2,40,1,NA,5,NA,3,NA,Anonymized
+2026-02-08 02:40:28,2026-02-08 02:42:24,0,Anonymized,100,115,1,2026-02-08 02:42:25,R_7OIrI4mORArwfUx,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,16.116,22.273,28.224,5,8,4,7,6,5,2,1,3,2,37,1,NA,2,NA,3,NA,Anonymized
+2026-02-08 02:41:09,2026-02-08 02:42:49,0,Anonymized,100,100,1,2026-02-08 02:42:49,R_5DcNESe3Yy1No57,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0.912,12.602,13.572,7,5,4,6,7,3,2,1,8,1,25,1,NA,2,NA,4,NA,Anonymized
+2026-02-08 02:41:10,2026-02-08 02:44:10,0,Anonymized,100,179,1,2026-02-08 02:44:11,R_1FckYkhTiDoVgyZ,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,16.001,16.001,18.9,1,8,5,6,7,1,4,2,3,2,35,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:42:45,2026-02-08 02:44:31,0,Anonymized,100,106,1,2026-02-08 02:44:31,R_6Cxew4811HICefD,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.153,0,8,3,4,5,2,6,1,7,2,24,1,NA,4,NA,4,NA,Anonymized
+2026-02-08 02:44:01,2026-02-08 02:45:51,0,Anonymized,100,109,1,2026-02-08 02:45:51,R_1E4qaRyD62eYcZq,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,20.308,21.079,21.595,3,8,4,7,5,6,2,1,3,2,33,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:45:57,2026-02-08 02:47:15,0,Anonymized,100,77,1,2026-02-08 02:47:16,R_15zNz2t5vgifwh0,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.164,0,8,4,6,7,3,2,1,5,2,39,1,NA,5,NA,3,NA,Anonymized
+2026-02-08 02:44:12,2026-02-08 02:47:33,0,Anonymized,100,200,1,2026-02-08 02:47:33,R_6doSyYbGSTFdQ4v,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,30.045,0,8,4,7,6,5,2,1,3,1,34,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:46:26,2026-02-08 02:49:16,0,Anonymized,100,169,1,2026-02-08 02:49:16,R_7sBKPYvTrcdPaIp,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,39.246,0,8,4,5,6,3,2,1,7,2,50,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:49:05,2026-02-08 02:50:43,0,Anonymized,100,98,1,2026-02-08 02:50:44,R_3TXbfPELPMoVekz,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,5.074,14.962,18.413,3,7,5,3,2,4,6,1,8,2,33,2,NA,3,NA,5,NA,Anonymized
+2026-02-08 02:48:50,2026-02-08 02:50:49,0,Anonymized,100,119,1,2026-02-08 02:50:50,R_7nBMF9qiQy5d6ue,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,1.78,9.659,10.925,8,8,4,7,5,6,3,1,2,1,23,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:49:55,2026-02-08 02:50:55,0,Anonymized,100,59,1,2026-02-08 02:50:55,R_3Y6ct5AwoABs86z,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,1,Anonymized,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Anonymized
+2026-02-08 02:48:21,2026-02-08 02:51:23,0,Anonymized,100,182,1,2026-02-08 02:51:24,R_5c5jnpVFxtkKiGq,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,13.555,35.217,69.072,4,8,7,4,3,6,2,1,5,1,29,3,NA,5,NA,4,NA,Anonymized
+2026-02-08 02:49:16,2026-02-08 02:51:56,0,Anonymized,100,159,1,2026-02-08 02:51:57,R_72s7DcusSysOQ9o,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,3.808,18.997,24.011,10,5,3,6,7,4,2,1,8,2,38,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:50:17,2026-02-08 02:52:03,0,Anonymized,100,105,1,2026-02-08 02:52:03,R_5zqA7KHU6KgofCL,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,2.028,12.5,13.228,9,8,7,4,5,6,2,3,1,2,36,1,NA,1,NA,6,NA,Anonymized
+2026-02-08 02:46:22,2026-02-08 02:52:15,0,Anonymized,100,353,1,2026-02-08 02:52:16,R_3MRw4Mz6zgj4jq5,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,12.874,0,8,2,7,6,3,4,1,5,2,60,2,NA,3,NA,1,NA,Anonymized
+2026-02-08 02:50:40,2026-02-08 02:52:26,0,Anonymized,100,105,1,2026-02-08 02:52:26,R_3qxaaMJUri4N8fg,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,8.073,9.069,15.023,2,8,3,5,7,4,2,1,6,2,70,2,NA,3,NA,5,NA,Anonymized
+2026-02-08 02:48:41,2026-02-08 02:52:46,0,Anonymized,100,245,1,2026-02-08 02:52:46,R_1mru6CzywFXZOo4,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,49.05,0,8,2,6,4,3,5,1,7,1,40,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:49:17,2026-02-08 02:52:50,0,Anonymized,100,213,1,2026-02-08 02:52:51,R_6pyrQIkUEFXya4o,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,29.643,30.278,31.565,2,8,3,7,6,4,2,1,5,2,43,2,NA,1,NA,5,NA,Anonymized
+2026-02-08 02:38:41,2026-02-08 02:52:54,0,Anonymized,100,853,1,2026-02-08 02:52:55,R_3eDW1fxrhK20zNS,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,55.497,0,5,3,6,8,4,2,1,7,2,46,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:50:36,2026-02-08 02:53:02,0,Anonymized,100,146,1,2026-02-08 02:53:02,R_3oMJrt3HvX6tdqW,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,18.945,0,8,2,6,4,7,1,3,5,2,34,2,NA,1,NA,4,NA,Anonymized
+2026-02-08 02:47:49,2026-02-08 02:53:04,0,Anonymized,100,314,1,2026-02-08 02:53:04,R_1QgpwISTw77V7DI,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,25.527,25.527,32.796,1,6,4,1,3,7,8,5,2,2,42,1,NA,1,NA,7,NA,Anonymized
+2026-02-08 02:50:47,2026-02-08 02:53:36,0,Anonymized,100,168,1,2026-02-08 02:53:36,R_3oFLLtIuFyM7OuS,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,76.325,0,7,3,5,6,4,2,1,8,2,34,1,NA,2,NA,4,NA,Anonymized
+2026-02-08 02:51:34,2026-02-08 02:53:55,0,Anonymized,100,141,1,2026-02-08 02:53:55,R_6L0wGUAA1DzZfq3,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,20.544,21.686,22.9,3,5,3,6,7,4,2,1,8,1,24,1,NA,3,NA,2,NA,Anonymized
+2026-02-08 02:51:16,2026-02-08 02:54:12,0,Anonymized,100,176,1,2026-02-08 02:54:13,R_7R7FJrrnFyX9mUO,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,15.118,15.118,21.257,1,8,3,5,7,6,4,1,2,2,41,2,NA,3,NA,2,NA,Anonymized
+2026-02-08 02:53:03,2026-02-08 02:55:08,0,Anonymized,100,124,1,2026-02-08 02:55:08,R_3JIbmuwfmHeBZeV,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,5.045,12.319,13.022,2,8,2,7,6,3,4,1,5,2,37,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:54:08,2026-02-08 02:55:20,0,Anonymized,100,71,1,2026-02-08 02:55:20,R_2VKLWsIcn9Ki32p,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,22.129,0,8,3,7,5,6,2,1,4,2,27,1,NA,1,NA,3,NA,Anonymized
+2026-02-08 02:54:12,2026-02-08 02:57:02,0,Anonymized,100,170,1,2026-02-08 02:57:03,R_6KxWjSYytapkTjH,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,9.125,25.073,27.814,3,7,3,6,5,4,2,1,8,2,32,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:55:53,2026-02-08 02:58:24,0,Anonymized,100,150,1,2026-02-08 02:58:25,R_5jkoFoHfqfAM56T,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,1.305,8.402,19.952,4,1,7,4,3,2,8,6,5,3,29,2,NA,3,NA,1,NA,Anonymized
+2026-02-08 02:56:54,2026-02-08 02:58:41,0,Anonymized,100,107,1,2026-02-08 02:58:42,R_7vZRlq2cofOiClP,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,12.376,12.376,15.171,1,5,4,6,7,3,2,1,8,1,41,2,NA,3,NA,5,NA,Anonymized
+2026-02-08 02:57:14,2026-02-08 02:59:14,0,Anonymized,100,120,1,2026-02-08 02:59:15,R_5Hnse5meJseIwZF,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,5.624,23.354,24.693,4,8,4,6,5,3,2,1,7,2,29,1,NA,1,NA,1,NA,Anonymized
+2026-02-08 02:47:30,2026-02-08 02:59:22,0,Anonymized,100,711,1,2026-02-08 02:59:22,R_5wzwCk5o0b2dUUO,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,1.201,5.795,43.513,2,5,3,6,8,4,2,1,7,2,37,2,NA,"1,3,5",NA,5,NA,Anonymized
+2026-02-08 02:58:29,2026-02-08 02:59:54,0,Anonymized,100,85,1,2026-02-08 02:59:55,R_194dCfHQcRYMIGq,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,12.75,0,8,7,5,4,3,2,1,6,2,19,2,NA,"2,3",NA,1,NA,Anonymized
+2026-02-08 02:54:49,2026-02-08 03:00:06,0,Anonymized,100,317,1,2026-02-08 03:00:07,R_1cWbkRD2InBJ7Lb,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,246.781,0,5,3,6,7,4,2,1,8,1,25,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:58:03,2026-02-08 03:00:49,0,Anonymized,100,165,1,2026-02-08 03:00:49,R_5iyBLUWY4ZDkvwB,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,19.074,0,6,3,7,8,4,2,1,5,2,25,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 02:58:18,2026-02-08 03:00:49,0,Anonymized,100,151,1,2026-02-08 03:00:50,R_1EdcvvvwpqX7hjX,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,24.511,24.511,32.9,1,8,3,7,6,5,1,2,4,2,38,1,NA,3,NA,5,NA,Anonymized
+2026-02-08 02:56:17,2026-02-08 03:00:54,0,Anonymized,100,277,1,2026-02-08 03:00:54,R_7OTTHOqH5C1Rany,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,5.002,18.067,22.535,4,8,7,5,4,6,2,3,1,2,34,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:57:22,2026-02-08 03:01:11,0,Anonymized,100,229,1,2026-02-08 03:01:12,R_772Yyx9PupSRk6R,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,20.503,20.503,21.73,1,8,4,7,6,3,2,1,5,1,72,1,NA,5,NA,3,NA,Anonymized
+2026-02-08 02:53:18,2026-02-08 03:01:15,0,Anonymized,100,477,1,2026-02-08 03:01:16,R_7MA5CNo1cWMBBXs,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,109.784,0,8,4,5,7,3,2,1,6,2,25,1,NA,"3,4",NA,4,NA,Anonymized
+2026-02-08 02:56:37,2026-02-08 03:01:21,0,Anonymized,100,283,1,2026-02-08 03:01:21,R_7gCO4BeK4eHSFWH,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,23.001,0,7,5,8,6,4,3,2,1,2,50,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:58:17,2026-02-08 03:01:45,0,Anonymized,100,208,1,2026-02-08 03:01:46,R_3OPKTFuWvHDOmn9,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,117.485,0,8,7,6,5,3,2,1,4,2,32,1,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:59:02,2026-02-08 03:01:57,0,Anonymized,100,174,1,2026-02-08 03:01:58,R_7s0Q7alR6MdW7wS,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,31.699,0,5,4,6,7,3,2,1,8,2,48,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 02:57:22,2026-02-08 03:02:28,0,Anonymized,100,305,1,2026-02-08 03:02:28,R_1pzKZEQDPSGpxEI,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,76.883,0,7,3,8,4,6,2,5,1,2,37,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 03:00:03,2026-02-08 03:02:34,0,Anonymized,100,151,1,2026-02-08 03:02:34,R_7jW6XnVGCXRxQ9H,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,18.197,0,8,3,6,5,4,2,1,7,2,29,1,NA,2,NA,4,NA,Anonymized
+2026-02-08 03:00:41,2026-02-08 03:02:50,0,Anonymized,100,129,1,2026-02-08 03:02:50,R_1UTp8SS5phUFOAV,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,2.202,21.074,31.039,2,8,4,5,6,7,2,1,3,2,24,2,NA,5,NA,1,NA,Anonymized
+2026-02-08 03:01:48,2026-02-08 03:04:03,0,Anonymized,100,134,1,2026-02-08 03:04:03,R_664JmylkiCyDSn9,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,16.687,0,1,2,4,5,3,7,8,6,2,22,2,NA,"3,5",NA,3,NA,Anonymized
+2026-02-08 02:59:32,2026-02-08 03:04:03,0,Anonymized,100,271,1,2026-02-08 03:04:04,R_1WM7t4lVrJhkt5e,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,22.659,0,5,4,6,7,3,2,1,8,2,57,2,NA,3,NA,4,NA,Anonymized
+2026-02-08 03:01:58,2026-02-08 03:04:04,0,Anonymized,100,125,1,2026-02-08 03:04:04,R_3VMvbE7pjNd6jex,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,1.494,10.494,18.66,3,8,5,7,6,4,3,2,1,2,60,2,NA,3,NA,3,NA,Anonymized
+2026-02-08 03:02:02,2026-02-08 03:04:38,0,Anonymized,100,155,1,2026-02-08 03:04:38,R_7e1T3wVaodvunq2,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,20.443,20.443,28.78,1,7,3,5,6,4,1,2,8,2,40,1,NA,4,NA,3,NA,Anonymized
+2026-02-08 03:03:07,2026-02-08 03:05:39,0,Anonymized,100,152,1,2026-02-08 03:05:39,R_3c1TdQmwkKdGAUq,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,14.813,0,6,2,5,3,1,4,8,7,2,26,1,NA,1,NA,5,NA,Anonymized
+2026-02-08 03:03:34,2026-02-08 03:05:51,0,Anonymized,100,137,1,2026-02-08 03:05:51,R_6YrmfuIt0rq5KeB,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,10.003,10.003,11.658,1,5,3,7,6,4,1,2,8,2,19,1,NA,"3,4",NA,1,NA,Anonymized
+2026-02-08 03:02:47,2026-02-08 03:06:17,0,Anonymized,100,209,1,2026-02-08 03:06:17,R_3pqJGD4DfJOw8Ux,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,15.494,0,8,2,5,3,6,1,4,7,2,40,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 03:00:55,2026-02-08 03:09:00,0,Anonymized,100,484,1,2026-02-08 03:09:00,R_30c0v2aqn6ZhUVR,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,15.146,0,8,4,7,6,3,2,1,5,2,22,2,NA,2,NA,3,NA,Anonymized
+2026-02-08 02:59:39,2026-02-08 03:11:50,0,Anonymized,100,731,1,2026-02-08 03:11:51,R_6v1lZBkiBihuHAd,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,38.298,39.098,39.676,2,8,5,7,4,6,1,2,3,2,35,1,NA,3,NA,3,NA,Anonymized
+2026-02-08 03:05:18,2026-02-08 03:15:54,0,Anonymized,100,635,1,2026-02-08 03:15:54,R_5RsAVTlHtb9TkZn,NA,NA,NA,NA,Anonymized,Anonymized,anonymous,EN,1,2,2,Anonymized,0,0,11.718,0,8,4,7,6,5,3,2,1,2,30,2,NA,1,NA,4,NA,Anonymized

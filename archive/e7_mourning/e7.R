@@ -18,7 +18,7 @@ pacman::p_load('ggplot2',
                'semTools',
                'lavaan',
                'tidyverse',
-               'cSEM','seminr', 'interactions', 'dplyr', 'effsize')
+               'cSEM','seminr', 'psych', 'interactions', 'splithalfr', 'dplyr')
 
 ### Read the data
 d <- read.csv('./data.csv')
@@ -31,26 +31,12 @@ d <- d[d$Finished == 1, ]
 # Print IDs of failed attention check participants
 print(paste0("IDS of participants failed attention check: ", paste(d[d$att_1 != 2 | d$att_2 != 2, 'prolific_id'], collapse = ", ")))
 
+
 # Attention check
 d <- d[d$att_1 == 2 & d$att_2 == 2,]
+print(paste0("Number of participants hired: ", nrow(d)))
 
-print(paste0("Number of participants after attention check: ", nrow(d)))
-
-# Exclude bots
-d <- d[d$Q_RecaptchaScore > 0.5,]
-
-print(paste0("Number of participants after bot exclusion: ", nrow(d)))
-
-# Exclude duplicates
-d <- d[d$Q_RelevantIDDuplicate != "true",]
-
-print(paste0("Number of participants after excluding duplicates: ", nrow(d)))
-
-# Write emails of these participants to a csv file
-#write.csv(d$email, file = "./participants_hired.csv", row.names = FALSE)
-
-# Comprehension check:
-d <- d[d$comp_1 == 1,]
+d <- d[d$comp_1 == "1" ,]
 
 print(paste0("Number of participants after comprehension check: ", nrow(d)))
 
@@ -113,7 +99,7 @@ table(d$subscription_rep)
 100 * table(d$subscription_rep)[4]/sum(table(d$subscription_rep)) ## percentage of lifetime
 
 # Remove prticipants without subscription
-#d <- d[d$subscription_rep != "1",]
+d <- d[d$subscription_rep != "1",]
 
 dim(d)
 
@@ -125,7 +111,7 @@ sd(as.numeric(d$months_rep), na.rm = TRUE) ## standard deviation
 
 # Make all dv's numeric, i.e., all columns that contain 'mhealth', 'mourn', 'disap', 'freq'
 for (col in colnames(d)) {
-  if (grepl('mourn', col) | grepl('disap', col) | grepl('freq', col)) {
+  if (grepl('mhealth', col) | grepl('mourn', col) | grepl('disap', col) | grepl('freq', col)) {
     d[[col]] <- as.numeric(d[[col]])
   }
 }
@@ -136,18 +122,18 @@ CONDITIONS <- c('aicomp', 'app', 'brand', 'game', 'voice', 'pet', 'car')
 # We have 2 questions for each DV, i.e., mhealth, mourn, disap
 # We will calculate the mean of these 2 questions for each DV and condition
 for (condition in CONDITIONS) {
-  for (dv in c('mourn', 'disap')) {
+  for (dv in c('mhealth', 'mourn', 'disap')) {
     d[[paste0(dv, '_', condition)]] <- (d[[paste0(dv, '_1_', condition, '_1')]]
                                         + d[[paste0(dv, '_2_', condition, '_1')]]) / 2
   }
 }
 
 # Correlation table between each question
-cor_matrix <- cor(d[, c('mourn_1_aicomp_1', 'mourn_2_aicomp_1', 'disap_1_aicomp_1', 'disap_2_aicomp_1')])
+cor_matrix <- cor(d[, c('mhealth_1_aicomp_1', 'mhealth_2_aicomp_1', 'mourn_1_aicomp_1', 'mourn_2_aicomp_1', 'disap_1_aicomp_1', 'disap_2_aicomp_1')])
 cor_matrix
 
 # Get cronbach alpha between the two questions for each DV. Combine each condition for this, for each DV. For this, create a new dataframe with two cols: Q1 and
-for (dv in c('mourn', 'disap')) {
+for (dv in c('mhealth', 'mourn', 'disap')) {
   Q1 <- c()
   for (q in c(paste0(dv, '_1_', CONDITIONS, '_1'))) {
     Q1 <- c(Q1, d[[q]])
@@ -209,20 +195,12 @@ d$car_name <- tolower(d$car_name)
 d$voice_name <- tolower(d$voice_name)
 d$aicomp_name <- tolower(d$aicomp_name)
 
-d$owns
-
-# Get how many rows include "5"
-sum(grepl("5", d$owns)) / dim(d)[1]
-
-# Get how many rows include "6"
-sum(grepl("6", d$owns)) / dim(d)[1]
-
 ############### DESCRIPTIVE ANALYSIS ###############
 
 # Print the mean values for each DV, based on condition
 for (condition in CONDITIONS) {
   print(paste0("*-*-*-*-* Condition: ", condition))
-  for (dv in c('disap', 'mourn', 'freq')) {
+  for (dv in c('disap', 'mourn', 'mhealth', 'freq')) {
     print(paste0(dv, ": ", mean(d[[paste0(dv, '_', condition)]])))
   }
 }
@@ -232,6 +210,7 @@ for (condition in CONDITIONS) {
 # Convert d to long format, with entity type as separate column
 d_long <- d %>%
   pivot_longer(cols = c('mourn_aicomp', 'mourn_app', 'mourn_brand', 'mourn_game', 'mourn_voice', 'mourn_pet', 'mourn_car',
+                        'mhealth_aicomp', 'mhealth_app', 'mhealth_brand', 'mhealth_game', 'mhealth_voice', 'mhealth_pet', 'mhealth_car',
                         'disap_aicomp', 'disap_app', 'disap_brand', 'disap_game', 'disap_voice', 'disap_pet', 'disap_car',
                         'freq_aicomp', 'freq_app', 'freq_brand', 'freq_game', 'freq_voice', 'freq_pet', 'freq_car'
                         ),
@@ -241,28 +220,30 @@ d_long <- d %>%
 d_long$entity_type <- as.factor(d_long$entity_type)
 
 # We will conduct two ANCOVAs to examine the effect of entity type on mourning, mental health, and disappointment, with “frequency of use” (hours per week interacting with the entity) as a covariate
-for (dv in c('mourn', 'disap')) {
+for (dv in c('mourn', 'mhealth', 'disap')) {
   print(paste0("*-*-*-*-*  ", dv, "  *-*-*-*-*"))
   aov_result <- aov(d_long[[dv]] ~ d_long$freq + d_long$entity_type, data = d_long)
   print(summary(aov_result))
-  print(anova_stats(aov_result))
+}
+
+
+# Post-hoc pairwise comparisons will be conducted using Tukey’s HSD to identify specific differences between the AI companion condition and other conditions.
+for (dv in c('mourn', 'mhealth', 'disap')) {
+  print(paste0("*-*-*-*-*  ", dv, "  *-*-*-*-*"))
+  posthoc <- TukeyHSD(aov(d_long[[dv]] ~ d_long$entity_type, data = d_long))
+  print(posthoc)
 }
 
 # Now, run t-tests comparing AI companion condition to all other conditions
-for (dv in c('mourn', 'disap')) {
+for (dv in c('mourn', 'mhealth', 'disap')) {
   print(paste0("*-*-*-*-*  ", dv, "  *-*-*-*-*"))
   for (condition in CONDITIONS) {
     if (condition != 'aicomp') {
       print(paste0("Condition: ", condition))
-      x <- d_long[d_long$entity_type == 'aicomp',][[dv]]
-      y <- d_long[d_long$entity_type == condition,][[dv]]
-      vart <- var.test(x, y)
-      tt <- t.test(x, y, paired = TRUE, var.equal = vart$p.value > 0.05); print(tt)
-      print(cohen.d(x, y))
+      print(t.test(d_long[d_long$entity_type == 'aicomp', dv], d_long[d_long$entity_type == condition, dv]))
     }
   }
 }
-
 
 #### Plotting ####
 
@@ -301,7 +282,7 @@ labels <- c('AI Companion', 'App', 'Brand Name', 'Game', 'Voice Assistant', 'Pet
 # Calculate mean mourning values and sort entity types
 # Reshape the data to long format
 d_longer <- d_long %>%
-  pivot_longer(cols = c(mourn, disap), names_to = "dv", values_to = "value")
+  pivot_longer(cols = c(mourn, mhealth, disap), names_to = "dv", values_to = "value")
 
 # Calculate mean mourning values and sort entity types
 mean_mourning <- d_longer %>%
@@ -310,8 +291,6 @@ mean_mourning <- d_longer %>%
   summarise(mean_mourn = mean(value, na.rm = TRUE)) %>%
   arrange(mean_mourn) %>%
   pull(entity_type)
-
-d_longer$dv <- factor(d_longer$dv, levels = c("mourn", "disap"))
 
 plot_dv <- function() {
   bar_func <- geom_bar(position="dodge", stat="summary", width = 0.7, size = 0.75)
@@ -326,67 +305,72 @@ plot_dv <- function() {
     labs(x = "Entity Type", y = "Value", fill = "DV") +
     theme_classic() +
     scale_x_discrete(labels = function(x) toLabel(x)) +
-    scale_fill_grey(start = 0.2, end = 0.7) +
+    scale_fill_grey(start = 0.8, end = 0.2) +
     theme(text = element_text(size=22),
           axis.text.x = element_text(size = 20, hjust=0.5, vjust=0.6), 
           axis.text.y = element_text(size = 20),
           legend.position="top") +
     summary_func +
-    ylim(0, 100) +
     xlab("")
   
   
   return(plt)
 }
 
-plt <- plot_dv()
+plot_dv()
+
+plt1 <- plot_dv("mourn")
+plt2 <- plot_dv("mhealth")
+plt2 <- plot_dv("disap")
 
 # Arrange all plots:
 dev.new(width = 10, height = 12 * 3/5, noRStudioGD = TRUE)
 
-figure <- ggarrange(plt, nrow = 1, ncol = 1, common.legend = TRUE, legend = "top", vjust = 1.0, hjust = 0.5)
-annotate_figure(figure, bottom = text_grob("Entity Type", color = "black", face = "plain", size = 26, margin(b = 2), hjust = 0.25))
+figure <- ggarrange(plt1, plt2, nrow = 1, ncol = 2, common.legend = TRUE, legend = "top", vjust = 1.0, hjust = 0.5)
+annotate_figure(figure, bottom = text_grob("Change Type", color = "black", face = "plain", size = 26, margin(b = 2), hjust = 0.25))
 
-ggsave("plt.pdf", last_plot(), dpi = 300, width = 10, height = 10 * 3/5,)
+if(dim(d)[1] == 320) {
+  ggsave("./combined_plot_ai_companion.pdf", last_plot(), dpi = 300, width = 15, height = 12 * 3/5)
+} else {
+  ggsave("./combined_plot.pdf", last_plot(), dpi = 300, width = 10, height = 12 * 3/5,)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ############### DISCRIMINANT VALIDITY TESTS ###############
 
-# Construct a dataframe, consisting of both mourning and disappointment questions for all entitites
-mourn_1 <- c()
-mourn_2 <- c()
-disap_1 <- c()
-disap_2 <- c()
-
-for (condition in CONDITIONS) {
-  mourn_1 <- c(mourn_1, d[[paste0('mourn_1_', condition, '_1')]])
-  mourn_2 <- c(mourn_2, d[[paste0('mourn_2_', condition, '_1')]])
-  disap_1 <- c(disap_1, d[[paste0('disap_1_', condition, '_1')]])
-  disap_2 <- c(disap_2, d[[paste0('disap_2_', condition, '_1')]])
-}
-
-# Construct a dataframe
-df <- data.frame(mourn_1, mourn_2, disap_1, disap_2)
-
-# Calculate the correlation matrix
-cor_matrix <- cor(df)
-print(cor_matrix)
-
-print(dim(df))
-print(names(df))
+# Correlation matrix with all questions
+cor_matrix_all <- cor(d[, c('identity_stability_1_1', 'identity_stability_2_1', 'value_1_1', 'value_2_1', 'mourn_1_1', 'mourn_2_1')])
+print(cor_matrix_all)
 
 # Define the measurement model
 simple_mm <- constructs(
-  composite("mourn", c("mourn_1", "mourn_2")),
-  composite("disap", c("disap_1", "disap_2"))
+  composite("value", c("value_1_1", "value_2_1")),
+  composite("mourn", c("mourn_1_1", "mourn_2_1")),
+  composite("identity_stability", c("identity_stability_1_1", "identity_stability_2_1"))
 )
 
+# Define the structural model
 simple_sm <- relationships(
-  paths(from = "mourn", to = "disap")
+  paths(from = "identity_stability", to = "mourn"),  
+  paths(from = "mourn", to = "value")
 )
 
 # Estimate the model
-simple_model <- estimate_pls(data = df, measurement_model = simple_mm, structural_model = simple_sm)
-print(simple_model$construct_scores)
+simple_model <- estimate_pls(data = d,
+                             measurement_model = simple_mm,
+                             structural_model = simple_sm)
 
 # Summarize the model results
 summary_simple <- summary(simple_model)
