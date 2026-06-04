@@ -6,6 +6,7 @@ options(download.file.method="libcurl")
 ## install packages
 if (!require(pacman)) {install.packages("pacman")}
 pacman::p_load('ggplot2',
+               'ggpattern',
                'stats',
                'sjstats',
                'lsr',
@@ -120,7 +121,7 @@ mean(c(na.omit(as.numeric(d$age))))
 sd(c(na.omit(as.numeric(d$age))))
 
 t.test(c(na.omit(as.numeric(d$age))), mu = 32.64)
-cohen.d(c(na.omit(as.numeric(d$age))), mu = 32.64, f=NA)
+effsize::cohen.d(c(na.omit(as.numeric(d$age))), mu = 32.64, f=NA)
 
 # Gender
 prop.test(c(36, table(d$gender)[1]), c(66, dim(d)[1])) # Male proportion
@@ -237,7 +238,7 @@ for (dv in dvs) {
     
     vart <- var.test(x, y)
     tt <- t.test(x, y, paired = TRUE, var.equal = vart$p.value > 0.05, alternative = "two.sided")
-    cd <- cohen.d(x, y, method = "paired")
+    cd <- effsize::cohen.d(x, y, method = "paired")
     
     pvals <- c(pvals, tt$p.value)
     ttests[[i]] <- tt
@@ -314,7 +315,7 @@ for(dv in c("inclusion")) {
 
   print("Friend vs. Partner: ")
   print(t.test(x, y))
-  print(cohen.d(x, y))
+  print(effsize::cohen.d(x, y))
 
   print("Friend vs. Mentor: ")
   print(t.test(x, z))
@@ -351,15 +352,15 @@ for(dv in c("inclusion")) {
 
   print("Monthly subscription vs. Yearly subscription: ")
   print(t.test(y, z))
-  print(cohen.d(y, z))
+  print(effsize::cohen.d(y, z))
 
   print("Monthly subscription vs. Lifetime subscription: ")
   print(t.test(y, w))
-  print(cohen.d(y, w))
+  print(effsize::cohen.d(y, w))
 
   print("Yearly subscription vs. Lifetime subscription: ")
   print(t.test(z, w))
-  print(cohen.d(z, w))
+  print(effsize::cohen.d(z, w))
 }
 
 
@@ -421,14 +422,29 @@ plot_all_dvs <- function(df_plot, stars_df = stars) {
   df_plot$value_plot[is_close] <- df_plot$value[is_close] + runif(sum(is_close), -6.5, 6.5)
 
   plt <- ggplot(df_plot, aes(x = condition, y = value, fill = dv)) +
-    geom_bar(position = position_dodge(.8), stat = "summary", fun = "mean", width = .8) +
+    # Distinguish the three DVs by fill PATTERN (solid / striped / dotted) rather
+    # than by colour/shade, so the figure is unambiguous in greyscale and for
+    # colour-blind readers. Bars are white with black outlines.
+    geom_bar_pattern(aes(pattern = dv, pattern_density = dv, pattern_fill = dv,
+                         pattern_spacing = dv, pattern_size = dv),
+                     position = position_dodge(.8), stat = "summary", fun = "mean",
+                     width = .8, colour = "black", linewidth = 0.4,
+                     pattern_colour = "black",
+                     # Soften the stripe/dot patterns slightly (grey, not solid black)
+                     # so the bars read lighter without losing the DV distinction.
+                     pattern_alpha = 0.7,
+                     # Small key scale factor so the legend keys render the SAME fine
+                     # hatch / dot field as the bars. At the default the tiny keys show
+                     # only 2-3 coarse slashes and a 5-dot "die face", which misrepresent
+                     # the bar patterns.
+                     pattern_key_scale_factor = 0.2) +
     # Overlay every individual participant score as a jittered dot so the full
     # data distribution is visible, not just the mean. Closeness points carry the
     # extra vertical jitter computed above (value_plot); bars/error bars still use
     # the exact values.
     geom_point(aes(x = condition, y = value_plot, group = dv),
                position = position_jitterdodge(jitter.width = .15, dodge.width = .8),
-               size = .6, alpha = .3, shape = 16, colour = "black",
+               size = .4, alpha = .3, shape = 16, colour = "black",
                inherit.aes = FALSE, show.legend = FALSE) +
     # Error bars: mean +/- 1 standard error.
     geom_errorbar(aes(group = dv),
@@ -437,18 +453,42 @@ plot_all_dvs <- function(df_plot, stars_df = stars) {
                   fun.data = "mean_se",
                   width = .25) +
     # Significance stars for each condition vs. Replika (Bonferroni-corrected).
+    # geom_text size is in mm; 2.1 mm * 2.845 ~ 6 pt (within Nature's 5-7 pt range).
     geom_text(data = star_pos,
               aes(x = condition, y = y, label = star, group = dv),
-              position = position_dodge(.8), vjust = 0, size = 3.5,
+              position = position_dodge(.8), vjust = 0, size = 2.1, family = "Helvetica",
               inherit.aes = FALSE) +
     labs(x = "Condition", y = "Mean Score") +
-    theme_classic() +
+    theme_classic(base_size = 7, base_family = "Helvetica") +
+    # All text within Nature's 5-7 pt range at the 180 mm final width.
     theme(legend.position = "top",
           legend.title = element_blank(),
-          text = element_text(size = 18),
-          axis.text.x = element_text(angle = 30, hjust = 1),
-          axis.text.y = element_text(size = 16)) +
-    scale_fill_grey(start = 0.8, end = 0.2, labels = dv_labels, name = NULL) +
+          text = element_text(size = 7),
+          axis.title = element_text(size = 7),
+          legend.text = element_text(size = 7),
+          axis.text.x = element_text(size = 6, angle = 30, hjust = 1),
+          axis.text.y = element_text(size = 6)) +
+    # Uniform white fill; the pattern (set below) carries the DV distinction.
+    scale_fill_manual(values = c(a_satisfaction = "white", b_support = "white",
+                                 c_inclusion = "white"), guide = "none") +
+    scale_pattern_manual(values = c(a_satisfaction = "none", b_support = "stripe",
+                                    c_inclusion = "circle"),
+                         labels = dv_labels, name = NULL) +
+    # Thin the stripe ~15% (0.5 -> 0.42); shrink the dots ~15% in diameter
+    # (density 0.5 -> 0.36, since dot radius scales with sqrt(density)).
+    # Stripe density 0.5 => stripe band and gap are equal width.
+    scale_pattern_density_manual(values = c(a_satisfaction = 0.5, b_support = 0.5,
+                                            c_inclusion = 0.30), guide = "none") +
+    # Empty (hollow) stripe — outline only; dots stay filled grey.
+    scale_pattern_fill_manual(values = c(a_satisfaction = NA, b_support = NA,
+                                         c_inclusion = "black"), guide = "none") +
+    # Wider spacing for the stripe only; dots are finer (scaled to match e2's
+    # pattern weight, since e3's bars are narrower).
+    scale_pattern_spacing_manual(values = c(a_satisfaction = 0.045, b_support = 0.065,
+                                            c_inclusion = 0.030), guide = "none") +
+    scale_pattern_size_manual(values = c(a_satisfaction = 0.4, b_support = 0.4,
+                                         c_inclusion = 0.3), guide = "none") +
+    guides(pattern = guide_legend(override.aes = list(fill = "white", colour = "black"))) +
     # Headroom at the top so stars above the tallest dots are never clipped.
     scale_y_continuous(breaks = c(0, 25, 50, 75, 100), expand = expansion(mult = c(0, 0.08))) +
     scale_x_discrete(limits = positions, labels = x_labs)
@@ -460,13 +500,14 @@ plot_all_dvs <- function(df_plot, stars_df = stars) {
 plt_all_dvs <- plot_all_dvs(df_plot)
 print(plt_all_dvs)
 
-# Arrange all three plots:
-dev.new(width = 12 * 4/5, height = 7 * 4/5, noRStudioGD = TRUE)
+# Arrange all three plots: 2-column width (180 mm) per Nature artwork guidelines.
+dev.new(width = 180 / 25.4, height = 105 / 25.4, noRStudioGD = TRUE)
 
+# Vector PDF, 180 mm (2-column) wide, RGB (ggplot PDF default) per Nature spec.
 if(dim(d)[1] == 48) {
-  ggsave("./combined_matched.pdf", last_plot(), dpi = 300, width = 12 * 4/5, height = 7 * 4/5)
+  ggsave("./combined_matched.pdf", last_plot(), width = 180, height = 105, units = "mm")
 } else {
-  ggsave("./combined_plot.pdf", last_plot(), dpi = 300, width = 12 * 4/5, height = 7 * 4/5)
+  ggsave("./combined_plot.pdf", last_plot(), width = 180, height = 105, units = "mm")
 }
 
 dev.off()
@@ -497,7 +538,7 @@ y <- d[d$gender == 2, 'X8_inclusion_1'] # Female
 vart <- var.test(x, y)
 tt <- t.test(x, y, var.equal = vart$p.value > 0.05)
 print(tt)
-cohen.d(x, y)
+effsize::cohen.d(x, y)
 
 # Compare male v. female in Replika condition for Satisfaction
 x <- d[d$gender == 1, 'X8_satisfaction_1'] # Male
@@ -505,7 +546,7 @@ y <- d[d$gender == 2, 'X8_satisfaction_1'] # Female
 vart <- var.test(x, y)
 tt <- t.test(x, y, var.equal = vart$p.value > 0.05)
 print(tt)
-cohen.d(x, y)
+effsize::cohen.d(x, y)
 
 # Compare male v. female in Replika condition for Support
 x <- d[d$gender == 1, 'X8_support_1'] # Male
@@ -513,7 +554,7 @@ y <- d[d$gender == 2, 'X8_support_1'] # Female
 vart <- var.test(x, y)
 tt <- t.test(x, y, var.equal = vart$p.value > 0.05)
 print(tt)
-cohen.d(x, y)
+effsize::cohen.d(x, y)
 
 # Combine all conditions (i.e., stanger, acquaintance, etc.) and compare male v. female condition
 x_combined <- c(d[d$gender == 1, 'X1_satisfaction_1'], d[d$gender == 1, 'X2_satisfaction_1'], 

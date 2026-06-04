@@ -255,20 +255,6 @@ for( dv in dvs ) {
   print(anova_stats(aov_mod))
 }
 
-
-
-source("process.R")
-d_mediation <- d
-
-d_mediation$change_type_num <- ifelse(d_mediation$change_type == 'control', 1, 2)
-d_mediation$revertible_num <- ifelse(d_mediation$revertible == 'True', 1, 2)
-
-process(data = d_mediation, y = "mourn", x = "change_type_num",
-        m = c("identity_stability"), model = 4, effsize = 1, total = 1, stand = 1, contrast = 1,
-        boot = 10000, modelbt = 1, seed = 654321)
-
-
-
 # T-tests comparing no Revertible vs. Not, for each of control and coldness
 for (dv in c('mourn')) {
   print(paste0("*-*-*-*-*  ", dv, "  *-*-*-*-*"))
@@ -353,7 +339,8 @@ plot_dv <- function(dv) {
   plt <- ggplot(d, aes(x = change_type, y = !!rlang::sym(dv)))
   plt <- plt +
     bar_func +
-    scale_fill_manual("revertible", values = c("True" = "grey", "False" = "#4a4a4a")) + # For Investment: c("Low Investment (< 50)" = "grey", "High Investment (>= 50)" = "#4a4a4a")
+    scale_fill_manual("Option to revert", values = c("True" = "grey", "False" = "#4a4a4a"),
+                      labels = c("True" = "Present", "False" = "Absent")) + # For Investment: c("Low Investment (< 50)" = "grey", "High Investment (>= 50)" = "#4a4a4a")
     labs(x = "Change Type Condition", y = dv) +
     theme(legend.position = "none") +
     theme_classic() +
@@ -362,9 +349,12 @@ plot_dv <- function(dv) {
           axis.text.x = element_text(size = 20, hjust=0.5, vjust=0.6), 
           axis.text.y = element_text(size = 20),
           legend.position="top") +
+    geom_point(aes(group = revertible),
+               position = position_jitterdodge(jitter.width = 0.15, dodge.width = 0.7),
+               color = "black", alpha = 0.2, size = 0.8) +
     summary_func +
     xlab("") +
-    coord_cartesian(ylim = c(0, 80))
+    coord_cartesian(ylim = c(0, 100))
   
   if(dv == "identity_stability") {
     plt <- plt + ylab("Identity Discontinuity")
@@ -383,21 +373,37 @@ plot_dv <- function(dv) {
 
 plt1 <- plot_dv("identity_stability")
 plt2 <- plot_dv("mourn")
-plt3 <- plot_dv("value")
 
 # Arrange all plots:
-dev.new(width = 25 * 3/4, height = 12 * 3/5, noRStudioGD = TRUE)
+dev.new(width = 25 * 3/4 * 2/3, height = 12 * 3/5, noRStudioGD = TRUE)
 
-figure <- ggarrange(plt1, plt2, plt3, nrow = 1, ncol = 3, common.legend = TRUE, legend = "top", vjust = 1.0, hjust = 0.5)
+figure <- ggarrange(plt1, plt2, nrow = 1, ncol = 2, common.legend = TRUE, legend = "top", vjust = 1.0, hjust = 0.5)
 annotate_figure(figure, bottom = text_grob("Change Type", color = "black", face = "plain", size = 26, margin(b = 2), hjust = 0.25))
 
 if(dim(d)[1] == 320) {
-  ggsave("./combined_plot_ai_companion.pdf", last_plot(), dpi = 300, width = 30 * 3/5 * 3/4, height = 12 * 3/5)
+  ggsave("./combined_plot_ai_companion.pdf", last_plot(), dpi = 300, width = 30 * 3/5 * 3/4 * 2/3, height = 12 * 3/5)
 } else {
-  ggsave("./combined_plot.pdf", last_plot(), dpi = 300, width = 25 * 3/5 * 3/4, height = 12 * 3/5)
+  ggsave("./combined_plot.pdf", last_plot(), dpi = 300, width = 25 * 3/5 * 3/4 * 2/3, height = 12 * 3/5)
 }
 
 #### Mediation Analysis ####
+
+
+
+
+source("process.R")
+d_mediation <- d
+
+d_mediation$change_type_num <- ifelse(d_mediation$change_type == 'control', 1, 2)
+d_mediation$revertible_num <- ifelse(d_mediation$revertible == 'True', 1, 2)
+
+process(data = d_mediation, y = "mourn", x = "change_type_num",
+        m = c("identity_stability"), model = 4, effsize = 1, total = 1, stand = 1, contrast = 1,
+        boot = 10000, modelbt = 1, seed = 654321)
+
+
+
+
 
 source("process.R")
 d_mediation <- d

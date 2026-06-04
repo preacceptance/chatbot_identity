@@ -134,12 +134,14 @@ CHATGPT_END_DATE <- as.Date(CHATGPT_UPDATE_DATE) + 29
 
 ################# READING THE DATA #################
 
-# Full raw dump (d_all.csv, ~218 MB, with usernames + verbatim post text) is kept
-# off GitHub. The public, de-identified version (d_all_shareable.csv) has hashed
-# authors and blanked post text; the reported results and the cached LDA topic
-# models reproduce from it (a from-scratch LDA refit would need the post text
-# re-fetched from Reddit via the `id` column).
-d_all <- read.csv(if (file.exists('d_all.csv')) 'd_all.csv' else 'd_all_shareable.csv')
+# Read the public, de-identified dataset (d_all_shareable.csv): hashed authors
+# and blanked post text. The full raw dump (d_all.csv, ~218 MB, with usernames +
+# verbatim post text) is kept off GitHub and is never read here. The reported
+# results reproduce directly; the topic-model figure reproduces from the
+# committed LDA fits in data/topic_cache/ (loaded instead of re-fit). A
+# from-scratch LDA refit would need the raw post text re-fetched from Reddit via
+# the `id` column.
+d_all <- read.csv('d_all_shareable.csv')
 apps <- unique(d_all$app)
 
 # Print dates for both apps
@@ -489,6 +491,97 @@ for (app in apps) {
 }
 
 ###################################################################
+###### Supplementary Table 1: per-day negative-proportion tests ###
+###################################################################
+# Build the formatted SI Table 1 (per-app TSV, combined side-by-side TSV, and a
+# Word-openable .doc) from the per-day proportion-test results written above.
+# Honors ONLY_LOOK_WITHIN_USERS via within_subjects_str so the within-subjects
+# run writes its own table files without overwriting the between-subjects ones.
+
+# Display-formatted rows for one app, read back from its prop_results CSV.
+build_si1_display <- function(app) {
+  pr <- read.csv(paste0("./data/", app, "_prop_results_posts.csv"), sep = ";",
+                 stringsAsFactors = FALSE)
+  pr <- pr[order(pr$date), ]
+  p_str <- ifelse(pr$p_value < .001, "<.001", sub("^0", "", sprintf("%.3f", pr$p_value)))
+  data.frame(
+    Date     = pr$date,
+    pctAfter = sprintf("%.2f", pr$perc_after),
+    chi2     = sprintf("%.2f", pr$chi2),
+    N        = as.character(pr$N),
+    p_tsv    = paste0(p_str, vapply(pr$p_value, get_stars, character(1))),
+    p_doc    = ifelse(pr$p_value < .001, "&lt; .001", sub("^0", "", sprintf("%.3f", pr$p_value))),
+    CI       = paste0("[", sprintf("%.2f", pr$ci_low_pp), ", ", sprintf("%.2f", pr$ci_high_pp), "]"),
+    h        = sprintf("%.2f", pr$cohen_h),
+    perc_before = pr$perc_before[1],
+    before_all  = pr$before_all[1],
+    stringsAsFactors = FALSE
+  )
+}
+
+si1_apps        <- c("replika", "chatgpt")
+si1_app_labels  <- c(replika = "Replika", chatgpt = "ChatGPT")
+si1_update_dates <- c(replika = REPLIKA_UPDATE_DATE, chatgpt = CHATGPT_UPDATE_DATE)
+si1_tables      <- lapply(si1_apps, build_si1_display)
+names(si1_tables) <- si1_apps
+
+tsv_header <- c("Date", "%After", "chi2(1)", "N", "p", "95%CI(pp)", "h")
+tsv_cols   <- c("Date", "pctAfter", "chi2", "N", "p_tsv", "CI", "h")
+
+# ---- per-app TSV ----
+for (app in si1_apps) {
+  out <- si1_tables[[app]][, tsv_cols]
+  colnames(out) <- tsv_header
+  write.table(out, sep = "\t", quote = FALSE, row.names = FALSE,
+              file = paste0("./data/", app, "_prop_table_SI1", within_subjects_str, ".tsv"))
+}
+
+# ---- combined side-by-side TSV (Replika left, ChatGPT right with .g suffix) ----
+rep_tb  <- si1_tables[["replika"]][, tsv_cols]
+cgpt_tb <- si1_tables[["chatgpt"]][, tsv_cols]
+n_max <- max(nrow(rep_tb), nrow(cgpt_tb))
+pad <- function(df, n) { if (nrow(df) < n) df[(nrow(df) + 1):n, ] <- ""; df }
+rep_tb  <- pad(rep_tb, n_max)
+cgpt_tb <- pad(cgpt_tb, n_max)
+combined <- cbind(rep_tb, mid = "", cgpt_tb)
+colnames(combined) <- c(tsv_header, " ", paste0(tsv_header, ".g"))
+write.table(combined, sep = "\t", quote = FALSE, row.names = FALSE,
+            file = paste0("./data/combined_prop_table_SI1", within_subjects_str, ".tsv"))
+
+# ---- Word-openable .doc (HTML) ----
+within_note <- if (ONLY_LOOK_WITHIN_USERS)
+  " Analysis is restricted to users who posted both before and after the update (within-subjects)." else ""
+html <- paste0(
+  "<html><head><meta charset='utf-8'></head><body style='font-family:Calibri,Arial'>",
+  "<p style='font-size:11pt'><b>Supplementary Table 1.</b> Comparing pre-update negative posts vs. daily post-update percentages, for Replika and ChatGPT. ",
+  "Each row is a two-sided two-sample proportion test of that post-update day&rsquo;s negative-post percentage against the platform&rsquo;s pooled pre-update baseline. ",
+  "95% CIs are for the difference in proportions (after minus before) in percentage points (pp); effect size is Cohen&rsquo;s h.",
+  within_note, "</p>",
+  "<table border='1' cellspacing='0' cellpadding='4' style='border-collapse:collapse;font-family:Calibri,Arial;font-size:10pt'>",
+  "<tr style='background:#f0f0f0'><th>Date</th><th>% After</th><th>&chi;<sup>2</sup>(1)</th><th>N</th><th>p</th><th>95% CI (pp)</th><th>Cohen&rsquo;s h</th></tr>"
+)
+for (app in si1_apps) {
+  tb <- si1_tables[[app]]
+  html <- paste0(html,
+    "<tr style='background:#dcdcdc'><td colspan='7'><b>", si1_app_labels[[app]],
+    " (update ", si1_update_dates[[app]], ")</b> &mdash; pre-update negative = ",
+    sprintf("%.2f", tb$perc_before[1]), "% of ", format(tb$before_all[1], big.mark = ","),
+    " posts (pooled 30-day baseline)</td></tr>")
+  for (i in seq_len(nrow(tb))) {
+    html <- paste0(html,
+      "<tr><td>", tb$Date[i], "</td>",
+      "<td style='text-align:center'>", tb$pctAfter[i], "</td>",
+      "<td style='text-align:center'>", tb$chi2[i], "</td>",
+      "<td style='text-align:center'>", tb$N[i], "</td>",
+      "<td style='text-align:center'>", tb$p_doc[i], "</td>",
+      "<td style='text-align:center'>", tb$CI[i], "</td>",
+      "<td style='text-align:center'>", tb$h[i], "</td></tr>")
+  }
+}
+html <- paste0(html, "</table></body></html>")
+writeLines(html, paste0("./data/SupplementaryTable1", within_subjects_str, ".doc"))
+
+###################################################################
 ######################### Emotion analyis #########################
 ###################################################################
 
@@ -805,6 +898,8 @@ plt <- ggplot(
 
 print(plt)
 
+# Capture panels a/b (Replika/ChatGPT stacked lines) for the combined Figure 1.
+p_ab <- plt
 
 # ---------------- SAVE ----------------
 ggsave(
@@ -1207,7 +1302,7 @@ prepare_daily_sentiment_change <- function(df_days, app_label) {
       values_to = "perc"
     ) %>%
     mutate(
-      sentiment = recode(
+      sentiment = dplyr::recode(
         sentiment,
         perc_positive = "Positive",
         perc_neutral  = "Neutral",
@@ -1243,8 +1338,8 @@ df_sentiment_change_combined <- rbind(df_sentiment_change_chatgpt, df_sentiment_
 # Sort emotions based on ERP highest change
 df_sentiment_change_combined$sentiment <- factor(df_sentiment_change_combined$sentiment, levels = c("Positive", "Neutral", "Negative"))
 
-# ----- SENTIMENT PLOT -----
-ggplot(df_sentiment_change_combined, aes(x = change, y = sentiment, fill = sentiment, pattern = app)) +
+# ----- SENTIMENT PLOT (panel c of combined Figure 1) -----
+p_c <- ggplot(df_sentiment_change_combined, aes(x = change, y = sentiment, fill = sentiment, pattern = app)) +
   geom_col_pattern(
     position = position_dodge(width = 0.6),
     width = 0.6,
@@ -1303,7 +1398,8 @@ ggplot(df_sentiment_change_combined, aes(x = change, y = sentiment, fill = senti
     inherit.aes = FALSE
   )
 
-ggsave(paste0("./images/sentiment_change", within_subjects_str, ".pdf"), width = 25, height = 15, units = "cm", dpi = 400, limitsize = FALSE)
+print(p_c)
+ggsave(paste0("./images/sentiment_change", within_subjects_str, ".pdf"), plot = p_c, width = 25, height = 15, units = "cm", dpi = 400, limitsize = FALSE)
 
 ###### ----- EMOTION PLOT ----- #####
 
@@ -1391,8 +1487,8 @@ df_emotion_change_combined <- rbind(df_emotion_change_chatgpt, df_emotion_change
 # Sort emotions based on ERP highest change
 df_emotion_change_combined$emotion <- factor(df_emotion_change_combined$emotion, levels = c("Neutral", "Enjoyment", "Surprise", "Disgust", "Fear", "Sadness", "Anger"))
 
-# Create a horizontal bar plot comparing both apps with patterns
-ggplot(df_emotion_change_combined, aes(x = change, y = emotion, fill = emotion, pattern = app)) +
+# Create a horizontal bar plot comparing both apps with patterns (panel d of combined Figure 1)
+p_d <- ggplot(df_emotion_change_combined, aes(x = change, y = emotion, fill = emotion, pattern = app)) +
   geom_col_pattern(
     position = position_dodge(width = 0.6),
     width = 0.6,
@@ -1448,7 +1544,8 @@ ggplot(df_emotion_change_combined, aes(x = change, y = emotion, fill = emotion, 
     inherit.aes = FALSE
   )
 
-ggsave(paste0("./images/emotion_change", within_subjects_str, ".pdf"), 
+print(p_d)
+ggsave(paste0("./images/emotion_change", within_subjects_str, ".pdf"), plot = p_d,
         width = 25, height = 15, units = "cm", dpi = 400, limitsize=FALSE)
 
 #########################################################
@@ -1481,7 +1578,8 @@ prepare_daily_percent <- function(data, outcome_var, group_vars) {
 # Common bar + dot plotting function
 ############################################
 
-plot_bar_with_daily_dots <- function(df_bar, df_daily, ylab, outfile) {
+plot_bar_with_daily_dots <- function(df_bar, df_daily, ylab, outfile,
+                                     bar_width = 0.6, dodge_width = 0.7) {
 
   # Robust upper limit for dots (99th percentile)
   y_max <- quantile(df_daily$perc, 0.99, na.rm = TRUE)
@@ -1492,8 +1590,8 @@ plot_bar_with_daily_dots <- function(df_bar, df_daily, ylab, outfile) {
     ## Bars
     geom_bar_pattern(
       stat = "identity",
-      width = 0.6,
-      position = position_dodge(width = 0.7),
+      width = bar_width,
+      position = position_dodge(width = dodge_width),
       pattern_colour = "black",
       pattern_fill = "black",
       color = "black",
@@ -1508,7 +1606,7 @@ plot_bar_with_daily_dots <- function(df_bar, df_daily, ylab, outfile) {
       aes(x = category, y = perc, color = platform),
       position = position_jitterdodge(
         jitter.width = 0.1,
-        dodge.width = 0.7
+        dodge.width = dodge_width
       ),
       size = 1.6,
       alpha = 0.45,
@@ -1881,8 +1979,8 @@ plot_event_study_side_by_side <- function(
 df_days_replika <- prepare_daily_summary(d_all[d_all$app == "replika", ], "replika")
 df_days_chatgpt <- prepare_daily_summary(d_all[d_all$app == "chatgpt", ], "chatgpt")
 
-## --- Mental health ---
-plot_event_study_side_by_side(
+## --- Mental health --- (panel f of combined Figure 1)
+p_f <- plot_event_study_side_by_side(
   df_days_replika,
   df_days_chatgpt,
   outcome_var = "perc_negative_mental_health",
@@ -1890,8 +1988,8 @@ plot_event_study_side_by_side(
   outfile = paste0("images/event_mh_side_by_side", within_subjects_str, ".pdf")
 )
 
-## --- Attachment-related loss ---
-plot_event_study_side_by_side(
+## --- Attachment-related loss --- (panel e of combined Figure 1)
+p_e <- plot_event_study_side_by_side(
   df_days_replika,
   df_days_chatgpt,
   outcome_var = "perc_attachment_related_loss",
@@ -1907,6 +2005,336 @@ plot_event_study_side_by_side(
   ylab = "Longing for restoration (%)",
   outfile = paste0("images/event_longing_for_restoration_side_by_side", within_subjects_str, ".pdf")
 )
+
+############################################################################
+# COMBINED FIGURE 1  (panels a-h) — Nature artwork spec:
+#   180 mm (2-column) wide, Helvetica, 5-7 pt text, vector PDF, RGB.
+# Reuses the existing panel objects (p_ab, p_c, p_d, p_e, p_f, plt_panel_g/h)
+# and lays them out with patchwork. Per-panel ggsave calls above are untouched.
+############################################################################
+pacman::p_load('patchwork', 'cowplot')
+
+# Shared theme override: brings every panel's text to 5-7 pt Helvetica without
+# touching the panels' other styling (bold faces etc. are preserved on merge).
+# Applied PER-PANEL (not via patchwork's `&`) so it can't re-enable the axes
+# that theme_void() removes from the brace rows. strip.text is set separately
+# on e/f only, so a/b keep their blank facet strips.
+nature_theme <- theme(
+  text         = element_text(family = "Helvetica", size = 7),
+  axis.title   = element_text(size = 7),
+  axis.title.x = element_text(size = 7, margin = margin(t = 1)),
+  axis.title.y = element_text(size = 7, margin = margin(r = 1)),
+  axis.text    = element_text(size = 6),
+  axis.text.x  = element_text(size = 6, margin = margin(t = 1)),
+  axis.text.y  = element_text(size = 6, margin = margin(r = 1)),
+  # Uniform hairline axes/ticks on every panel: the source panels are built with
+  # different theme_classic base sizes (a/b at 7, g/h at 18), which otherwise
+  # gives c-h visibly thicker axis lines than a/b.
+  axis.line    = element_line(linewidth = 0.3),
+  axis.ticks   = element_line(linewidth = 0.3),
+  legend.text  = element_text(size = 7),
+  legend.title = element_text(size = 7),
+  plot.margin  = margin(0.5, 2, 0.5, 2),
+  plot.tag     = element_text(size = 8, face = "bold", family = "Helvetica"),
+  plot.tag.position = c(0, 1)
+)
+strip6 <- theme(strip.text = element_text(size = 6, face = "bold"))
+
+# ---- helpers --------------------------------------------------------------
+# Downward-pointing curly brace (no external package), used under panels e/f.
+curly_brace <- function(x1, x2, y, height, n = 60) {
+  ease_out <- function(t) sin(t * pi / 2)         # steep start, flat end
+  ease_in  <- function(t) 1 - cos(t * pi / 2)     # flat start, steep end
+  seg <- function(xa, xb, ya, yb, ease) {
+    xs <- seq(xa, xb, length.out = n)
+    data.frame(x = xs, y = ya + (yb - ya) * ease((xs - xa) / (xb - xa)))
+  }
+  xm <- (x1 + x2) / 2; q1 <- (x1 + xm) / 2; q2 <- (xm + x2) / 2; half <- height / 2
+  rbind(seg(x1, q1, y,          y - half,   ease_out),
+        seg(q1, xm, y - half,   y - height, ease_in),
+        seg(xm, q2, y - height, y - half,   ease_out),
+        seg(q2, x2, y - half,   y,          ease_in))
+}
+# Downward curly brace (a "}" rotated 90 deg clockwise): the two ends sit at the
+# top, the point dips to the centre, pointing at g/h below. Reads as "the panel
+# below is an extension of the one above".
+brace_panel <- function() ggplot(curly_brace(.12, .88, 0.82, 0.55, n = 200), aes(x, y)) +
+  geom_path(linewidth = 0.35, lineend = "round") +
+  scale_x_continuous(limits = c(0, 1)) + scale_y_continuous(limits = c(0, 1)) +
+  theme_void()
+
+# Enlarge every GeomPoint layer (the jittered raw dots) on a panel copy.
+bump_pts <- function(p, sz, alpha = NULL) {
+  for (i in seq_along(p$layers)) if (inherits(p$layers[[i]]$geom, "GeomPoint")) {
+    p$layers[[i]]$aes_params$size <- sz
+    if (!is.null(alpha)) p$layers[[i]]$aes_params$alpha <- alpha
+  }
+  p
+}
+# Thin every smooth/trend line (GeomSmooth) on a panel copy.
+thin_smooth <- function(p, lw) {
+  for (i in seq_along(p$layers)) if (inherits(p$layers[[i]]$geom, "GeomSmooth"))
+    p$layers[[i]]$aes_params$linewidth <- lw
+  p
+}
+# "]" significance bracket (vertical, opening left) for the horizontal bar panels.
+vbrack <- function(x, ylo, yhi, tick) data.frame(x = c(x - tick, x, x, x - tick),
+                                                 y = c(ylo, ylo, yhi, yhi))
+# Build bracket-path + star-label layers for a horizontal change-bar panel.
+# Brackets sit just right of each category's dot cloud (90th pct of the dots).
+add_sig_h <- function(p, change_df, daily_df, cat_col, val_col, cat_levels, labs,
+                      half = 0.165) {                # spans the two dodged bar centers
+  cats   <- names(labs)
+  q90    <- sapply(cats, function(cc)
+    quantile(daily_df[[val_col]][daily_df[[cat_col]] == cc], 0.90, na.rm = TRUE))
+  barmax <- sapply(cats, function(cc)
+    max(change_df[[val_col]][change_df[[cat_col]] == cc], na.rm = TRUE))
+  xspan <- diff(range(c(change_df[[val_col]], daily_df[[val_col]]), na.rm = TRUE))
+  tick  <- 0.035 * xspan                       # serif length, in x units (clearly visible)
+  xb    <- pmax(q90, barmax) + 0.04 * xspan    # bracket x right of the dot cloud
+  yc    <- match(cats, cat_levels)
+  paths <- do.call(rbind, lapply(seq_along(cats), function(i)
+    transform(vbrack(xb[i], yc[i] - half, yc[i] + half, tick), grp = cats[i])))
+  txt   <- data.frame(x = xb + 0.06 * xspan, y = yc, lab = unname(labs),
+                      face = ifelse(unname(labs) == "ns", "italic", "plain"))
+  list(
+    geom_path(data = paths, aes(x = x, y = y, group = grp),
+              inherit.aes = FALSE, linewidth = 0.45, linejoin = "mitre", lineend = "square"),
+    geom_text(data = txt, aes(x = x, y = y, label = lab, fontface = face),
+              inherit.aes = FALSE, hjust = 0, size = 2.1, family = "Helvetica"),
+    scale_x_continuous(
+      labels = function(x) paste0(ifelse(x >= 0, "+", ""), round(x, 2), "%"),
+      expand = expansion(mult = c(0.05, 0.16)))
+  )
+}
+# Horizontal bracket (opening down) + star for a Before/After bar panel.
+add_sig_v <- function(p, ytop, lab, xlo = 1, xhi = 2, tick = NULL) {
+  if (is.null(tick)) tick <- ytop * 0.03
+  brk <- data.frame(x = c(xlo, xlo, xhi, xhi),
+                    y = c(ytop - tick, ytop, ytop, ytop - tick))
+  list(
+    geom_path(data = brk, aes(x = x, y = y), inherit.aes = FALSE,
+              linewidth = 0.45, linejoin = "mitre", lineend = "square"),
+    geom_text(data = data.frame(x = (xlo + xhi) / 2, y = ytop * 1.02, lab = lab),
+              aes(x = x, y = y, label = lab), inherit.aes = FALSE,
+              fontface = ifelse(lab == "ns", "italic", "plain"),
+              vjust = 0, size = 2.1, family = "Helvetica")
+  )
+}
+
+# ---- panel a/b: single merged colour+linetype key, short labels, a/b letters
+# (no platform strip boxes, matching the target). Map linetype to label so each
+# category's swatch carries its own dash style; sentiments dashed, emotions solid.
+lty_by_label <- c(
+  "Anger" = "solid", "Disgust" = "solid", "Fear" = "solid", "Enjoyment" = "solid",
+  "Sadness" = "solid", "Surprise" = "solid",
+  "Negative sentiment" = "22", "Neutral sentiment" = "22", "Positive sentiment" = "22"
+)
+short_lab <- function(x) sub(" sentiment", "", x)
+# Legend order (fills 3 columns by row): sentiments first, then emotions.
+legend_order <- c("Negative sentiment", "Neutral sentiment", "Positive sentiment",
+                  "Sadness", "Anger", "Disgust", "Surprise", "Fear", "Enjoyment")
+# SPLIT a/b into two single-platform panels so patchwork tags (a, b) sit at the
+# left margin, horizontally aligned with c/e/g. Each rebuilds the line plot from
+# df_long/sig_df (no facet). linetype mapped to label so the legend merges
+# colour+linetype and the lines keep their dash style (sentiments dashed).
+make_ab <- function(plat, show_x) {
+  dat <- df_long[df_long$platform == plat, ]
+  sg  <- sig_df[sig_df$platform == plat, ]
+  p <- ggplot(dat, aes(x = day_rel, y = value, color = label, linetype = label)) +
+    geom_vline(xintercept = 0, color = "#f2c94c", linewidth = 9, alpha = 0.22) +
+    geom_segment(data = sg, aes(x = day_rel - 0.5, xend = day_rel + 0.5,
+                                y = y_sig, yend = y_sig),
+                 inherit.aes = FALSE, color = "#0b46a3", linewidth = 1.6, alpha = 0.7) +
+    geom_line(linewidth = 0.7, alpha = 0.9) +
+    # Platform name inside the panel, top-left (right of the a/b tag).
+    ggplot2::annotate("text", x = -Inf, y = Inf, label = plat, hjust = -0.2, vjust = 1.4,
+             size = 2.3, fontface = "plain", family = "Helvetica") +
+    scale_x_continuous(labels = function(x) ifelse(x %in% c(-30, 30), "", x)) +
+    scale_color_manual(values = color_map, labels = short_lab, name = NULL, breaks = legend_order) +
+    scale_linetype_manual(values = lty_by_label, labels = short_lab, name = NULL, breaks = legend_order) +
+    labs(x = "Days relative to update", y = "Number of posts") +
+    theme_classic(base_size = 7, base_family = "Helvetica") +
+    theme(panel.border = element_blank(), legend.position = "none") +
+    nature_theme
+  if (!show_x) p <- p + theme(axis.title.x = element_blank(),
+                              axis.text.x = element_blank(),
+                              axis.ticks.x = element_blank())
+  p
+}
+p_a <- make_ab("Replika", show_x = FALSE) +              # top panel, carries the legend
+  theme(legend.position = "top",
+        legend.key.height = unit(3, "mm"), legend.key.width = unit(8, "mm"),
+        legend.spacing.y = unit(0.3, "mm"), legend.spacing.x = unit(1, "mm"),
+        legend.margin = margin(1, 1, 1, 1)) +
+  guides(color    = guide_legend(ncol = 3, byrow = TRUE, override.aes = list(linewidth = 1.6)),
+         linetype = guide_legend(ncol = 3, byrow = TRUE))
+p_b <- make_ab("ChatGPT", show_x = TRUE)                 # bottom panel, shows the x-axis
+
+# ---- App pattern key: built from the grey g/h bars (Replika stripe / ChatGPT solid)
+app_leg_src <- plt_panel_h + theme(legend.position = "top", legend.direction = "horizontal",
+                                   legend.key.height = unit(2.8, "mm"), legend.key.width = unit(5.5, "mm"),
+                                   legend.spacing.x = unit(0.5, "mm"), legend.margin = margin(0, 0, 0, 0)) +
+  scale_pattern_manual(values = c("Replika" = "stripe", "ChatGPT" = "none"), name = "App") +
+  guides(fill = "none",
+         pattern = guide_legend(title = "App", override.aes = list(fill = "#d3d3d3"))) +
+  nature_theme
+app_leg <- cowplot::get_legend(app_leg_src)
+
+# ---- panels c/d: bigger points + significance brackets (labels match the
+# reported results; verify against the computed stats and edit if needed).
+# Vertical y-axis category labels on c (Negative/Neutral/Positive) so the long
+# words don't eat horizontal space — the bars get a wider plotting area. d keeps
+# horizontal labels: its 7 categories sit too close for vertical text to fit.
+c_yvert <- theme(axis.text.y = element_text(angle = 90, hjust = 0.5, vjust = 0.5))
+p_c2 <- bump_pts(p_c, 0.25, alpha = 0.3) +
+  add_sig_h(p_c, df_sentiment_change_combined, df_sentiment_daily, "sentiment", "change",
+            c("Positive", "Neutral", "Negative"),
+            c(Negative = "***", Neutral = "ns", Positive = "***")) +
+  nature_theme + c_yvert
+p_d2 <- bump_pts(p_d, 0.25, alpha = 0.3) +
+  add_sig_h(p_d, df_emotion_change_combined, df_emotion_daily, "emotion", "change",
+            c("Neutral", "Enjoyment", "Surprise", "Disgust", "Fear", "Sadness", "Anger"),
+            c(Anger = "*", Sadness = "***", Fear = "**", Disgust = "*",
+              Surprise = "**", Enjoyment = "***", Neutral = "ns")) +
+  nature_theme
+
+# ---- panels g/h: bigger dots + Before/After significance bracket.
+yg <- min(quantile(df_attach_daily$perc, 0.99, na.rm = TRUE) * 1.05, 100)
+yh <- min(quantile(df_mh_daily$perc,     0.99, na.rm = TRUE) * 1.05, 100)
+# Extra horizontal margin makes g/h a touch narrower than e/f (and the brace
+# above funnels into them), reinforcing that they extend the panels above.
+gh_inset <- theme(plot.margin = margin(0.5, 16, 0.5, 16))
+p_g2 <- bump_pts(plt_panel_h, 0.3, alpha = 0.35) + add_sig_v(plt_panel_h, yg * 0.96, "ns") + nature_theme + gh_inset   # attachment
+p_h2 <- bump_pts(plt_panel_g, 0.3, alpha = 0.35) + add_sig_v(plt_panel_g, yh * 0.96, "***") + nature_theme + gh_inset   # mental health
+
+# Single design-based layout so EVERY panel is top-level: patchwork then aligns
+# all panel edges into one grid (a/b left edge lines up with c and e, despite c's
+# wide category labels). a/b spans two rows to be taller. Design letters map to
+# the plots in the order they are added below (A, B, C, ...).
+p_e2 <- thin_smooth(bump_pts(p_e, 0.75), 0.6) + nature_theme + strip6   # dots 50% smaller, thinner trend
+p_f2 <- thin_smooth(bump_pts(p_f, 0.75), 0.6) + nature_theme + strip6
+# a and b are now separate panels (A, B) so patchwork tags them at the left
+# margin, aligned with c/e/g. Letters map to plots in add order (A, B, C, ...).
+fig_design <- "
+AA
+BB
+CC
+DE
+FG
+HI
+JK
+"
+figure1 <- p_a + p_b + wrap_elements(full = app_leg) +
+  p_c2 + p_d2 + p_e2 + p_f2 +
+  brace_panel() + brace_panel() + p_g2 + p_h2 +
+  plot_layout(design = fig_design,
+              heights = c(2.5, 2.5, 0.2, 2.95, 2.4, 0.35, 1.95)) +
+  plot_annotation(tag_levels = list(c("a", "b", "", "c", "d", "e", "f", "", "", "g", "h")))
+
+ggsave(paste0("images/figure1_combined", within_subjects_str, ".pdf"),
+       plot = figure1, width = 180, height = 235, units = "mm", limitsize = FALSE)
+
+############################################################################
+# COMBINED FIGURE 2 (panels a-b) — Nature artwork spec:
+#   88 mm (1-column) wide, Helvetica, 5-7 pt text, vector PDF, RGB.
+# a: Mental health mentions (%)  b: Longing for restoration (%),
+# each by attachment loss (No / Yes) x platform (Replika stripe / ChatGPT solid).
+# Reuses the existing panel objects (plt_panel_i, plt_fig2_panel_b) and the
+# Figure 1 helpers (nature_theme, bump_pts, add_sig_v, app_leg). The per-panel
+# ggsave calls above are untouched.
+############################################################################
+
+# Significance brackets span No-attachment-loss vs Attachment-loss (the
+# attachment-loss effect: see link_glm_platform / link_glm_platform_longing).
+# Star labels mirror the reported figure; verify against the computed stats
+# above and edit if the data change.
+y2a <- min(quantile(df_conditional_daily$perc,         0.99, na.rm = TRUE) * 1.05, 100)
+y2b <- min(quantile(df_longing_conditional_daily$perc, 0.99, na.rm = TRUE) * 1.05, 100)
+
+# Wrap the two long category labels onto two lines so they don't collide at the
+# narrow 1-column panel width.
+attach_x_labs <- scale_x_discrete(labels = c(
+  "No attachment loss" = "No attachment\nloss",
+  "Attachment loss"    = "Attachment\nloss"
+))
+
+# Thin every stroked layer on a panel copy: bar/pattern outlines, the bracket
+# paths, and the pattern stripe lines (without touching the standalone exports).
+thin_layers <- function(p, bar_lw = 0.25, path_lw = 0.3, pattern_lw = 0.12) {
+  for (i in seq_along(p$layers)) {
+    g <- p$layers[[i]]$geom
+    if (inherits(g, "GeomBar") || inherits(g, "GeomCol") ||
+        inherits(g, "GeomRectPattern") || inherits(g, "GeomBarPattern")) {
+      p$layers[[i]]$aes_params$linewidth <- bar_lw
+      if (!is.null(p$layers[[i]]$aes_params$pattern_size))
+        p$layers[[i]]$aes_params$pattern_size <- pattern_lw
+    }
+    if (inherits(g, "GeomPath") || inherits(g, "GeomSegment") || inherits(g, "GeomLine"))
+      p$layers[[i]]$aes_params$linewidth <- path_lw
+  }
+  p
+}
+
+# 5-6 pt fonts (NHB floor is 5 pt) plus hairline axes/ticks for the 1-column size.
+fig2_theme <- theme(
+  axis.title   = element_text(size = 6),
+  axis.title.y = element_text(size = 6, margin = margin(r = 1)),
+  axis.text    = element_text(size = 5),
+  axis.text.x  = element_text(size = 5, margin = margin(t = 1)),
+  axis.text.y  = element_text(size = 5, margin = margin(r = 1)),
+  axis.line    = element_line(linewidth = 0.25),
+  axis.ticks   = element_line(linewidth = 0.25),
+  plot.tag     = element_text(size = 7, face = "bold", family = "Helvetica")
+)
+
+# Rebuild the two panels with slightly wider bars (0.6 -> 0.72) for Figure 2 only;
+# the standalone plt_panel_i / plt_fig2_panel_b exports keep the default width.
+fig2_tmp_pdf <- file.path(tempdir(), "fig2_bar_tmp.pdf")
+plt_panel_i_w <- plot_bar_with_daily_dots(
+  df_conditional_bar, df_conditional_daily, "Mental health mentions (%)",
+  fig2_tmp_pdf, bar_width = 0.72, dodge_width = 0.78)
+plt_fig2_panel_b_w <- plot_bar_with_daily_dots(
+  df_longing_conditional_bar, df_longing_conditional_daily, "Longing for\nrestoration (%)",
+  fig2_tmp_pdf, bar_width = 0.72, dodge_width = 0.78)
+
+fig2_a <- thin_layers(bump_pts(plt_panel_i_w, 0.3, alpha = 0.35) +
+  add_sig_v(plt_panel_i_w, y2a * 0.96, "*")) + nature_theme + fig2_theme + attach_x_labs   # mental health
+fig2_b <- thin_layers(bump_pts(plt_fig2_panel_b_w, 0.3, alpha = 0.35) +
+  add_sig_v(plt_fig2_panel_b_w, y2b * 0.96, "***")) + nature_theme + fig2_theme + attach_x_labs   # longing
+
+# Title-less Replika-stripe / ChatGPT-solid key (matches the target figure), built
+# from a dedicated 2-bar plot so the stripe pattern in the swatch reads clearly
+# (wider spacing + thicker lines than the down-scaled panel pattern).
+app_leg2_src <- ggplot(
+  data.frame(platform = factor(c("Replika", "ChatGPT"), levels = c("Replika", "ChatGPT")), y = 1),
+  aes(x = platform, y = y, pattern = platform)) +
+  geom_col_pattern(
+    fill = "#d3d3d3", colour = "black", linewidth = 0.25,
+    pattern_colour = "black", pattern_fill = "black",
+    pattern_density = 0.1, pattern_spacing = 0.03, pattern_size = 0.35) +
+  scale_pattern_manual(values = c("Replika" = "stripe", "ChatGPT" = "none"), name = NULL) +
+  theme(legend.position = "top", legend.direction = "horizontal",
+        legend.text = element_text(size = 6),
+        legend.key.height = unit(2.8, "mm"), legend.key.width = unit(5.5, "mm"),
+        legend.spacing.x = unit(0.6, "mm"), legend.margin = margin(0, 0, 0, 0)) +
+  guides(pattern = guide_legend(title = NULL, override.aes = list(fill = "#d3d3d3"))) +
+  nature_theme
+app_leg2 <- cowplot::get_legend(app_leg2_src)
+
+# Legend (Replika stripe / ChatGPT solid) spans both columns on top; a/b panels
+# sit side by side beneath it. Design letters map to plots in add order
+# (A = legend, B = fig2_a, C = fig2_b).
+fig2_design <- "
+AA
+BC
+"
+figure2 <- wrap_elements(full = app_leg2) + fig2_a + fig2_b +
+  plot_layout(design = fig2_design, heights = c(0.22, 3)) +
+  plot_annotation(tag_levels = list(c("", "a", "b")))
+
+ggsave(paste0("images/figure2_combined", within_subjects_str, ".pdf"),
+       plot = figure2, width = 88, height = 55, units = "mm", limitsize = FALSE)
 
 ## --- Negative sentiment ---
 if (FALSE) {
@@ -2162,6 +2590,11 @@ print(roberta_sentiment_breakdown)
 ## Personality, Company/Prompt and Features) and render a 2-row figure of
 ## bar charts (row a: Replika, row b: ChatGPT) showing topic-word probabilities.
 
+# NOTE: The raw post text is blanked in the public data, so LDA cannot be re-fit
+# from scratch here. The fitted models are committed under data/topic_cache/ and
+# loaded by fit_lda_top_terms(), so this figure still reproduces exactly. To
+# re-fit from scratch, restore the full d_all.csv text and delete the cache.
+
 set.seed(42)
 
 TOPIC_K <- 15
@@ -2351,9 +2784,15 @@ plot_topic_terms <- function(top_terms, label_levels) {
 replika_texts <- d_all$titlencontent[d_all$app == "replika"]
 chatgpt_texts <- d_all$titlencontent[d_all$app == "chatgpt"]
 
-# Build DTMs once and cache the fitted LDA per app (RDS) so re-runs are fast.
-replika_dtm <- build_topic_dtm(replika_texts)
-chatgpt_dtm <- build_topic_dtm(chatgpt_texts)
+# Build a DTM only when the cached LDA fit is absent. The public shareable data
+# has blanked post text, so a DTM cannot be built from it — but the committed
+# fits in data/topic_cache/ let fit_lda_top_terms() load instead of re-fit, so
+# this figure reproduces without the raw text. (With the full d_all.csv present,
+# delete the cache to re-fit from scratch.)
+dtm_if_uncached <- function(texts, tag, k = TOPIC_K)
+  if (file.exists(cache_path(paste0("lda_", tag, "_k", k)))) NULL else build_topic_dtm(texts)
+replika_dtm <- dtm_if_uncached(replika_texts, "replika")
+chatgpt_dtm <- dtm_if_uncached(chatgpt_texts, "chatgpt")
 
 replika_top_terms <- fit_lda_top_terms(
   replika_dtm, tag = "replika", anchor_map = topic_label_anchors$replika

@@ -35,16 +35,20 @@ print(paste0("IDS of participants failed attention check: ", paste(d[d$att_1 != 
 # Attention check
 d <- d[d$att_1 == 2 & d$att_2 == 2,]
 
-# Exclude duplicates
-d <- d[d$Q_RelevantIDDuplicate != "true",]
+# Exclude duplicates. The released (de-identified) data has Q_RelevantIDDuplicate
+# blanked to NA for every participant, so the bare `!= "true"` comparison would
+# evaluate to NA for all rows and silently replace the whole data frame with NA
+# rows. Treat a missing flag as "not a duplicate" (keep), matching the behaviour
+# when the column is populated.
+d <- d[is.na(d$Q_RelevantIDDuplicate) | d$Q_RelevantIDDuplicate != "true",]
 
 print(paste0("Number of participants hired: ", nrow(d)))
 
 # Write emails of these participants to a csv file
 #write.csv(d$email, file = "./participants_hired.csv", row.names = FALSE)
 
-# Comprehension check:
-d <- d[d$comp_1 == 1,]
+# Comprehension check (drop NA so a missing answer can never be silently kept):
+d <- d[!is.na(d$comp_1) & d$comp_1 == 1,]
 
 print(paste0("Number of participants after comprehension check: ", nrow(d)))
 

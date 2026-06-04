@@ -2,11 +2,20 @@
 rm(list = ls()) 
 
 options(download.file.method="libcurl")
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+# Set the working directory to this script's folder. rstudioapi returns the
+# *focused* editor tab, which may be a different file if e2.R was sourced while
+# another script was focused; fall back to the sourced-file path in that case.
+if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
+  setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+} else {
+  this_file <- tryCatch(normalizePath(sys.frames()[[1]]$ofile), error = function(e) NULL)
+  if (!is.null(this_file) && nzchar(this_file)) setwd(dirname(this_file))
+}
 
 ## install packages
 if (!require(pacman)) {install.packages("pacman")}
 pacman::p_load('ggplot2',
+               'ggpattern',
                'stats',
                'lsr',
                'ggpubr',
@@ -22,6 +31,14 @@ pacman::p_load('ggplot2',
 
 ### Read the data
 d <- read.csv('./data.csv')
+
+# Fail loudly if the wrong file loaded (e.g. wrong working directory / focused
+# tab) instead of erroring cryptically later in the PLS block with
+# "invalid 'row.names' length".
+if (!"mourn_1_aicomp_1" %in% names(d)) {
+  stop("data.csv in '", getwd(), "' is not the Study 2 data ",
+       "(missing 'mourn_1_aicomp_1'). Check the working directory.")
+}
 
 # Remove NA rows
 d <- d[d$Finished == 1, ]
@@ -371,7 +388,15 @@ plot_dv <- function() {
   # "ns" is italicised; stars and "+" upright, matching the figure convention.
   sig_df$face <- ifelse(sig_df$label == "ns", "italic", "plain")
 
-  bar_func <- geom_bar(position="dodge", stat="summary", width = 0.7, size = 0.75)
+  # Distinguish the two DVs by fill PATTERN (solid vs. striped) rather than by
+  # colour/shade, so the figure is unambiguous in greyscale and for colour-blind
+  # readers. Bars are white with black outlines; the pattern is the encoding.
+  bar_func <- geom_bar_pattern(aes(pattern = dv),
+                               position = "dodge", stat = "summary", width = 0.7,
+                               colour = "black", linewidth = 0.4,
+                               pattern_fill = NA, pattern_colour = "black",
+                               pattern_density = 0.5, pattern_spacing = 0.065,
+                               pattern_size = 0.4, pattern_key_scale_factor = 0.6)
     summary_func <- stat_summary(fun.data = "mean_se", color = "black",
                  fun.args = list(mult = 1),
                  position = position_dodge(width = 0.7),
@@ -383,12 +408,13 @@ plot_dv <- function() {
   point_func <- geom_point(position = position_jitterdodge(jitter.width = 0.12,
                                                            dodge.width = 0.7,
                                                            seed = 123),
-                           size = 0.8, alpha = 0.25, shape = 16,
+                           size = 0.5, alpha = 0.25, shape = 16,
                            color = "black", show.legend = FALSE)
 
+  # geom_text size is in mm; 2.1 mm * 2.845 ~ 6 pt (within Nature's 5-7 pt range).
   sig_func <- geom_text(data = sig_df,
                         aes(x = x, y = y, label = label, fontface = face),
-                        inherit.aes = FALSE, vjust = 0, size = 6)
+                        inherit.aes = FALSE, vjust = 0, size = 2.1, family = "Helvetica")
 
   # Bold the AI Companion x-axis label (the reference condition); plain elsewhere.
   # Ordered to match the axis (factor levels = mean_mourning).
@@ -400,13 +426,20 @@ plot_dv <- function() {
     point_func +
     sig_func +
     labs(x = "Entity Type", y = "Mean rating", fill = NULL) +
-    theme_classic() +
+    theme_classic(base_size = 7, base_family = "Helvetica") +
     scale_x_discrete(labels = function(x) toLabel(x)) +
-    scale_fill_grey(start = 0.2, end = 0.7,
-                    labels = c("Mourning", "Disappointment")) +
-    theme(text = element_text(size=22),
-          axis.text.x = element_text(size = 20, hjust=0.5, vjust=0.6, face = x_face),
-          axis.text.y = element_text(size = 20),
+    # Uniform white fill; the pattern (set below) carries the DV distinction.
+    scale_fill_manual(values = c(mourn = "white", disap = "white"), guide = "none") +
+    scale_pattern_manual(values = c(mourn = "none", disap = "stripe"),
+                         labels = c(mourn = "Mourning", disap = "Disappointment"),
+                         name = NULL) +
+    guides(pattern = guide_legend(override.aes = list(fill = "white", colour = "black"))) +
+    # All text within Nature's 5-7 pt range at the 180 mm final width.
+    theme(text = element_text(size = 7),
+          axis.title = element_text(size = 7),
+          axis.text.x = element_text(size = 6, hjust=0.5, vjust=0.6, face = x_face),
+          axis.text.y = element_text(size = 6),
+          legend.text = element_text(size = 7),
           legend.position="top",
           legend.title = element_blank()) +
     summary_func +
@@ -420,13 +453,14 @@ plot_dv <- function() {
 
 plt <- plot_dv()
 
-# Arrange all plots:
-dev.new(width = 10, height = 12 * 3/5, noRStudioGD = TRUE)
+# Arrange all plots: 2-column width (180 mm) per Nature artwork guidelines.
+dev.new(width = 180 / 25.4, height = 108 / 25.4, noRStudioGD = TRUE)
 
 figure <- ggarrange(plt, nrow = 1, ncol = 1, common.legend = TRUE, legend = "top", vjust = 1.0, hjust = 0.5)
-annotate_figure(figure, bottom = text_grob("Entity Type", color = "black", face = "plain", size = 26, margin(b = 2), hjust = 0.25))
+annotate_figure(figure, bottom = text_grob("Entity Type", color = "black", face = "plain", size = 7, family = "Helvetica", margin(b = 2), hjust = 0.25))
 
-ggsave("plt.pdf", last_plot(), dpi = 300, width = 10, height = 10 * 3/5,)
+# Vector PDF, 180 mm (2-column) wide, RGB (ggplot PDF default) per Nature spec.
+ggsave("plt.pdf", last_plot(), width = 180, height = 108, units = "mm")
 
 ############### DISCRIMINANT VALIDITY TESTS ###############
 

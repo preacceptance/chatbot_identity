@@ -49,10 +49,10 @@ d$order_replika <- as.numeric(d$order_8)
 mean(d$order_replika, na.rm = TRUE)
 sd(d$order_replika, na.rm = TRUE)
 
-# Do a one-sample t-test after deducting 2 from order_replika to test if the mean is significantly different from 0
+# Do a two-sided one-sample Wilcoxon signed-rank test after deducting 2 from order_replika to test if the median is significantly different from 0
 d$order_replika_adj <- d$order_replika - 2
-t_test_result <- t.test(d$order_replika_adj, mu = 0)
-print(t_test_result)
+wilcox_test_result <- wilcox.test(d$order_replika_adj, mu = 0, alternative = "two.sided")
+print(wilcox_test_result)
 
 
 # Print order of all, from lowest to highest

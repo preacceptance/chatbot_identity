@@ -17,9 +17,11 @@ CHATGPT_UPDATE_DATE <- "2025-08-07"
 
 ################# READING THE DATA #################
 
-d_replika <- read.csv('emotion_classifications_final_replika.csv', sep = ",")
-d_chatgpt <- read.csv('emotion_classifications_final_chatgpt.csv', sep = ",")
-d_robustness <- read.csv('emotion_classifications_final_robustness.csv', sep = ",")
+# Public, de-identified datasets (authors dropped, verbatim post text blanked).
+# The full raw Reddit dumps are kept off GitHub and are never read here.
+d_replika <- read.csv('emotion_classifications_final_replika_shareable.csv', sep = ",")
+d_chatgpt <- read.csv('emotion_classifications_final_chatgpt_shareable.csv', sep = ",")
+d_robustness <- read.csv('emotion_classifications_final_robustness_shareable.csv', sep = ",")
 
 d_all <- rbind(d_replika, d_chatgpt)
 

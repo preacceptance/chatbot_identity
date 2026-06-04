@@ -350,6 +350,10 @@ toLabel <- function(x) {
 
 d$subscription_status <- factor(d$subscription_status, levels = c("no_subscription", "lifetime"))
 
+# Investment median/threshold split, used for the separate appendix figure
+d$invest_binary <- ifelse(d$investment < 50, "Low Investment (< 50)", "High Investment (>= 50)")
+d$invest_binary <- factor(d$invest_binary, levels = c("Low Investment (< 50)", "High Investment (>= 50)"))
+
 ###### APPENDIX
 if(FALSE) {
   # Edit d$subscription status such that if investment is < 50, set it to "Low Investment (< 50)", else, set it to "High Investment (>= 50)"
@@ -384,46 +388,35 @@ if(FALSE) {
 #### Bar Plot For Devaluation and Mourning, Both for Free Subscription/Lifetime Subscription and Control/Coldness ####
 positions <- c('control', 'coldness')
 labels <- c('Control', 'Coldness')
-plot_dv <- function(dv) {
-
-  if(dv == "identity_stability") {
-    bar_func <- geom_bar(position="dodge", stat="summary", width = 0.7, size = 0.75)
-    summary_func <- stat_summary(fun.data = "mean_se", color = "black",
-                 fun.args = list(mult = 1),
-                 position = position_dodge(width = 0.7),
-                 geom = "errorbar", width = 0.2)
-  } else {
-    bar_func <- geom_bar(aes(fill = subscription_status), position="dodge", stat="summary", width = 0.7, size = 0.75)
-    summary_func <- stat_summary(fun.data = "mean_se", color = "black",
-                 fun.args = list(mult = 1),
-                 position = position_dodge(width = 0.7),
-                 geom = "errorbar", width = 0.2,
-                 aes(group=subscription_status))
-  }
-
-  bar_func <- geom_bar(aes(fill = subscription_status), position="dodge", stat="summary", width = 0.7, size = 0.75)
-    summary_func <- stat_summary(fun.data = "mean_se", color = "black",
-                 fun.args = list(mult = 1),
-                 position = position_dodge(width = 0.7),
-                 geom = "errorbar", width = 0.2,
-                 aes(group=subscription_status))
+plot_dv <- function(dv, group_var = "subscription_status",
+                    fill_vals = c("no_subscription" = "grey", "lifetime" = "#4a4a4a"),
+                    fill_labels = c("no_subscription" = "No Subscription", "lifetime" = "Lifetime"),
+                    legend_title = "Subscription Status") {
 
   plt <- ggplot(d, aes(x = change_type, y = !!rlang::sym(dv)))
   plt <- plt +
-    bar_func +
-    scale_fill_manual("subscription_status", values = c("no_subscription" = "grey", "lifetime" = "#4a4a4a")) + # For Investment: c("Low Investment (< 50)" = "grey", "High Investment (>= 50)" = "#4a4a4a")
+    geom_bar(aes(fill = .data[[group_var]]), position = "dodge", stat = "summary",
+             width = 0.7, size = 0.75) +
+    scale_fill_manual(legend_title, values = fill_vals, labels = fill_labels) +
     labs(x = "Change Type Condition", y = dv) +
     theme(legend.position = "none") +
     theme_classic() +
     scale_x_discrete(limits = positions, labels = function(x) toLabel(x)) +
     theme(text = element_text(size=22),
-          axis.text.x = element_text(size = 20, hjust=0.5, vjust=0.6), 
+          axis.text.x = element_text(size = 20, hjust=0.5, vjust=0.6),
           axis.text.y = element_text(size = 20),
           legend.position="top") +
-    summary_func +
+    geom_point(aes(group = .data[[group_var]]),
+               position = position_jitterdodge(jitter.width = .15, dodge.width = .7),
+               size = .5, alpha = .2, shape = 16, color = "black") +
+    stat_summary(fun.data = "mean_se", color = "black",
+                 fun.args = list(mult = 1),
+                 position = position_dodge(width = 0.7),
+                 geom = "errorbar", width = 0.2,
+                 aes(group = .data[[group_var]])) +
     xlab("") +
-    coord_cartesian(ylim = c(0, 80))
-  
+    coord_cartesian(ylim = c(0, 100))
+
   if(dv == "identity_stability") {
     plt <- plt + ylab("Identity Discontinuity")
   }
@@ -456,6 +449,25 @@ if(dim(d)[1] == 340) {
   ggsave("./combined_plot_ai_companion.pdf", last_plot(), dpi = 300, width = 15 * 3/5, height = 12 * 3/5)
 } else {
   ggsave("./combined_plot.pdf", last_plot(), dpi = 300, width = 15 * 3/5, height = 12 * 3/5)
+}
+
+#### Appendix figure: same plot split by investment (low vs. high) ####
+inv_vals <- c("Low Investment (< 50)" = "grey", "High Investment (>= 50)" = "#4a4a4a")
+inv_labels <- c("Low Investment (< 50)" = "Low Investment (< 50)",
+                "High Investment (>= 50)" = "High Investment (>= 50)")
+
+plt1_inv <- plot_dv("identity_stability", "invest_binary", inv_vals, inv_labels, "Investment")
+plt2_inv <- plot_dv("mourn", "invest_binary", inv_vals, inv_labels, "Investment")
+
+figure_inv <- ggarrange(plt1_inv, plt2_inv, nrow = 1, ncol = 2, common.legend = TRUE,
+                        legend = "top", vjust = 1.0, hjust = 0.5)
+figure_inv <- annotate_figure(figure_inv, bottom = text_grob("Change Type", color = "black",
+                              face = "plain", size = 26, margin(b = 2), hjust = 0.25))
+
+if(dim(d)[1] == 340) {
+  ggsave("./combined_plot_investment_ai_companion.pdf", figure_inv, dpi = 300, width = 15 * 3/5, height = 12 * 3/5)
+} else {
+  ggsave("./combined_plot_investment.pdf", figure_inv, dpi = 300, width = 15 * 3/5, height = 12 * 3/5)
 }
 
 #### Mediation Analysis ####

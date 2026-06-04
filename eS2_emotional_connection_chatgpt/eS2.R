@@ -344,29 +344,70 @@ df_plot_orig <- df_plot # Save the original
 df_plot[df_plot$dv == "c_inclusion", 'value'] <- df_plot[df_plot$dv == "c_inclusion", 'value'] * 100/7
 positions <- c("Stranger", "App", "Brand", "ChatGPT", "Acquaintance", "Colleague", "Friend", "Family")
 
-plot_all_dvs <- function(df_plot) {
+# Build significance-star annotations from the `stars` data frame, mapping its
+# dv / condition naming onto the plot's naming and computing a y position just
+# above each bar's error bar.
+dv_map <- c("support_new" = "b_support_new",
+            "satisfaction_new" = "a_satisfaction_new",
+            "inclusion" = "c_inclusion")
+
+star_df <- stars
+star_df$dv <- dv_map[star_df$dv]
+star_df$condition <- paste0(toupper(substring(star_df$condition, 1, 1)),
+                            substring(star_df$condition, 2))
+
+bar_summ <- df_plot %>%
+  group_by(dv, condition) %>%
+  summarise(mean = mean(value), se = sd(value) / sqrt(n()), .groups = "drop")
+bar_summ$ypos <- bar_summ$mean + bar_summ$se
+
+star_df <- merge(star_df, bar_summ[, c("dv", "condition", "ypos")],
+                 by = c("dv", "condition"))
+star_df <- star_df[star_df$value != "", ]            # drop ChatGPT (no comparison)
+star_df$face <- ifelse(star_df$value == "ns", "italic", "plain")
+
+plot_all_dvs <- function(df_plot, star_df) {
+  # Jitter the (discrete) closeness values vertically for the point overlay only,
+  # so overlapping points fan out. Bars/error bars still use the unjittered data.
+  df_points <- df_plot
+  is_close <- df_points$dv == "c_inclusion"
+  set.seed(1)
+  df_points$value[is_close] <- df_points$value[is_close] +
+    runif(sum(is_close), min = -2.5, max = 2.5)
+
   plt <- ggplot(df_plot, aes(x = condition, y = value, fill = dv)) +
     geom_bar(position = position_dodge(), stat = "summary", fun = "mean", width = .8) +
-    labs(x = "Condition", y = "Value") + 
+    labs(x = "Condition", y = "Value") +
     theme_classic() +
-    theme(legend.position = "right", 
+    theme(legend.position = "top",
+          legend.title = element_blank(),
           text = element_text(size = 18),
-          axis.text.x = element_text(angle = 30, hjust = 1),
+          axis.text.x = element_text(angle = 30, hjust = 1,
+                                     face = ifelse(positions == "ChatGPT", "bold", "plain")),
           axis.text.y = element_text(size = 16)) +
-    scale_fill_grey(start = 0.8, end = 0.2) + # Using grey colors, but you can customize
-    geom_errorbar(aes(group=dv), 
-                  position = position_dodge(.8), 
-                  stat = "summary", 
-                  fun.data = "mean_se", 
+    scale_fill_grey(start = 0.8, end = 0.2, name = NULL,
+                    labels = c("Relationship Satisfaction", "Social Support", "Closeness")) +
+    geom_point(data = df_points, aes(group = dv),
+               position = position_jitterdodge(jitter.width = .15, dodge.width = .8),
+               size = .6, alpha = .25, shape = 16, color = "black") +
+    geom_errorbar(aes(group=dv),
+                  position = position_dodge(.8),
+                  stat = "summary",
+                  fun.data = "mean_se",
                   width = .25) +
+    geom_text(data = star_df,
+              aes(x = condition, y = 110, label = value, group = dv, fontface = face),
+              position = position_dodge(width = .8),
+              vjust = -0.4, size = 5) +
     scale_x_discrete(limits = positions) +
-    ylab("Mean Score") 
+    scale_y_continuous(expand = expansion(mult = c(0, 0.18))) +
+    ylab("Mean Score")
 
   return(plt)
 }
 
 # Call the function and plot
-plt_all_dvs <- plot_all_dvs(df_plot)
+plt_all_dvs <- plot_all_dvs(df_plot, star_df)
 print(plt_all_dvs)
 
 # Arrange all three plots:
