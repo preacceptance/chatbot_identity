@@ -660,12 +660,37 @@ for (var in variables) {
 df_days_replika_after <- df_days_replika[df_days_replika$before_after == "After", ]
 df_days_chatgpt_after <- df_days_chatgpt[df_days_chatgpt$before_after == "After", ]
 
-# Run variance tests and t-tests for all variables using a loop
+# Assess normality of the daily aggregates (N = 30 days per group) with
+# Shapiro-Wilk tests. Each platform x before/after group is tested separately,
+# matching the 30-vs-30 day groups compared by the Welch t-tests below.
+cat("\n========== Shapiro-Wilk normality tests (daily aggregates, N = 30/group) ==========\n")
+shapiro_groups <- list(
+  "replika (Before)" = df_days_replika[df_days_replika$before_after == "Before", ],
+  "replika (After)"  = df_days_replika_after,
+  "chatgpt (Before)" = df_days_chatgpt[df_days_chatgpt$before_after == "Before", ],
+  "chatgpt (After)"  = df_days_chatgpt_after
+)
+for (g in names(shapiro_groups)) {
+  for (var in variables) {
+    sw <- shapiro.test(shapiro_groups[[g]][[var]])
+    cat(sprintf("%-18s %-22s W = %.3f, p = %.4f%s\n",
+                g, var, sw$statistic, sw$p.value,
+                ifelse(sw$p.value < .05, "  <-- departs from normality", "")))
+  }
+}
+
+# Run variance tests (F-tests) and Welch t-tests for all variables using a loop.
+# var.test() reports the F-test on equal variances, justifying the use of
+# Welch's (unequal-variance) t-test over Student's t-test.
 for (var in variables) {
   var_normalized <- paste0(var, "_normalized")
-  
+
   cat("\n=== Analysis for", var, "===\n")
-  
+
+  # F-test for equality of variances between the two platforms (post-update)
+  vtest <- var.test(df_days_replika_after[[var_normalized]], df_days_chatgpt_after[[var_normalized]])
+  print(vtest)
+
   ttest <- t.test(df_days_replika_after[[var_normalized]], df_days_chatgpt_after[[var_normalized]])
 
   print(ttest)

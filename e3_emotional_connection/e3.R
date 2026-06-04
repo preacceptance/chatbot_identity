@@ -174,7 +174,10 @@ conditions <- c("stranger", "acquaintance", "brand", "app", "colleague", "friend
 for(dv in dvs) {
   # Create a data frame for the current DV
   df_anova <- data.frame(
-    id = 1:nrow(d),
+    # id must be a factor: as a bare integer it enters Error(id/condition) as a
+    # single continuous covariate (1 df), which mis-partitions the within-subject
+    # error and inflates the residual df to 792 (impossible for N=101, max 700).
+    id = factor(1:nrow(d)),
     stranger = d[, paste0('X1_', dv, '_1')],
     acquaintance = d[, paste0('X2_', dv, '_1')],
     brand = d[, paste0('X3_', dv, '_1')],
@@ -202,7 +205,7 @@ for(dv in dvs) {
   # Pre-registered analysis is the RM ANOVA above; these confirm robustness.
   print(paste("Assumption checks for", dv))
   print(paste0("Residual normality (Shapiro-Wilk) p = ",
-               signif(shapiro.test(proj(anova_model)[["Within"]][, "Residuals"])$p.value, 3)))
+               signif(shapiro.test(proj(anova_model)[["id:condition"]][, "Residuals"])$p.value, 3)))
   # Sphericity (the RM analog of equal variances): Mauchly's test + Greenhouse-Geisser
   wide_mat <- as.matrix(df_anova[, c("stranger", "acquaintance", "brand", "app",
                                      "colleague", "friend", "family", "replika")])
