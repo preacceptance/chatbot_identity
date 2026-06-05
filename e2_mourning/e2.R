@@ -306,7 +306,7 @@ toLabel <- function(x) {
   labels <- c()
   for(label in x) {
     if(label == "aicomp") {
-      labels <- c(labels, "AI\nCompanion")
+      labels <- c(labels, "Replika")
     }
     if(label == "app") {
       labels <- c(labels, 'App')
@@ -332,7 +332,7 @@ toLabel <- function(x) {
 }
 
 positions <- c('aicomp', 'app', 'brand', 'game', 'voice', 'pet', 'car')
-labels <- c('AI Companion', 'App', 'Brand Name', 'Game', 'Voice Assistant', 'Pet', 'Car')
+labels <- c('Replika', 'App', 'Brand Name', 'Game', 'Voice Assistant', 'Pet', 'Car')
 
 # Calculate mean mourning values and sort entity types
 # Reshape the data to long format
@@ -388,15 +388,10 @@ plot_dv <- function() {
   # "ns" is italicised; stars and "+" upright, matching the figure convention.
   sig_df$face <- ifelse(sig_df$label == "ns", "italic", "plain")
 
-  # Distinguish the two DVs by fill PATTERN (solid vs. striped) rather than by
-  # colour/shade, so the figure is unambiguous in greyscale and for colour-blind
-  # readers. Bars are white with black outlines; the pattern is the encoding.
-  bar_func <- geom_bar_pattern(aes(pattern = dv),
-                               position = "dodge", stat = "summary", width = 0.7,
-                               colour = "black", linewidth = 0.4,
-                               pattern_fill = NA, pattern_colour = "black",
-                               pattern_density = 0.5, pattern_spacing = 0.065,
-                               pattern_size = 0.4, pattern_key_scale_factor = 0.6)
+  # Distinguish the two DVs by fill SHADE (dark vs. light grey). Bars have black
+  # outlines; the greyscale fill carries the DV distinction.
+  bar_func <- geom_bar(position = "dodge", stat = "summary", width = 0.7,
+                       colour = "black", linewidth = 0.4)
     summary_func <- stat_summary(fun.data = "mean_se", color = "black",
                  fun.args = list(mult = 1),
                  position = position_dodge(width = 0.7),
@@ -411,10 +406,10 @@ plot_dv <- function() {
                            size = 0.5, alpha = 0.25, shape = 16,
                            color = "black", show.legend = FALSE)
 
-  # geom_text size is in mm; 2.1 mm * 2.845 ~ 6 pt (within Nature's 5-7 pt range).
+  # geom_text size is in mm; 2.46 mm * 2.845 ~ 7 pt (within Nature's 5-7 pt range).
   sig_func <- geom_text(data = sig_df,
                         aes(x = x, y = y, label = label, fontface = face),
-                        inherit.aes = FALSE, vjust = 0, size = 2.1, family = "Helvetica")
+                        inherit.aes = FALSE, vjust = 0, size = 2.46, family = "Helvetica")
 
   # Bold the AI Companion x-axis label (the reference condition); plain elsewhere.
   # Ordered to match the axis (factor levels = mean_mourning).
@@ -428,17 +423,15 @@ plot_dv <- function() {
     labs(x = "Entity Type", y = "Mean rating", fill = NULL) +
     theme_classic(base_size = 7, base_family = "Helvetica") +
     scale_x_discrete(labels = function(x) toLabel(x)) +
-    # Uniform white fill; the pattern (set below) carries the DV distinction.
-    scale_fill_manual(values = c(mourn = "white", disap = "white"), guide = "none") +
-    scale_pattern_manual(values = c(mourn = "none", disap = "stripe"),
-                         labels = c(mourn = "Mourning", disap = "Disappointment"),
-                         name = NULL) +
-    guides(pattern = guide_legend(override.aes = list(fill = "white", colour = "black"))) +
+    # Dark grey = Mourning, light grey = Disappointment.
+    scale_fill_manual(values = c(mourn = "grey25", disap = "grey70"),
+                      labels = c(mourn = "Mourning", disap = "Disappointment"),
+                      name = NULL) +
     # All text within Nature's 5-7 pt range at the 180 mm final width.
     theme(text = element_text(size = 7),
           axis.title = element_text(size = 7),
-          axis.text.x = element_text(size = 6, hjust=0.5, vjust=0.6, face = x_face),
-          axis.text.y = element_text(size = 6),
+          axis.text.x = element_text(size = 7, hjust=0.5, vjust=0.6, face = x_face),
+          axis.text.y = element_text(size = 7),
           legend.text = element_text(size = 7),
           legend.position="top",
           legend.title = element_blank()) +

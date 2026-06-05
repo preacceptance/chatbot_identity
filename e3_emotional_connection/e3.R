@@ -418,29 +418,19 @@ plot_all_dvs <- function(df_plot, stars_df = stars) {
   # Closeness was a 7-point scale rescaled by 100/7, so its points land on only a
   # few discrete levels (spacing 100/7 ~ 14.3) and overlap into flat lines. Add
   # vertical jitter to the closeness points only so their distribution is visible;
-  # the continuous DVs keep their exact values.
+  # the continuous DVs keep their exact values. Jitter is +/-4.5 (~0.32 of the
+  # 14.3 level spacing) so the seven levels stay visibly distinct rather than
+  # smearing into a continuous band.
   set.seed(42)
   df_plot$value_plot <- df_plot$value
   is_close <- df_plot$dv == "c_inclusion"
-  df_plot$value_plot[is_close] <- df_plot$value[is_close] + runif(sum(is_close), -6.5, 6.5)
+  df_plot$value_plot[is_close] <- df_plot$value[is_close] + runif(sum(is_close), -4.5, 4.5)
 
   plt <- ggplot(df_plot, aes(x = condition, y = value, fill = dv)) +
-    # Distinguish the three DVs by fill PATTERN (solid / striped / dotted) rather
-    # than by colour/shade, so the figure is unambiguous in greyscale and for
-    # colour-blind readers. Bars are white with black outlines.
-    geom_bar_pattern(aes(pattern = dv, pattern_density = dv, pattern_fill = dv,
-                         pattern_spacing = dv, pattern_size = dv),
-                     position = position_dodge(.8), stat = "summary", fun = "mean",
-                     width = .8, colour = "black", linewidth = 0.4,
-                     pattern_colour = "black",
-                     # Soften the stripe/dot patterns slightly (grey, not solid black)
-                     # so the bars read lighter without losing the DV distinction.
-                     pattern_alpha = 0.7,
-                     # Small key scale factor so the legend keys render the SAME fine
-                     # hatch / dot field as the bars. At the default the tiny keys show
-                     # only 2-3 coarse slashes and a 5-dot "die face", which misrepresent
-                     # the bar patterns.
-                     pattern_key_scale_factor = 0.2) +
+    # Distinguish the three DVs by fill SHADE (light / medium / dark grey). Bars
+    # have black outlines; the greyscale fill carries the DV distinction.
+    geom_bar(position = position_dodge(.8), stat = "summary", fun = "mean",
+             width = .8, colour = "black", linewidth = 0.4) +
     # Overlay every individual participant score as a jittered dot so the full
     # data distribution is visible, not just the mean. Closeness points carry the
     # extra vertical jitter computed above (value_plot); bars/error bars still use
@@ -456,10 +446,10 @@ plot_all_dvs <- function(df_plot, stars_df = stars) {
                   fun.data = "mean_se",
                   width = .25) +
     # Significance stars for each condition vs. Replika (Bonferroni-corrected).
-    # geom_text size is in mm; 2.1 mm * 2.845 ~ 6 pt (within Nature's 5-7 pt range).
+    # geom_text size is in mm; 2.46 mm * 2.845 ~ 7 pt (within Nature's 5-7 pt range).
     geom_text(data = star_pos,
               aes(x = condition, y = y, label = star, group = dv),
-              position = position_dodge(.8), vjust = 0, size = 2.1, family = "Helvetica",
+              position = position_dodge(.8), vjust = 0, size = 2.46, family = "Helvetica",
               inherit.aes = FALSE) +
     labs(x = "Condition", y = "Mean Score") +
     theme_classic(base_size = 7, base_family = "Helvetica") +
@@ -469,29 +459,13 @@ plot_all_dvs <- function(df_plot, stars_df = stars) {
           text = element_text(size = 7),
           axis.title = element_text(size = 7),
           legend.text = element_text(size = 7),
-          axis.text.x = element_text(size = 6, angle = 30, hjust = 1),
-          axis.text.y = element_text(size = 6)) +
-    # Uniform white fill; the pattern (set below) carries the DV distinction.
-    scale_fill_manual(values = c(a_satisfaction = "white", b_support = "white",
-                                 c_inclusion = "white"), guide = "none") +
-    scale_pattern_manual(values = c(a_satisfaction = "none", b_support = "stripe",
-                                    c_inclusion = "circle"),
-                         labels = dv_labels, name = NULL) +
-    # Thin the stripe ~15% (0.5 -> 0.42); shrink the dots ~15% in diameter
-    # (density 0.5 -> 0.36, since dot radius scales with sqrt(density)).
-    # Stripe density 0.5 => stripe band and gap are equal width.
-    scale_pattern_density_manual(values = c(a_satisfaction = 0.5, b_support = 0.5,
-                                            c_inclusion = 0.30), guide = "none") +
-    # Empty (hollow) stripe — outline only; dots stay filled grey.
-    scale_pattern_fill_manual(values = c(a_satisfaction = NA, b_support = NA,
-                                         c_inclusion = "black"), guide = "none") +
-    # Wider spacing for the stripe only; dots are finer (scaled to match e2's
-    # pattern weight, since e3's bars are narrower).
-    scale_pattern_spacing_manual(values = c(a_satisfaction = 0.045, b_support = 0.065,
-                                            c_inclusion = 0.030), guide = "none") +
-    scale_pattern_size_manual(values = c(a_satisfaction = 0.4, b_support = 0.4,
-                                         c_inclusion = 0.3), guide = "none") +
-    guides(pattern = guide_legend(override.aes = list(fill = "white", colour = "black"))) +
+          axis.text.x = element_text(size = 7, hjust = 0.5),
+          axis.text.y = element_text(size = 7)) +
+    # Light = satisfaction, medium = support, dark = closeness (a_/b_/c_ coding
+    # keeps the shades sorted lightest -> darkest).
+    scale_fill_manual(values = c(a_satisfaction = "grey80", b_support = "grey50",
+                                 c_inclusion = "grey25"),
+                      labels = dv_labels, name = NULL) +
     # Headroom at the top so stars above the tallest dots are never clipped.
     scale_y_continuous(breaks = c(0, 25, 50, 75, 100), expand = expansion(mult = c(0, 0.08))) +
     scale_x_discrete(limits = positions, labels = x_labs)
