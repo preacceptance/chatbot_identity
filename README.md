@@ -6,10 +6,8 @@ R version 4.4.1 was used, but other R versions will likely work as well.
 
 All data in this repository have been de-identified. Direct identifiers (Prolific
 IDs, worker IDs, IP addresses, geolocation, e-mail addresses) and free-text that
-participants produced (open-ended responses, "other, please specify" fields, and
-the names participants supplied) have been removed from the survey data. Removal
-is reproducible via `anonymize_for_release.py`. None of these fields are used by
-the analysis scripts, so the reported results reproduce unchanged.
+participants produced (e.g., open-ended responses and
+the names participants supplied) have been removed from the survey data.
 
 ## Study 1 data
 
