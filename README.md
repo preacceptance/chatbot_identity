@@ -14,9 +14,4 @@ the analysis scripts, so the reported results reproduce unchanged.
 ## Study 1 data
 
 Study 1 (`e1_field_study/`) analyses run on `d_all_shareable.csv`, a de-identified
-extract of the Reddit data: usernames are replaced with stable hashes and verbatim
-post text is removed, keeping the derived emotion/sentiment classifications and the
-post `id`. `e1.R` reads it automatically. The reported results and the cached LDA
-topic models reproduce from this file; a from-scratch LDA refit would require
-re-fetching the post text from Reddit via the `id` column. The full raw dump and
-other Study 1 files are available on OSF at https://osf.io/825jk/ .
+extract of the Reddit data.
